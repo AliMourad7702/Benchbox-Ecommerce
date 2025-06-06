@@ -1,11 +1,11 @@
 "use client";
 
-import { ClerkLoaded, useUser } from "@clerk/nextjs";
+import { ClerkLoaded, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Form from "next/form";
-import { TrolleyIcon } from "@sanity/icons";
+import { PackageIcon, TrolleyIcon } from "@sanity/icons";
 
 const Header = () => {
   const { user } = useUser();
@@ -16,7 +16,7 @@ const Header = () => {
       <div className="w-full flex justify-between items-center">
         <Link
           href={"/"}
-          className="hover:opacity-50 cursor-pointer mx-auto sm:mx-0 flex items-center justify-center min-w-fit"
+          className="hover:opacity-50 cursor-pointer mx-auto sm:mx-0 flex items-center justify-center min-w-fit max-w-1.5"
         >
           <Image
             src={"/images/Benchbox-logo.png"}
@@ -38,7 +38,7 @@ const Header = () => {
             className="bg-gray-100 text-gray-800 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border w-full max-w-3xl "
           />
         </Form>
-        <div>
+        <div className="flex justify-between gap-2">
           <Link
             href="/basket"
             className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:opacity-50 text-white font-bold py-2 px-4 rounded"
@@ -56,7 +56,22 @@ const Header = () => {
               <Link
                 href={"/orders"}
                 className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              ></Link>
+              >
+                <PackageIcon className="w-6 h-6" />
+                <span className="hidden sm:block">My Orders</span>
+              </Link>
+            )}
+
+            {user ? (
+              <div className="flex items-center space-x-2">
+                <UserButton />
+                <div className="hidden sm:block text-xs">
+                  <p className="text-gray-400">Welcome Back</p>
+                  <p className="font-bold">{user.fullName}!</p>
+                </div>
+              </div>
+            ) : (
+              <SignInButton mode="modal" />
             )}
           </ClerkLoaded>
         </div>
