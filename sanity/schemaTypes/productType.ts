@@ -2,16 +2,15 @@ import { TrolleyIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
 export const productType = defineType({
-  name: "productType",
-  title: "Product",
+  name: "product",
+  title: "Products",
   type: "document",
   icon: TrolleyIcon,
   fields: [
     defineField({
       name: "name",
-      title: "Product Name",
+      title: "Product Name (optional)",
       type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "baseSku",
@@ -20,10 +19,19 @@ export const productType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "baseSku",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "category",
       title: "Category",
       type: "reference",
-      to: [{ type: "categoryType" }],
+      to: [{ type: "category" }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -61,13 +69,25 @@ export const productType = defineType({
               validation: (Rule) => Rule.required(),
             }),
             defineField({
+              name: "stock",
+              title: "Stock",
+              type: "number",
+              validation: (Rule) => Rule.required().min(0),
+            }),
+            defineField({
               name: "image",
-              title: "Variant Image",
-              type: "image",
-              options: {
-                hotspot: true,
-              },
-              validation: (Rule) => Rule.required(),
+              title: "Variant Image(s)",
+              type: "array",
+              of: [
+                {
+                  type: "image",
+                  options: {
+                    hotspot: true,
+                  },
+                  validation: (Rule) => Rule.required(),
+                },
+              ],
+              validation: (Rule) => Rule.required().min(1),
             }),
           ],
         }),
@@ -75,4 +95,18 @@ export const productType = defineType({
       validation: (Rule) => Rule.min(1),
     }),
   ],
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "baseSku",
+      media: "variants.0.image.0.asset",
+    },
+    prepare({ title, subtitle, media }) {
+      return {
+        title: title,
+        subtitle: subtitle,
+        media: media,
+      };
+    },
+  },
 });
