@@ -70,16 +70,10 @@ export const quoteType = defineType({
           type: "object",
           fields: [
             {
-              name: "product",
-              title: "Product",
+              name: "variant",
+              title: "Selected Variant",
               type: "reference",
-              to: [{ type: "product" }],
-              validation: (Rule) => Rule.required(),
-            },
-            {
-              name: "variantLabel",
-              title: "Variant Label",
-              type: "string",
+              to: [{ type: "variant" }],
               validation: (Rule) => Rule.required(),
             },
             {
@@ -89,6 +83,22 @@ export const quoteType = defineType({
               validation: (Rule) => Rule.required().min(1),
             },
           ],
+          preview: {
+            select: {
+              variantLabel: "variant.label",
+              sku: "variant.sku",
+              quantity: "quantity",
+              price: "variant.price",
+              media: "variant.images.0.asset",
+            },
+            prepare({ variantLabel, sku, quantity, media, price }) {
+              return {
+                title: `${sku} - ${variantLabel} x ${quantity}`,
+                subtitle: `SAR ${price}`,
+                media,
+              };
+            },
+          },
         }),
       ],
       validation: (Rule) => Rule.required().min(1),

@@ -7,7 +7,15 @@ import { authorType } from "./authorType";
 import { productType } from "./productType";
 import { userType } from "./userType";
 import { quoteType } from "./quoteType";
+import { variantType } from "./variantType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContentType, categoryType, productType, userType, quoteType],
+  types: [
+    blockContentType,
+    categoryType,
+    productType,
+    variantType,
+    userType,
+    quoteType,
+  ],
 };

@@ -34,63 +34,17 @@ export const productType = defineType({
       to: [{ type: "category" }],
       validation: (Rule) => Rule.required(),
     }),
+
+    // ✅ NEW: Link to related variant documents
     defineField({
       name: "variants",
-      title: "Product Variants",
+      title: "Variants",
       type: "array",
       of: [
-        defineField({
-          name: "variant",
-          title: "Variant",
-          type: "object",
-          fields: [
-            defineField({
-              name: "label",
-              title: "Variant Label (e.g. A, B)",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: "sku",
-              title: "Full SKU (e.g. CH-535A)",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: "price",
-              title: "Price (SAR)",
-              type: "number",
-              validation: (Rule) => Rule.required().positive(),
-            }),
-            defineField({
-              name: "specs",
-              title: "Specifications / Remarks",
-              type: "text",
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: "stock",
-              title: "Stock",
-              type: "number",
-              validation: (Rule) => Rule.required().min(0),
-            }),
-            defineField({
-              name: "image",
-              title: "Variant Image(s)",
-              type: "array",
-              of: [
-                {
-                  type: "image",
-                  options: {
-                    hotspot: true,
-                  },
-                  validation: (Rule) => Rule.required(),
-                },
-              ],
-              validation: (Rule) => Rule.required().min(1),
-            }),
-          ],
-        }),
+        {
+          type: "reference",
+          to: [{ type: "variant" }],
+        },
       ],
       validation: (Rule) => Rule.min(1),
     }),
@@ -99,13 +53,13 @@ export const productType = defineType({
     select: {
       title: "name",
       subtitle: "baseSku",
-      media: "variants.0.image.0.asset",
+      media: "variants.0.images.0.asset",
     },
     prepare({ title, subtitle, media }) {
       return {
-        title: title,
-        subtitle: subtitle,
-        media: media,
+        title,
+        subtitle,
+        media,
       };
     },
   },
