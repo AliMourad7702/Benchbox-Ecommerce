@@ -26,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-wrap justify-between px-4 py-2 bg-slate-800">
+    <header className="flex flex-wrap justify-between px-4 py-4 bg-slate-800">
       <div className="w-full flex flex-wrap justify-between items-center">
         <Link
           href={"/"}
@@ -53,7 +53,7 @@ const Header = () => {
           />
         </Form>
 
-        <div className="flex items-center justify-between gap-2 flex-1 md:flex-none mt-4 space-x-4">
+        <div className="flex items-center justify-between gap-2 flex-1 md:flex-none  space-x-4">
           <Link
             href="/basket"
             className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:opacity-50 text-white font-bold py-2 px-4 rounded"
