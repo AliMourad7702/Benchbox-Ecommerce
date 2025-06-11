@@ -26,11 +26,11 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-wrap justify-between px-4 py-4 bg-slate-800">
+    <header className="flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
       <div className="w-full flex flex-wrap justify-between items-center">
         <Link
           href={"/"}
-          className="hover:opacity-50 cursor-pointer mx-auto sm:mx-0 flex items-center justify-center min-w-fit max-w-1.5"
+          className="hover:opacity-50 cursor-pointer mx-auto sm:mx-0 flex items-center justify-center min-w-fit max-w-1.5 mb-2 sm:my-0"
         >
           <Image
             src={"/images/Benchbox-logo.png"}
@@ -53,16 +53,14 @@ const Header = () => {
           />
         </Form>
 
-        <div className="flex items-center justify-between gap-2 flex-1 md:flex-none  space-x-4">
+        <div className="flex items-center justify-between gap-2 flex-1 md:flex-none space-x-4 mt-2 sm:mt-0">
           <Link
             href="/basket"
             className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:opacity-50 text-white font-bold py-2 px-4 rounded"
           >
             <TrolleyIcon className="w-6 h-6" />
-
             {/* TODO span item count once global state is implemented */}
-
-            <span className="hidden sm:block">My Basket</span>
+            <span>My Basket</span>
           </Link>
 
           {/* User Area */}
@@ -74,7 +72,7 @@ const Header = () => {
                 className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 <PackageIcon className="w-6 h-6" />
-                <span className="hidden sm:block">My Orders</span>
+                <span>My Orders</span>
               </Link>
             </SignedIn>
 
