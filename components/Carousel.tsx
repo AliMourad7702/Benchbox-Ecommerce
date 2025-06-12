@@ -11,6 +11,8 @@ import {
   FiLayers,
   FiLayout,
 } from "react-icons/fi";
+import Image from "next/image";
+import Link from "next/link";
 export interface CarouselItem {
   _id: string;
   label: string | null;
@@ -34,6 +36,8 @@ export interface CarouselProps {
   loop?: boolean;
   round?: boolean;
   showDots?: boolean;
+  baseSku?: string;
+  parentProductSlug?: string;
 }
 
 const DEFAULT_ITEMS: CarouselItem[] = [
@@ -109,8 +113,10 @@ export default function Carousel({
   loop = false,
   round = false,
   showDots = false,
+  baseSku = "",
+  parentProductSlug = "",
 }: CarouselProps): JSX.Element {
-  const containerPadding = 16;
+  const containerPadding = 0;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
 
@@ -204,10 +210,8 @@ export default function Carousel({
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden p-4 ${
-        round
-          ? "rounded-full border border-white"
-          : "rounded-lg border border-[#222]"
+      className={`relative overflow-hidden ${
+        round ? "rounded-full" : "rounded-lg"
       }`}
       style={{
         width: `${baseWidth}px`,
@@ -244,8 +248,8 @@ export default function Carousel({
               key={index}
               className={`relative shrink-0 flex flex-col ${
                 round
-                  ? "items-center justify-center text-center bg-[#060010] border-0"
-                  : "items-start justify-between bg-[#222] border border-[#222] rounded-[12px]"
+                  ? "items-center justify-center text-center border-0"
+                  : "items-start justify-between "
               } overflow-hidden cursor-grab active:cursor-grabbing`}
               style={{
                 width: itemWidth,
@@ -256,28 +260,43 @@ export default function Carousel({
               }}
               transition={effectiveTransition}
             >
-              <div className="p-5 relative">
-                <div className="mb-1 font-bold text-white">
-                  {item.label} — <span className="text-sm">({item.sku})</span>
-                </div>
-                <p className="text-sm text-white">{item.specs}</p>
-                <p className="text-sm text-gray-300">Price: SAR {item.price}</p>
-                {isOutOfStock ? (
-                  <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded shadow">
-                    Out of Stock
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-300">Stock: {item.stock}</p>
-                )}
-
+              <div className="relative w-full h-full aspect-square overflow-hidden">
                 {item.colorOptions?.[0]?.images?.[0] && (
-                  <img
+                  <Image
                     src={item.colorOptions[0].images[0] ?? ""}
                     alt={`${item.label} image`}
-                    className="mt-2 rounded-md object-cover h-40 w-full"
+                    fill
+                    className="object-contain h-full w-full transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px): 33vw"
+                    draggable={false}
                   />
                 )}
+
+                {isOutOfStock && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black opacity-50 w-full h-full">
+                    <span className="text-white font-bold text-lg">
+                      Out of Stock
+                    </span>
+                  </div>
+                )}
               </div>
+              <Link
+                href={`/product/${parentProductSlug}`}
+                className="h-full w-full"
+              >
+                <div className="p-4">
+                  <h2 className="text-lg font-semibold text-gray-800 truncate">
+                    {baseSku}-{item.label}
+                  </h2>
+
+                  <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                    {item.specs}
+                  </p>
+                  <p className="mt-2 text-lg font-bold text-gray-900">
+                    SAR {item.price?.toFixed(2)}
+                  </p>
+                </div>
+              </Link>
             </motion.div>
           );
         })}

@@ -10,23 +10,24 @@ interface ProductThumbnailProps {
 
 const ProductThumbnail = ({ product }: ProductThumbnailProps) => {
   return (
-    <Link
-      href={`/product/${product.slug}`}
-      className={`group flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden ${isProductOutOfStock(product) ? "opacity-50" : ""}`}
+    <div
+      className={`group flex flex-col rounded-lg border bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden ${isProductOutOfStock(product) ? "opacity-50" : ""}`}
     >
       {/* TODO search for a good card component for out product on https://www.reactbits.dev/ */}
-      <div className="relative ">
+      <div className="relative">
         <Carousel
           items={product.variants!}
+          baseSku={product.baseSku!}
           baseWidth={250}
           autoplay={product.variants!.length > 1}
           autoplayDelay={3000}
           pauseOnHover={true}
           loop={true}
           round={false}
+          parentProductSlug={product.slug!}
         />
       </div>
-    </Link>
+    </div>
   );
 };
 
