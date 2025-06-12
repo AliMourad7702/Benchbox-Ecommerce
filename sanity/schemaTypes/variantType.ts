@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const variantType = defineType({
   name: "variant",
@@ -37,17 +37,62 @@ export const variantType = defineType({
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
-      name: "images",
-      title: "Variant Images",
+      name: "colorOptions",
+      title: "Color Options",
       type: "array",
       of: [
-        {
-          type: "image",
-          options: { hotspot: true },
-        },
+        defineArrayMember({
+          type: "object",
+          name: "colorImagePair",
+          title: "Color + Image",
+          fields: [
+            defineField({
+              name: "colorName",
+              title: "Color Name",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "color",
+              title: "Color",
+              type: "color",
+              options: {
+                disableAlpha: true,
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "images",
+              title: "Images",
+              type: "array",
+              of: [
+                defineArrayMember({
+                  type: "image",
+                  options: {
+                    hotspot: true,
+                  },
+                }),
+              ],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: {
+              title: "color.hex",
+              media: "images.0.asset",
+            },
+            prepare({ title, media }) {
+              return {
+                title: title ? `Color ${title}` : "No Color",
+                media,
+              };
+            },
+          },
+        }),
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
+
     defineField({
       name: "product",
       title: "Parent Product",
@@ -59,7 +104,7 @@ export const variantType = defineType({
     select: {
       title: "sku",
       subtitle: "label",
-      media: "images.0.asset",
+      media: "colorOptions.0.images.0.asset",
     },
     prepare({ title, subtitle, media }) {
       return {

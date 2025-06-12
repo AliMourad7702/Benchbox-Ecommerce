@@ -53,7 +53,7 @@ export const productType = defineType({
     select: {
       title: "name",
       subtitle: "baseSku",
-      media: "variants.0.images.0.asset",
+      media: "variants.0.colorOptions.0.images.0.asset",
     },
     prepare({ title, subtitle, media }) {
       return {

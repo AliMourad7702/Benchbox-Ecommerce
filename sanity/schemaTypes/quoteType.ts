@@ -50,9 +50,24 @@ export const quoteType = defineType({
           validation: (Rule) => Rule.required(),
         },
         { name: "line2", title: "Address Line 2", type: "string" },
-        { name: "city", title: "City", type: "string" },
-        { name: "postalCode", title: "Postal Code", type: "string" },
-        { name: "country", title: "Country", type: "string" },
+        {
+          name: "city",
+          title: "City",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "postalCode",
+          title: "Postal Code",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "country",
+          title: "Country",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        },
       ],
     }),
     defineField({
@@ -87,14 +102,15 @@ export const quoteType = defineType({
             select: {
               variantLabel: "variant.label",
               sku: "variant.sku",
+              color: "variant.colorOptions.0.colorName",
               quantity: "quantity",
               price: "variant.price",
-              media: "variant.images.0.asset",
+              media: "variant.colorOptions.0.images.0.asset",
             },
-            prepare({ variantLabel, sku, quantity, media, price }) {
+            prepare({ variantLabel, sku, quantity, media, price, color }) {
               return {
                 title: `${sku} - ${variantLabel} x ${quantity}`,
-                subtitle: `SAR ${price}`,
+                subtitle: `SAR ${price} - Color ${color}`,
                 media,
               };
             },

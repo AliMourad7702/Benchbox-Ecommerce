@@ -76,17 +76,23 @@ export type Variant = {
   price?: number;
   specs?: string;
   stock?: number;
-  images?: Array<{
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+  colorOptions?: Array<{
+    colorName?: string;
+    color?: Color;
+    images?: Array<{
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      _key: string;
+    }>;
+    _type: "colorImagePair";
     _key: string;
   }>;
   product?: {
@@ -163,6 +169,39 @@ export type BlockContent = Array<{
   _type: "image";
   _key: string;
 }>;
+
+export type Color = {
+  _type: "color";
+  hex?: string;
+  alpha?: number;
+  hsl?: HslaColor;
+  hsv?: HsvaColor;
+  rgb?: RgbaColor;
+};
+
+export type RgbaColor = {
+  _type: "rgbaColor";
+  r?: number;
+  g?: number;
+  b?: number;
+  a?: number;
+};
+
+export type HsvaColor = {
+  _type: "hsvaColor";
+  h?: number;
+  s?: number;
+  v?: number;
+  a?: number;
+};
+
+export type HslaColor = {
+  _type: "hslaColor";
+  h?: number;
+  s?: number;
+  l?: number;
+  a?: number;
+};
 
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
@@ -282,7 +321,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Quote | User | Variant | Product | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Quote | User | Variant | Product | Category | BlockContent | Color | RgbaColor | HsvaColor | HslaColor | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/categories/getAllCategories.ts
 // Variable: ALL_CATEGORIES_QUERY
@@ -296,7 +335,7 @@ export type ALL_CATEGORIES_QUERYResult = Array<{
 
 // Source: ./sanity/lib/products/getAllProducts.ts
 // Variable: ALL_PRODUCTS_QUERY
-// Query: *[_type == "product"]{    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      price,      stock,      specs,      "images": images[].asset->url    }  }
+// Query: *[_type == "product"]{    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      price,      stock,      specs,      colorOptions[]{          colorName,          "colorCode": color.hex,          "images":images[].asset->url        }    }  }
 export type ALL_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -313,7 +352,11 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     price: number | null;
     stock: number | null;
     specs: string | null;
-    images: Array<string | null> | null;
+    colorOptions: Array<{
+      colorName: string | null;
+      colorCode: string | null;
+      images: Array<string | null> | null;
+    }> | null;
   }> | null;
 }>;
 
@@ -322,6 +365,6 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n  *[_type == \"category\"]{\n    _id,\n    title,\n    description,\n    \"slug\": slug.current\n  }\n    ": ALL_CATEGORIES_QUERYResult;
-    "\n    *[_type == \"product\"]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      stock,\n      specs,\n      \"images\": images[].asset->url\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
+    "\n    *[_type == \"product\"]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      stock,\n      specs,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url\n        }\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
   }
 }

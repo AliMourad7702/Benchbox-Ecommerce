@@ -19,7 +19,11 @@ export const getAllProducts = async () => {
       price,
       stock,
       specs,
-      "images": images[].asset->url
+      colorOptions[]{
+          colorName,
+          "colorCode": color.hex,
+          "images":images[].asset->url
+        }
     }
   }
     `);
