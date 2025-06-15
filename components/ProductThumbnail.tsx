@@ -24,7 +24,7 @@ const ProductThumbnail = ({ product }: ProductThumbnailProps) => {
           pauseOnHover={true}
           loop={true}
           round={false}
-          parentProductSlug={product.slug!}
+          parentProductInfo={{ slug: product.slug!, name: product.name ?? "" }}
         />
       </div>
     </div>

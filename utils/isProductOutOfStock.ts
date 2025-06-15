@@ -1,4 +1,4 @@
-import { ALL_PRODUCTS_QUERYResult, Product } from "@/sanity.types";
+import { ALL_PRODUCTS_QUERYResult } from "@/sanity.types";
 
 export const isProductOutOfStock = (
   product: ALL_PRODUCTS_QUERYResult[0]

@@ -43,7 +43,7 @@ const Header = () => {
 
         <Form
           action="/search"
-          className="w-full  sm:flex-1 sm:mx-4 mt-2 sm:mt-0 sm:ml-4"
+          className="w-full sm:flex-1 sm:mx-4 mt-2 sm:mt-0 sm:ml-4"
         >
           <input
             type="text"

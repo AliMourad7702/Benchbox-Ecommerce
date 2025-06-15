@@ -28,7 +28,7 @@ export interface CarouselItem {
 }
 
 export interface CarouselProps {
-  items?: CarouselItem[];
+  items: CarouselItem[];
   baseWidth?: number;
   autoplay?: boolean;
   autoplayDelay?: number;
@@ -36,8 +36,11 @@ export interface CarouselProps {
   loop?: boolean;
   round?: boolean;
   showDots?: boolean;
-  baseSku?: string;
-  parentProductSlug?: string;
+  baseSku: string;
+  parentProductInfo: {
+    slug: string;
+    name?: string;
+  };
 }
 
 const DEFAULT_ITEMS: CarouselItem[] = [
@@ -114,7 +117,10 @@ export default function Carousel({
   round = false,
   showDots = false,
   baseSku = "",
-  parentProductSlug = "",
+  parentProductInfo = {
+    slug: "",
+    name: "",
+  },
 }: CarouselProps): JSX.Element {
   const containerPadding = 0;
   const itemWidth = baseWidth - containerPadding * 2;
@@ -281,13 +287,23 @@ export default function Carousel({
                 )}
               </div>
               <Link
-                href={`/product/${parentProductSlug}`}
+                href={`/product/${parentProductInfo.slug}`}
                 className="h-full w-full"
               >
                 <div className="p-4">
-                  <h2 className="text-lg font-semibold text-gray-800 truncate">
-                    {baseSku}-{item.label}
-                  </h2>
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-lg font-semibold text-gray-800 truncate">
+                      {parentProductInfo.name
+                        ? `${parentProductInfo.name}`
+                        : `${baseSku}-${item.label}`}
+                    </h2>
+
+                    {parentProductInfo.name && (
+                      <h2 className="text-[1rem] font-semibold text-gray-600 truncate">
+                        {item.label!.toUpperCase()}
+                      </h2>
+                    )}
+                  </div>
 
                   <p className="mt-2 text-sm text-gray-600 line-clamp-2">
                     {item.specs}

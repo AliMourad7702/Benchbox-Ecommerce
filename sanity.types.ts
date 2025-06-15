@@ -360,11 +360,39 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
   }> | null;
 }>;
 
+// Source: ./sanity/lib/products/searchProducts.ts
+// Variable: PRODUCT_SEARCH_QUERY
+// Query: *[_type == "product" && (        name match $searchParams ||        baseSku match $searchParams ||        category->title match $searchParams ||        count(variants[@->specs match $searchParams])>0      )    ] {        _id,        name,        baseSku,        "slug": slug.current,        category->{          title,          "slug": slug.current        },        variants[]->{          _id,          label,          sku,          price,          stock,          specs,          colorOptions[]{              colorName,              "colorCode": color.hex,              "images":images[].asset->url          }        }      }
+export type PRODUCT_SEARCH_QUERYResult = Array<{
+  _id: string;
+  name: string | null;
+  baseSku: string | null;
+  slug: string | null;
+  category: {
+    title: string | null;
+    slug: string | null;
+  } | null;
+  variants: Array<{
+    _id: string;
+    label: string | null;
+    sku: string | null;
+    price: number | null;
+    stock: number | null;
+    specs: string | null;
+    colorOptions: Array<{
+      colorName: string | null;
+      colorCode: string | null;
+      images: Array<string | null> | null;
+    }> | null;
+  }> | null;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n  *[_type == \"category\"]{\n    _id,\n    title,\n    description,\n    \"slug\": slug.current\n  }\n    ": ALL_CATEGORIES_QUERYResult;
     "\n    *[_type == \"product\"]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      stock,\n      specs,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url\n        }\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
+    "\n    *[_type == \"product\" && (\n        name match $searchParams ||\n        baseSku match $searchParams ||\n        category->title match $searchParams ||\n        count(variants[@->specs match $searchParams])>0\n      )\n    ] {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          price,\n          stock,\n          specs,\n          colorOptions[]{\n              colorName,\n              \"colorCode\": color.hex,\n              \"images\":images[].asset->url\n          }\n        }\n      }\n  ": PRODUCT_SEARCH_QUERYResult;
   }
 }
