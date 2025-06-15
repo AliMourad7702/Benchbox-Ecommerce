@@ -12,6 +12,7 @@ import Link from "next/link";
 import React from "react";
 import Form from "next/form";
 import { PackageIcon, TrolleyIcon } from "@sanity/icons";
+import { Button } from "../ui/button";
 
 const Header = () => {
   const { user } = useUser();
@@ -86,9 +87,12 @@ const Header = () => {
               </div>
             ) : (
               // TODO adjust this so that when hovering over the SignInButton it's not applying cursor-pointer on the "Sign In"
-              <div className="text-white bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-2 px-4 rounded cursor-pointer!">
-                <SignInButton mode="modal" />
-              </div>
+
+              <SignInButton mode="modal">
+                <Button className="text-white text-md bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-5 px-4 rounded cursor-pointer!">
+                  Sign In
+                </Button>
+              </SignInButton>
             )}
 
             {user?.passkeys.length === 0 && (
