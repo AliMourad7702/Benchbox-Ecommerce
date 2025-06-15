@@ -85,7 +85,10 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              <SignInButton mode="modal" />
+              // TODO adjust this so that when hovering over the SignInButton it's not applying cursor-pointer on the "Sign In"
+              <div className="text-white bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-2 px-4 rounded cursor-pointer!">
+                <SignInButton mode="modal" />
+              </div>
             )}
 
             {user?.passkeys.length === 0 && (

@@ -11,7 +11,7 @@ interface ProductThumbnailProps {
 const ProductThumbnail = ({ product }: ProductThumbnailProps) => {
   return (
     <div
-      className={`group flex flex-col rounded-lg border bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden ${isProductOutOfStock(product) ? "opacity-50" : ""}`}
+      className={`group flex flex-col rounded-lg border min-w-fit bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden ${isProductOutOfStock(product) ? "opacity-50" : ""}`}
     >
       {/* TODO search for a good card component for out product on https://www.reactbits.dev/ */}
       <div className="relative">
