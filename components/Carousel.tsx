@@ -226,7 +226,9 @@ export default function Carousel({
     >
       <motion.div
         className="flex"
-        drag="x"
+        {...(items.length > 1 ? { drag: "x", onDragEnd: handleDragEnd } : {})}
+        // drag="x"
+        // onDragEnd={handleDragEnd}
         {...dragProps}
         style={{
           width: itemWidth,
@@ -235,7 +237,6 @@ export default function Carousel({
           perspectiveOrigin: `${currentIndex * trackItemOffset + itemWidth / 2}px 50%`,
           x,
         }}
-        onDragEnd={handleDragEnd}
         animate={{ x: -(currentIndex * trackItemOffset) }}
         transition={effectiveTransition}
         onAnimationComplete={handleAnimationComplete}
@@ -256,7 +257,7 @@ export default function Carousel({
                 round
                   ? "items-center justify-center text-center border-0"
                   : "items-start justify-between "
-              } overflow-hidden cursor-grab active:cursor-grabbing`}
+              } overflow-hidden ${items.length > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-default"} `}
               style={{
                 width: itemWidth,
                 height: round ? itemWidth : "100%",
