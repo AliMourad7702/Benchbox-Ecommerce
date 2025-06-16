@@ -74,7 +74,24 @@ export type Variant = {
   label?: string;
   sku?: string;
   price?: number;
-  specs?: string;
+  specs?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
   stock?: number;
   colorOptions?: Array<{
     colorName?: string;
@@ -351,7 +368,24 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     sku: string | null;
     price: number | null;
     stock: number | null;
-    specs: string | null;
+    specs: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
     colorOptions: Array<{
       colorName: string | null;
       colorCode: string | null;
@@ -378,7 +412,24 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
     sku: string | null;
     price: number | null;
     stock: number | null;
-    specs: string | null;
+    specs: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
     colorOptions: Array<{
       colorName: string | null;
       colorCode: string | null;
@@ -405,7 +456,24 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
     sku: string | null;
     price: number | null;
     stock: number | null;
-    specs: string | null;
+    specs: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
     colorOptions: Array<{
       colorName: string | null;
       colorCode: string | null;

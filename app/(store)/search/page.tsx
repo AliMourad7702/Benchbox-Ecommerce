@@ -1,5 +1,6 @@
 import ProductGrid from "@/components/ProductGrid";
 import { searchProducts } from "@/sanity/lib/products/searchProducts";
+import { redirect } from "next/navigation";
 import React from "react";
 
 async function SearchPage({
@@ -10,7 +11,11 @@ async function SearchPage({
   };
 }) {
   const { query } = await searchParams;
-  const products = await searchProducts(query);
+  if (query.length === 0) {
+    return redirect("/");
+  }
+
+  const products = await searchProducts(query.trim());
 
   console.log("===================================================");
   console.log("products: ", JSON.stringify(products));

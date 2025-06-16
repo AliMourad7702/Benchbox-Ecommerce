@@ -27,8 +27,9 @@ export const variantType = defineType({
     defineField({
       name: "specs",
       title: "Specifications / Remarks",
-      type: "text",
-      validation: (Rule) => Rule.required(),
+      type: "array",
+      of: [{ type: "block" }],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: "stock",
