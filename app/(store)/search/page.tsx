@@ -17,9 +17,9 @@ async function SearchPage({
 
   const products = await searchProducts(query.trim());
 
-  console.log("===================================================");
-  console.log("products: ", JSON.stringify(products));
-  console.log("===================================================");
+  // console.log("===================================================");
+  // console.log("products: ", JSON.stringify(products));
+  // console.log("===================================================");
 
   if (!products || products.length === 0) {
     return (
