@@ -1,13 +1,16 @@
-import { ALL_PRODUCTS_QUERYResult } from "@/sanity.types";
+import {
+  ALL_PRODUCTS_QUERYResult,
+  PRODUCT_BY_SLUG_QUERYResult,
+} from "@/sanity.types";
 
 export const isProductOutOfStock = (
-  product: ALL_PRODUCTS_QUERYResult[0]
+  product: PRODUCT_BY_SLUG_QUERYResult
 ): boolean => {
-  if (!product.variants || product.variants.length === 0) {
+  if (!product!.variants || product!.variants.length === 0) {
     return true;
   }
 
-  const totalStock = product.variants.reduce((sum, variant) => {
+  const totalStock = product!.variants.reduce((sum, variant) => {
     return sum + (variant.stock || 0);
   }, 0);
 

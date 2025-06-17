@@ -1,3 +1,4 @@
+import SanityAutoSlugInput from "@/components/SanityAutoSlugInput";
 import { TrolleyIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
@@ -22,10 +23,12 @@ export const productType = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
+      components: {
+        input: SanityAutoSlugInput,
+      },
       options: {
         source: "baseSku",
       },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "category",

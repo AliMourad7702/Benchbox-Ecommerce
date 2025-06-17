@@ -1,3 +1,4 @@
+import SanityAutoSlugInput from "@/components/SanityAutoSlugInput";
 import { TagIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
@@ -16,6 +17,9 @@ export const categoryType = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
+      components: {
+        input: SanityAutoSlugInput,
+      },
       options: {
         source: "title",
       },
