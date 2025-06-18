@@ -5,15 +5,16 @@ import { isProductOutOfStock } from "@/utils/isProductOutOfStock";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button } from "../ui/button";
+import SetColor from "./SetColor";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
 }
 
 // FIXME modify this if it caused future errors
-type ProductInBasketType = {
+export type ProductInBasketType = {
   productId: string;
   baseSku: string;
   productSlug: string;
@@ -23,14 +24,16 @@ type ProductInBasketType = {
     label: string | null;
     sku: string | null;
     price: number | null;
-    color: {
-      name: string | null;
-      code: string | null;
-      image: string | null;
-    } | null;
+    color: SelectedColorType;
   };
   quantity: number;
 };
+
+export type SelectedColorType = {
+  colorName: string | null;
+  colorCode: string | null;
+  images: Array<string | null> | null;
+} | null;
 
 const Horizontal = () => {
   return <hr className="w-[30%] my-2" />;
@@ -50,15 +53,23 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       sku: product!.variants![0].sku,
       price: product!.variants![0].price,
       color: {
-        name: product!.variants![0].colorOptions![0].colorName,
-        code: product!.variants![0].colorOptions![0].colorCode,
-        image: product!.variants![0].colorOptions![0].images![0],
+        colorName: product!.variants![0].colorOptions![0].colorName,
+        colorCode: product!.variants![0].colorOptions![0].colorCode,
+        images: product!.variants![0].colorOptions![0].images,
       },
     },
     quantity: 1,
   });
 
   const isOutOfStock = isProductOutOfStock(product);
+
+  const handleColorSelect = useCallback(
+    (color: SelectedColorType) => {
+      // TODO continue implementation
+    },
+    [productInBasket.variant.color]
+  );
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div
@@ -127,10 +138,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             variant
           </div>
           <Horizontal />
-          <div className="text-sm">
-            {/* TODO implement color component here */}
-            color
-          </div>
+          <SetColor
+            productInBasket={productInBasket}
+            colors={product!.variants![0].colorOptions!}
+            handleColorSelect={handleColorSelect}
+          />
           <Horizontal />
           <div className="text-sm">
             {/* TODO implement quantityChanger component here */}
