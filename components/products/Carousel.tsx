@@ -6,12 +6,12 @@ import { JSX, useEffect, useRef, useState } from "react";
 import { PortableText, PortableTextBlock } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
+import { getAllVariantsStock } from "@/utils/isProductOutOfStock";
 export interface CarouselItem {
   _id: string;
   label: string | null;
   sku: string | null;
   price: number | null;
-  stock: number | null;
   specs: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -34,6 +34,7 @@ export interface CarouselItem {
     colorName: string | null;
     colorCode: string | null;
     images: Array<string | null> | null;
+    stock: number | null;
   }> | null;
 }
 
@@ -52,64 +53,6 @@ export interface CarouselProps {
     name?: string;
   };
 }
-
-// const DEFAULT_ITEMS: CarouselItem[] = [
-//   {
-//     _id: "1",
-//     label: "CH-535A with Armrest",
-//     sku: "CH-535A",
-//     price: 320,
-//     stock: 12,
-//     specs: "Adjustable height, Mesh back, Armrest",
-//     colorOptions: [
-//       {
-//         colorName: "Black",
-//         colorCode: "#000000",
-//         images: ["https://via.placeholder.com/300x200?text=CH-535A+Black"],
-//       },
-//       {
-//         colorName: "Grey",
-//         colorCode: "#AAAAAA",
-//         images: ["https://via.placeholder.com/300x200?text=CH-535A+Grey"],
-//       },
-//     ],
-//   },
-//   {
-//     _id: "2",
-//     label: "CH-535B with Headrest",
-//     sku: "CH-535B",
-//     price: 370,
-//     stock: 8,
-//     specs: "Lumbar support, Tilt mechanism, Headrest",
-//     colorOptions: [
-//       {
-//         colorName: "Blue",
-//         colorCode: "#0044CC",
-//         images: ["https://via.placeholder.com/300x200?text=CH-535B+Blue"],
-//       },
-//     ],
-//   },
-//   {
-//     _id: "3",
-//     label: "CH-535C Premium",
-//     sku: "CH-535C",
-//     price: 420,
-//     stock: 5,
-//     specs: "Premium cushioning, Adjustable armrests, Swivel base",
-//     colorOptions: [
-//       {
-//         colorName: "Red",
-//         colorCode: "#CC0000",
-//         images: ["https://via.placeholder.com/300x200?text=CH-535C+Red"],
-//       },
-//       {
-//         colorName: "White",
-//         colorCode: "#FFFFFF",
-//         images: ["https://via.placeholder.com/300x200?text=CH-535C+White"],
-//       },
-//     ],
-//   },
-// ];
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
@@ -252,7 +195,7 @@ export default function Carousel({
         onAnimationComplete={handleAnimationComplete}
       >
         {carouselItems.map((item, index) => {
-          const isOutOfStock = item.stock === 0;
+          const isOutOfStock = getAllVariantsStock(item) === 0;
           const range = [
             -(index + 1) * trackItemOffset,
             -index * trackItemOffset,
@@ -290,8 +233,8 @@ export default function Carousel({
                 )}
 
                 {isOutOfStock && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black opacity-50 w-full h-full">
-                    <span className="text-white font-bold text-lg">
+                  <div className="relative inset-0 flex items-center justify-center bg-black opacity-50 w-full h-full">
+                    <span className="text-white font-bold text-lg absolute top-1 left-1">
                       Out of Stock
                     </span>
                   </div>

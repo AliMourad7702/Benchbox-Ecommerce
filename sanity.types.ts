@@ -92,7 +92,6 @@ export type Variant = {
     _type: "block";
     _key: string;
   }>;
-  stock?: number;
   colorOptions?: Array<{
     colorName?: string;
     color?: Color;
@@ -109,6 +108,7 @@ export type Variant = {
       _type: "image";
       _key: string;
     }>;
+    stock?: number;
     _type: "colorImagePair";
     _key: string;
   }>;
@@ -352,7 +352,7 @@ export type ALL_CATEGORIES_QUERYResult = Array<{
 
 // Source: ./sanity/lib/products/getAllProducts.ts
 // Variable: ALL_PRODUCTS_QUERY
-// Query: *[_type == "product"] | order(_updatedAt desc) {    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      price,      stock,      specs,      colorOptions[]{          colorName,          "colorCode": color.hex,          "images":images[].asset->url        }    }  }
+// Query: *[_type == "product"] | order(_updatedAt desc) {    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      price,      specs,      colorOptions[]{          colorName,          "colorCode": color.hex,          "images":images[].asset->url,          stock,        }    }  }
 export type ALL_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -367,7 +367,6 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     label: string | null;
     sku: string | null;
     price: number | null;
-    stock: number | null;
     specs: Array<{
       children?: Array<{
         marks?: Array<string>;
@@ -390,13 +389,14 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
       colorName: string | null;
       colorCode: string | null;
       images: Array<string | null> | null;
+      stock: number | null;
     }> | null;
   }> | null;
 }>;
 
 // Source: ./sanity/lib/products/getProductBySlug.ts
 // Variable: PRODUCT_BY_SLUG_QUERY
-// Query: *[_type == "product" && slug.current==$slug][0]{    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      price,      stock,      specs,      colorOptions[]{          colorName,          "colorCode": color.hex,          "images":images[].asset->url        }    }  }
+// Query: *[_type == "product" && slug.current==$slug][0]{    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      price,      specs,      colorOptions[]{          colorName,          "colorCode": color.hex,          "images":images[].asset->url,          stock,        }    }  }
 export type PRODUCT_BY_SLUG_QUERYResult = {
   _id: string;
   name: string | null;
@@ -411,7 +411,6 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
     label: string | null;
     sku: string | null;
     price: number | null;
-    stock: number | null;
     specs: Array<{
       children?: Array<{
         marks?: Array<string>;
@@ -434,13 +433,14 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
       colorName: string | null;
       colorCode: string | null;
       images: Array<string | null> | null;
+      stock: number | null;
     }> | null;
   }> | null;
 } | null;
 
 // Source: ./sanity/lib/products/searchProducts.ts
 // Variable: PRODUCT_SEARCH_QUERY
-// Query: *[_type == "product" && (        name match $searchParams ||        baseSku match $searchParams ||        category->title match $searchParams ||        count(variants[@->specs match $searchParams])>0      )     ] | order(_updatedAt desc) {        _id,        name,        baseSku,        "slug": slug.current,        category->{          title,          "slug": slug.current        },        variants[]->{          _id,          label,          sku,          price,          stock,          specs,          colorOptions[]{              colorName,              "colorCode": color.hex,              "images":images[].asset->url          }        }      }
+// Query: *[_type == "product" && (        name match $searchParams ||        baseSku match $searchParams ||        category->title match $searchParams ||        count(variants[@->specs[].children[].text match $searchParams])>0      )     ] | order(_updatedAt desc) {        _id,        name,        baseSku,        "slug": slug.current,        category->{          title,          "slug": slug.current        },        variants[]->{          _id,          label,          sku,          price,          specs,          colorOptions[]{              colorName,              "colorCode": color.hex,              "images":images[].asset->url,              stock,                        }        }      }
 export type PRODUCT_SEARCH_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -455,7 +455,6 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
     label: string | null;
     sku: string | null;
     price: number | null;
-    stock: number | null;
     specs: Array<{
       children?: Array<{
         marks?: Array<string>;
@@ -478,6 +477,7 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
       colorName: string | null;
       colorCode: string | null;
       images: Array<string | null> | null;
+      stock: number | null;
     }> | null;
   }> | null;
 }>;
@@ -487,8 +487,8 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n  *[_type == \"category\"]{\n    _id,\n    title,\n    description,\n    \"slug\": slug.current\n  }\n    ": ALL_CATEGORIES_QUERYResult;
-    "\n    *[_type == \"product\"] | order(_updatedAt desc) {\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      stock,\n      specs,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url\n        }\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
-    "\n    *[_type == \"product\" && slug.current==$slug][0]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      stock,\n      specs,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url\n        }\n    }\n  }\n    ": PRODUCT_BY_SLUG_QUERYResult;
-    "\n    *[_type == \"product\" && (\n        name match $searchParams ||\n        baseSku match $searchParams ||\n        category->title match $searchParams ||\n        count(variants[@->specs match $searchParams])>0\n      ) \n    ] | order(_updatedAt desc) {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          price,\n          stock,\n          specs,\n          colorOptions[]{\n              colorName,\n              \"colorCode\": color.hex,\n              \"images\":images[].asset->url\n          }\n        }\n      }\n  ": PRODUCT_SEARCH_QUERYResult;
+    "\n    *[_type == \"product\"] | order(_updatedAt desc) {\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      specs,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url,\n          stock,\n        }\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
+    "\n    *[_type == \"product\" && slug.current==$slug][0]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      price,\n      specs,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url,\n          stock,\n        }\n    }\n  }\n    ": PRODUCT_BY_SLUG_QUERYResult;
+    "\n    *[_type == \"product\" && (\n        name match $searchParams ||\n        baseSku match $searchParams ||\n        category->title match $searchParams ||\n        count(variants[@->specs[].children[].text match $searchParams])>0\n      ) \n    ] | order(_updatedAt desc) {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          price,\n          specs,\n          colorOptions[]{\n              colorName,\n              \"colorCode\": color.hex,\n              \"images\":images[].asset->url,\n              stock,\n              \n          }\n        }\n      }\n  ": PRODUCT_SEARCH_QUERYResult;
   }
 }

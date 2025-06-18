@@ -54,12 +54,13 @@ export const searchProducts = async (searchParams: string) => {
           label,
           sku,
           price,
-          stock,
           specs,
           colorOptions[]{
               colorName,
               "colorCode": color.hex,
-              "images":images[].asset->url
+              "images":images[].asset->url,
+              stock,
+              
           }
         }
       }

@@ -1,7 +1,10 @@
 "use client";
 
 import { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
-import { isProductOutOfStock } from "@/utils/isProductOutOfStock";
+import {
+  AdjustedVariantType,
+  isProductOutOfStock,
+} from "@/utils/isProductOutOfStock";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +12,7 @@ import React, { useCallback, useState } from "react";
 import { Button } from "../ui/button";
 import SetColor from "./SetColor";
 import SetQuantity from "./SetQuantity";
+import SetVariant from "./SetVariant";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -21,12 +25,29 @@ export type ProductInBasketType = {
   productSlug: string;
   productName?: string | null;
   variant: {
-    id: string;
+    _id: string;
     label: string | null;
     sku: string | null;
     price: number | null;
     color: SelectedColorType;
-    stock: number | null;
+    specs: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
   };
   quantity: number;
 };
@@ -35,6 +56,7 @@ export type SelectedColorType = {
   colorName: string | null;
   colorCode: string | null;
   images: Array<string | null> | null;
+  stock: number | null;
 } | null;
 
 const Horizontal = () => {
@@ -50,15 +72,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     productSlug: product!.slug!,
     productName: product!.name,
     variant: {
-      id: product!.variants![0]._id,
+      _id: product!.variants![0]._id,
       label: product!.variants![0].label,
       sku: product!.variants![0].sku,
       price: product!.variants![0].price,
-      stock: product!.variants![0].stock,
+      specs: product!.variants![0].specs,
       color: {
         colorName: product!.variants![0].colorOptions![0].colorName,
         colorCode: product!.variants![0].colorOptions![0].colorCode,
         images: product!.variants![0].colorOptions![0].images,
+        stock: product!.variants![0].colorOptions![0].stock,
       },
     },
     quantity: 1,
@@ -67,6 +90,33 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   const isOutOfStock = isProductOutOfStock(product);
 
   console.log("Product In Basket: ", productInBasket);
+
+  const handleVariantChange = useCallback(
+    (variant: AdjustedVariantType) => {
+      setProductInBasket((prev) => {
+        return {
+          ...prev,
+          variant: {
+            ...prev.variant,
+            _id: variant._id,
+            label: variant.label,
+            price: variant.price,
+            specs: variant.specs,
+            color: {
+              colorName: variant.colorOptions![0].colorName,
+              colorCode: variant.colorOptions![0].colorCode,
+              images: variant.colorOptions![0].images,
+              stock: variant.colorOptions![0].stock,
+            },
+          },
+
+          quantity:
+            prev.quantity > variant.colorOptions![0].stock! ? 1 : prev.quantity,
+        };
+      });
+    },
+    [productInBasket.variant]
+  );
 
   const handleColorSelect = useCallback(
     (color: SelectedColorType) => {
@@ -77,6 +127,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             ...prev.variant,
             color: color,
           },
+          quantity: prev.quantity > color?.stock! ? 1 : prev.quantity,
         };
       });
     },
@@ -90,12 +141,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           ...prev,
           quantity:
             action === "increase"
-              ? prev.quantity < prev.variant.stock!
-                ? prev.quantity++
+              ? prev.quantity < prev.variant!.color!.stock!
+                ? prev.quantity + 1
                 : prev.quantity
-              : prev.quantity > 0
-                ? prev.quantity--
-                : 0,
+              : prev.quantity > 1
+                ? prev.quantity - 1
+                : 1,
         };
       });
     },
@@ -109,9 +160,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       >
         {/* FIXME think about the logic to implement how to showcase each variant and switch between them (and simultaneously switch the necessary info*/}
 
-        {product!.variants && (
+        {productInBasket!.variant && (
           <Image
-            src={product!.variants![0].colorOptions![0].images![0]!}
+            src={productInBasket!.variant!.color?.images![0]!}
             alt={product!.name ?? "product! Image"}
             fill
             className="object-contain transition-transform duration-300 hover:scale-105"
@@ -126,53 +177,67 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       <div className="flex flex-col justify-between">
         <div>
           <h1 className="text-3xl font-bold mb-4">
-            {product!.name ??
-              product!.baseSku + "-" + product!.variants![0].label}
+            {product!.name
+              ? product!.name
+              : product!.baseSku + " " + productInBasket.variant!.label}
           </h1>
           <div className="text-xl font-semibold mb-4">
-            SAR {product!.variants![0].price?.toFixed(2)}
+            SAR {productInBasket.variant.price?.toFixed(2)}
           </div>
           <Horizontal />
           <div className="prose max-w-none mb-6 text-black">
-            {Array.isArray(product!.variants![0].specs) && (
-              <PortableText value={product!.variants![0].specs} />
+            {Array.isArray(productInBasket.variant.specs) && (
+              <PortableText value={productInBasket.variant.specs} />
             )}
           </div>
           <Horizontal />
-          <div className="text-sm">
-            <Link
-              href={`/category/${product!.category!.slug}`}
-              className="hover:opacity-50"
-            >
-              <span className="font-semibold">CATEGORY:</span>{" "}
-              {product!.category!.title}
-            </Link>
+          <div className="flex flex-col gap-2">
+            <div className="flex text-sm">
+              <Link
+                href={`/category/${product!.category!.slug}`}
+                className="hover:opacity-50 flex gap-2"
+              >
+                <span className="font-semibold">Category:</span>{" "}
+                <span>{product!.category!.title}</span>
+              </Link>
+            </div>
+            <div className="flex text-sm gap-2">
+              <span className="font-semibold">SKU / Model Number:</span>{" "}
+              {product!.baseSku}
+            </div>
+            <div className="flex text-sm gap-2">
+              <span className="font-semibold">Availability:</span>{" "}
+              <span
+                className={
+                  productInBasket!.variant!.color!.stock === 0
+                    ? "text-red-400"
+                    : "text-green-400"
+                }
+              >
+                {productInBasket!.variant!.color!.stock === 0
+                  ? "Out of Stock"
+                  : "In Stock"}
+              </span>
+            </div>
           </div>
-          <div className="text-sm">
-            <span className="font-semibold">SKU / Model Number:</span>{" "}
-            {product!.baseSku}
-          </div>
-          <div className="text-sm">
-            <span className="font-semibold">Availability:</span>{" "}
-            <span
-              className={
-                product!.variants![0].stock! === 0
-                  ? "text-red-400"
-                  : "text-green-400"
-              }
-            >
-              {product!.variants![0].stock! === 0 ? "Out of Stock" : "In Stock"}
-            </span>
-          </div>
+
           <Horizontal />
           <div className="text-sm">
             {/* TODO implement variant component here */}
-            variant
+            <SetVariant
+              variants={product?.variants!}
+              productInBasket={productInBasket}
+              handleVariantChange={handleVariantChange}
+            />
           </div>
           <Horizontal />
           <SetColor
             productInBasket={productInBasket}
-            colors={product!.variants![0].colorOptions!}
+            colors={
+              product!.variants?.find(
+                (v) => v._id == productInBasket.variant._id
+              )?.colorOptions ?? []
+            }
             handleColorSelect={handleColorSelect}
           />
           <Horizontal />
@@ -181,12 +246,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               productInBasket={productInBasket}
               handleQuantityChange={handleQuantityChange}
               quantity={1}
+              isOutOfStock={productInBasket.variant.color?.stock === 0}
             />
           </div>
           <Horizontal />
           <Button
             className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
             size={"lg"}
+            disabled={productInBasket.variant.color?.stock === 0}
           >
             Add to Basket
           </Button>

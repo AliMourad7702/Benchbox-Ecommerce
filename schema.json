@@ -561,13 +561,6 @@
         },
         "optional": true
       },
-      "stock": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
-        },
-        "optional": true
-      },
       "colorOptions": {
         "type": "objectAttribute",
         "value": {
@@ -670,6 +663,13 @@
                       }
                     }
                   }
+                },
+                "optional": true
+              },
+              "stock": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "number"
                 },
                 "optional": true
               },

@@ -19,17 +19,22 @@ const SetColor: React.FC<SetColorProps> = ({
       <span className="text-sm font-semibold">COLOR:</span>
       <div className="flex w-full max-w-[30%] gap-1">
         {colors?.map((item) => {
-          console.log(item?.colorName + ": ", item?.colorCode);
+          console.log("item stock: ", item?.colorName, ": ", item?.stock);
           return (
             <div
-              className={`h-7 w-7 rounded-full border-green-400 flex items-center justify-center ${productInBasket.variant.color?.colorName === item?.colorName ? "border-[1.5px]" : "border-none"}`}
+              className={`h-7 w-7 rounded-full  flex items-center justify-center relative ${productInBasket.variant.color?.colorName === item?.colorName ? (productInBasket.variant.color?.stock === 0 ? "border-[1.5px] border-red-400" : "border-[1.5px] border-green-400") : "border-none"}`}
               key={item?.colorCode}
               onClick={() => handleColorSelect(item)}
             >
               <div
                 style={{ background: item!.colorCode! }}
-                className="h-5 w-5 rounded-full border-[1px] border-slate-300 hover:cursor-pointer hover:opacity-70"
+                className={`flex justify-center items-center  h-5 w-5 rounded-full border-[1px] border-slate-300 hover:cursor-pointer hover:opacity-70 ${item?.stock === 0 && "opacity-50"}`}
               ></div>
+              {item?.stock === 0 && (
+                <span className="text-red-500 absolute text-xl select-none hover:cursor-pointer">
+                  X
+                </span>
+              )}
             </div>
           );
         })}
