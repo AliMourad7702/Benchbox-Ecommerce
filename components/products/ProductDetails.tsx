@@ -8,6 +8,7 @@ import Link from "next/link";
 import React, { useCallback, useState } from "react";
 import { Button } from "../ui/button";
 import SetColor from "./SetColor";
+import SetQuantity from "./SetQuantity";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -25,6 +26,7 @@ export type ProductInBasketType = {
     sku: string | null;
     price: number | null;
     color: SelectedColorType;
+    stock: number | null;
   };
   quantity: number;
 };
@@ -52,6 +54,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       label: product!.variants![0].label,
       sku: product!.variants![0].sku,
       price: product!.variants![0].price,
+      stock: product!.variants![0].stock,
       color: {
         colorName: product!.variants![0].colorOptions![0].colorName,
         colorCode: product!.variants![0].colorOptions![0].colorCode,
@@ -63,11 +66,40 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   const isOutOfStock = isProductOutOfStock(product);
 
+  console.log("Product In Basket: ", productInBasket);
+
   const handleColorSelect = useCallback(
     (color: SelectedColorType) => {
-      // TODO continue implementation
+      setProductInBasket((prev) => {
+        return {
+          ...prev,
+          variant: {
+            ...prev.variant,
+            color: color,
+          },
+        };
+      });
     },
     [productInBasket.variant.color]
+  );
+
+  const handleQuantityChange = useCallback(
+    (action: "increase" | "decrease") => {
+      setProductInBasket((prev) => {
+        return {
+          ...prev,
+          quantity:
+            action === "increase"
+              ? prev.quantity < prev.variant.stock!
+                ? prev.quantity++
+                : prev.quantity
+              : prev.quantity > 0
+                ? prev.quantity--
+                : 0,
+        };
+      });
+    },
+    [productInBasket.quantity]
   );
 
   return (
@@ -145,12 +177,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           />
           <Horizontal />
           <div className="text-sm">
-            {/* TODO implement quantityChanger component here */}
-            quantity
+            <SetQuantity
+              productInBasket={productInBasket}
+              handleQuantityChange={handleQuantityChange}
+              quantity={1}
+            />
           </div>
           <Horizontal />
           <Button
-            className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[30%]"
+            className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
             size={"lg"}
           >
             Add to Basket
