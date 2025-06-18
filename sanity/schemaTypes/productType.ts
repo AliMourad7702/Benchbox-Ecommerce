@@ -1,4 +1,4 @@
-import SanityAutoSlugInput from "@/components/SanityAutoSlugInput";
+import SanityAutoSlugInput from "@/sanity/lib/components/SanityAutoSlugInput";
 import { TrolleyIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 

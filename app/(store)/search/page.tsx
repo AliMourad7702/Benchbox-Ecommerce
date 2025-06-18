@@ -1,4 +1,4 @@
-import ProductGrid from "@/components/ProductGrid";
+import ProductGrid from "@/components/products/ProductGrid";
 import { searchProducts } from "@/sanity/lib/products/searchProducts";
 import { redirect } from "next/navigation";
 import React from "react";

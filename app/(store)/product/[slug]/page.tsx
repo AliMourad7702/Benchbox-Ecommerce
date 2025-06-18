@@ -1,10 +1,7 @@
-import ProductDetails from "@/components/ProductDetails";
+import ProductDetails from "@/components/products/ProductDetails";
 import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug";
 import { isProductOutOfStock } from "@/utils/isProductOutOfStock";
-import { PortableText } from "next-sanity";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import React from "react";
 
 interface ProductPageProps {
   params: Promise<{

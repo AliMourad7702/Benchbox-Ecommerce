@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { useFormValue } from "sanity";
-import { TextInput, Stack, Card, Text } from "@sanity/ui";
-import { PatchEvent, set, setIfMissing } from "sanity";
 import { client } from "@/sanity/lib/client";
-import { defineQuery } from "next-sanity";
+import { Card, Stack, Text, TextInput } from "@sanity/ui";
+import { useEffect, useState } from "react";
+import { PatchEvent, set, useFormValue } from "sanity";
 
 export default function SanityAutoSlugInput(props: any) {
   const { onChange, elementProps, schemaType } = props;
@@ -12,15 +10,16 @@ export default function SanityAutoSlugInput(props: any) {
 
   const source = useFormValue([`${sourceField}`]) as string;
   const doc = useFormValue([]) as { _type: string; _id: string };
+  const currentSlug = useFormValue(["slug", "current"]) as string;
 
   console.log("doc._id", doc._id);
 
   const [generatedSlug, setGeneratedSlug] = useState("");
 
   useEffect(() => {
-    if (!source || !sourceField) return;
+    if (!source || !sourceField || !doc?._id) return;
 
-    let isMounted = true;
+    let cancelled = false;
 
     const generateUniqueSlug = async () => {
       const baseSlug = source
@@ -52,17 +51,22 @@ export default function SanityAutoSlugInput(props: any) {
         uniqueSlug = `${baseSlug}-${counter++}`;
       }
 
-      if (!isMounted) return;
-
-      if (uniqueSlug !== generatedSlug) {
+      if (!cancelled) {
         setGeneratedSlug(uniqueSlug);
-        onChange(PatchEvent.from([set({ current: uniqueSlug })]));
+        if (!currentSlug && onChange && typeof onChange === "function") {
+          onChange(PatchEvent.from([set({ current: uniqueSlug })]));
+        }
       }
     };
 
-    generateUniqueSlug();
+    // Wrap in setTimeout to wait a frame before patching (lets Sanity load properly)
+    const timeout = setTimeout(() => {
+      generateUniqueSlug();
+    }, 50);
+
     return () => {
-      isMounted = false;
+      cancelled = true;
+      clearTimeout(timeout);
     };
   }, [source]);
 

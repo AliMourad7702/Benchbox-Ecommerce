@@ -5,8 +5,8 @@ import {
   Product,
 } from "@/sanity.types";
 import React from "react";
-import CategorySelector from "./CategorySelector";
 import ProductGrid from "./ProductGrid";
+import CategorySelector from "../categories/CategorySelector";
 
 interface ProductsViewProps {
   products: ALL_PRODUCTS_QUERYResult;
