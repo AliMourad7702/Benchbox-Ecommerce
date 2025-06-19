@@ -13,6 +13,8 @@ import { Button } from "../ui/button";
 import SetColor from "./SetColor";
 import SetQuantity from "./SetQuantity";
 import SetVariant from "./SetVariant";
+import { set } from "sanity";
+import ProductImage from "./ProductImage";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -59,6 +61,11 @@ export type SelectedColorType = {
   stock: number | null;
 } | null;
 
+export type SelectedImageType = {
+  index: number;
+  url: string | null;
+};
+
 const Horizontal = () => {
   return <hr className="w-[30%] my-2" />;
 };
@@ -87,9 +94,27 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     quantity: 1,
   });
 
-  const isOutOfStock = isProductOutOfStock(product);
+  const [selectedImage, setSelectedImage] = useState<SelectedImageType>({
+    index: 0,
+    url: productInBasket.variant.color?.images![0]!,
+  });
+
+  const isOutOfStock = productInBasket.variant.color?.stock === 0;
 
   console.log("Product In Basket: ", productInBasket);
+
+  const handleImageSelect = useCallback(
+    (index: number) => {
+      setSelectedImage((prev) => {
+        return {
+          ...prev,
+          index: index,
+          url: productInBasket.variant.color?.images![index]!,
+        };
+      });
+    },
+    [selectedImage]
+  );
 
   const handleVariantChange = useCallback(
     (variant: AdjustedVariantType) => {
@@ -114,6 +139,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             prev.quantity > variant.colorOptions![0].stock! ? 1 : prev.quantity,
         };
       });
+      setSelectedImage({ index: 0, url: variant.colorOptions![0].images![0] });
     },
     [productInBasket.variant]
   );
@@ -128,6 +154,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             color: color,
           },
           quantity: prev.quantity > color?.stock! ? 1 : prev.quantity,
+        };
+      });
+      setSelectedImage((prev) => {
+        return {
+          ...prev,
+          url: color?.images![prev.index] ?? color?.images![0]!,
         };
       });
     },
@@ -156,22 +188,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div
-        className={`relative aspect-square overflow-hidden rounded-lg shadow-lg ${isOutOfStock ? "opacity-50" : ""}`}
+        className={`relative aspect-square overflow-hidden rounded-lg shadow-lg `}
       >
         {/* FIXME think about the logic to implement how to showcase each variant and switch between them (and simultaneously switch the necessary info*/}
 
-        {productInBasket!.variant && (
-          <Image
-            src={productInBasket!.variant!.color?.images![0]!}
-            alt={product!.name ?? "product! Image"}
-            fill
-            className="object-contain transition-transform duration-300 hover:scale-105"
+        {productInBasket!.variant.color!.images?.length! > 0 && (
+          <ProductImage
+            productInBasket={productInBasket}
+            selectedImage={selectedImage}
+            handleImageSelect={handleImageSelect}
           />
-        )}
-        {isOutOfStock && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black opacity-50">
-            <span className="text-white font-bold text-lg">Out of Stock</span>
-          </div>
         )}
       </div>
       <div className="flex flex-col justify-between">
@@ -246,7 +272,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               productInBasket={productInBasket}
               handleQuantityChange={handleQuantityChange}
               quantity={1}
-              isOutOfStock={productInBasket.variant.color?.stock === 0}
+              isOutOfStock={isOutOfStock}
             />
           </div>
           <Horizontal />
