@@ -1,20 +1,15 @@
 "use client";
 
 import { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
-import {
-  AdjustedVariantType,
-  isProductOutOfStock,
-} from "@/utils/isProductOutOfStock";
+import { AdjustedVariantType } from "@/utils/isProductOutOfStock";
 import { PortableText } from "next-sanity";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
 import { Button } from "../ui/button";
+import ProductImage from "./ProductImage";
 import SetColor from "./SetColor";
 import SetQuantity from "./SetQuantity";
 import SetVariant from "./SetVariant";
-import { set } from "sanity";
-import ProductImage from "./ProductImage";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
