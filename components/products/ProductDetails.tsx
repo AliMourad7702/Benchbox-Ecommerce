@@ -10,12 +10,12 @@ import ProductImage from "./ProductImage";
 import SetColor from "./SetColor";
 import SetQuantity from "./SetQuantity";
 import SetVariant from "./SetVariant";
+import { useBasket } from "@/hooks/useBasket";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
 }
 
-// FIXME modify this if it caused future errors
 export type ProductInBasketType = {
   productId: string;
   baseSku: string;
@@ -68,6 +68,14 @@ const Horizontal = () => {
 const ProductDetails: React.FC<ProductDetailsProps> = ({
   product,
 }: ProductDetailsProps) => {
+  const { basketTotalQuantity, productsInBasket, handleAddProductToBasket } =
+    useBasket();
+
+  console.log("basketTotalQuantity: ", basketTotalQuantity);
+  console.log("productsInBasket: ", productsInBasket);
+
+  productsInBasket;
+
   const [productInBasket, setProductInBasket] = useState<ProductInBasketType>({
     productId: product!._id,
     baseSku: product!.baseSku!,
@@ -185,8 +193,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       <div
         className={`relative aspect-square overflow-hidden rounded-lg shadow-lg `}
       >
-        {/* FIXME think about the logic to implement how to showcase each variant and switch between them (and simultaneously switch the necessary info*/}
-
         {productInBasket!.variant.color!.images?.length! > 0 && (
           <ProductImage
             productInBasket={productInBasket}
@@ -244,7 +250,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
           <Horizontal />
           <div className="text-sm">
-            {/* TODO implement variant component here */}
             <SetVariant
               variants={product?.variants!}
               productInBasket={productInBasket}
@@ -275,6 +280,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
             size={"lg"}
             disabled={productInBasket.variant.color?.stock === 0}
+            onClick={() => handleAddProductToBasket(productInBasket)}
           >
             Add to Basket
           </Button>

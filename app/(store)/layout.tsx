@@ -3,6 +3,7 @@ import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/layout/Header";
 import { SanityLive } from "@/sanity/lib/live";
+import BasketProvider from "@/providers/BasketProvider";
 
 export const metadata: Metadata = {
   title: "BenchBox",
@@ -19,10 +20,13 @@ export default function RootLayout({
     <ClerkProvider dynamic>
       <html lang="en">
         <body className="m-0">
-          <main>
-            <Header />
-            {children}
-          </main>
+          <BasketProvider>
+            <main>
+              <Header />
+              {children}
+            </main>
+          </BasketProvider>
+
           <SanityLive />
         </body>
       </html>

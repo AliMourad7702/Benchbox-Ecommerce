@@ -31,8 +31,6 @@ export const variantType = defineType({
       of: [{ type: "block" }],
       validation: (Rule) => Rule.required().min(1),
     }),
-    // TODO move the "stock" field inside the array of colorOptions objects and run the typegen command
-    // FIXME after running the command, enjoy fixing errors :)
     defineField({
       name: "colorOptions",
       title: "Color Options",

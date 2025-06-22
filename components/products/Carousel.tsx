@@ -3,43 +3,16 @@ import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
 import { JSX, useEffect, useRef, useState } from "react";
 
 // replace icons with your own if needed
-import { PortableText, PortableTextBlock } from "next-sanity";
+import {
+  AdjustedVariantType,
+  getAllVariantsStock,
+} from "@/utils/isProductOutOfStock";
+import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
-import { getAllVariantsStock } from "@/utils/isProductOutOfStock";
-export interface CarouselItem {
-  _id: string;
-  label: string | null;
-  sku: string | null;
-  price: number | null;
-  specs: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
-  colorOptions: Array<{
-    colorName: string | null;
-    colorCode: string | null;
-    images: Array<string | null> | null;
-    stock: number | null;
-  }> | null;
-}
 
 export interface CarouselProps {
-  items: CarouselItem[];
+  items: AdjustedVariantType[];
   baseWidth?: number;
   autoplay?: boolean;
   autoplayDelay?: number;

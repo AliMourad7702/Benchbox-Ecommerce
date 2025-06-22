@@ -13,7 +13,6 @@ const ProductThumbnail = ({ product }: ProductThumbnailProps) => {
     <div
       className={`group flex flex-col rounded-lg border min-w-fit bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden `}
     >
-      {/* TODO search for a good card component for out product on https://www.reactbits.dev/ */}
       <div className="relative">
         <Carousel
           items={product.variants!}
