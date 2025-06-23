@@ -271,7 +271,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             <SetQuantity
               productInBasket={productInBasket}
               handleQuantityChange={handleQuantityChange}
-              quantity={1}
               isOutOfStock={isOutOfStock}
             />
           </div>

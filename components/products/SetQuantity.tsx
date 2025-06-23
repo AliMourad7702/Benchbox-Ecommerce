@@ -6,10 +6,12 @@ import { Button } from "../ui/button";
 
 interface SetQuantityProps {
   productInBasket: ProductInBasketType;
-  quantity: number;
   isBasket?: boolean;
   isOutOfStock?: boolean;
-  handleQuantityChange: (action: "increase" | "decrease") => void;
+  handleQuantityChange: (
+    action: "increase" | "decrease",
+    product?: ProductInBasketType
+  ) => void;
 }
 
 const buttonStyles =
@@ -17,7 +19,6 @@ const buttonStyles =
 
 const SetQuantity: React.FC<SetQuantityProps> = ({
   productInBasket,
-  quantity,
   isBasket = false,
   isOutOfStock = false,
   handleQuantityChange,
@@ -28,7 +29,7 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
       <div className="flex items-center gap-4">
         <Button
           variant={"outline"}
-          onClick={() => handleQuantityChange("decrease")}
+          onClick={() => handleQuantityChange("decrease", productInBasket)}
           className={buttonStyles}
           disabled={isOutOfStock}
         >
@@ -37,7 +38,7 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
         <div>{productInBasket.quantity}</div>
         <Button
           variant={"outline"}
-          onClick={() => handleQuantityChange("increase")}
+          onClick={() => handleQuantityChange("increase", productInBasket)}
           className={buttonStyles}
           disabled={isOutOfStock}
         >

@@ -58,8 +58,6 @@ const SetVariant: React.FC<SetVariantProps> = ({
       <span className="text-sm font-semibold">VARIANT:</span>
       <div className="flex w-full max-w-[30%] gap-1">
         {variants?.map((item) => {
-          console.log("Variant ", item?.label, " price : ", item?.price);
-          console.log("Variant ", item?.label, " id : ", item?._id);
           return (
             <div
               className={`h-7 w-7 rounded-full border-green-400 flex items-center justify-center relative ${productInBasket.variant._id === item?._id ? "border-[1.5px]" : "border-none"}`}

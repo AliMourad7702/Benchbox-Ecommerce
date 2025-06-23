@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/layout/Header";
 import { SanityLive } from "@/sanity/lib/live";
 import BasketProvider from "@/providers/BasketProvider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "BenchBox",
@@ -19,14 +20,21 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang="en">
-        <body className="m-0">
+        <body className="m-0 bg-gray-100">
+          <Toaster
+            toastOptions={{
+              style: {
+                background: "rgb(51 65 85)",
+                color: "white",
+              },
+            }}
+          />
           <BasketProvider>
             <main>
               <Header />
               {children}
             </main>
           </BasketProvider>
-
           <SanityLive />
         </body>
       </html>
