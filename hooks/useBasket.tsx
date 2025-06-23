@@ -110,6 +110,13 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
 
   const handleQuantityChange = useCallback(
     (action: "increase" | "decrease", product?: ProductInBasketType) => {
+      if (
+        product!.quantity === product?.variant.color?.stock &&
+        action === "increase"
+      ) {
+        toast.error("Maximum Quantity for this item reached!");
+        return;
+      }
       setProductsInBasket((prev) => {
         const currentBasket = prev ?? [];
 

@@ -13,6 +13,7 @@ import React from "react";
 import Form from "next/form";
 import { PackageIcon, TrolleyIcon } from "@sanity/icons";
 import { Button } from "../ui/button";
+import { useBasket } from "@/hooks/useBasket";
 
 const Header = () => {
   const { user } = useUser();
@@ -25,6 +26,8 @@ const Header = () => {
       console.error("Error: ", JSON.stringify(err, null, 2));
     }
   };
+
+  const { basketTotalQuantity } = useBasket();
 
   return (
     <header className="flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
@@ -60,8 +63,12 @@ const Header = () => {
             className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:opacity-50 text-white font-bold py-2 px-4 rounded"
           >
             <TrolleyIcon className="w-6 h-6" />
-            {/* TODO span item count once global state is implemented */}
             <span>My Basket</span>
+            {basketTotalQuantity > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
+                <span>{basketTotalQuantity}</span>
+              </span>
+            )}
           </Link>
 
           {/* User Area */}
