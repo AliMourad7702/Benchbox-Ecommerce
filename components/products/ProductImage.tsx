@@ -22,7 +22,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
 }) => {
   return (
     <div className="relative grid grid-cols-6  h-full min-h-[300px] sm:min-h-[400px]">
-      <div className="flex flex-col items-center justify-center gap-4 cursor-pointer border-r h-full">
+      <div className="flex flex-col items-center justify-center gap-4 cursor-pointer border-r h-full bg-white">
         {productInBasket.variant.color?.images?.map((imageUrl, index) => {
           return (
             <div
@@ -45,7 +45,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
           src={selectedImage.url!}
           alt={`Product: ${productInBasket.baseSku} - ${productInBasket.variant.label} ${productInBasket.variant.color?.colorName} image-${selectedImage.index}`}
           fill
-          className="object-contain transition-transform duration-300 hover:scale-105"
+          className="object-contain transition-transform duration-300 hover:scale-102"
         />
         {productInBasket.variant.color?.stock === 0 && (
           <div className="absolute inset-0 flex items-center justify-center bg-black opacity-50">
