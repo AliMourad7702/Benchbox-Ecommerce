@@ -62,11 +62,11 @@ export const quoteType = defineType({
           type: "string",
           validation: (Rule) => Rule.required(),
         },
+        // TODO remove the country field because its not necessary (the shop is local)
         {
           name: "country",
-          title: "Country",
+          title: "Country (Optional)",
           type: "string",
-          validation: (Rule) => Rule.required(),
         },
       ],
     }),
@@ -124,7 +124,7 @@ export const quoteType = defineType({
       title: "Status",
       type: "string",
       options: {
-        list: ["pending", "reviewed", "replied"],
+        list: ["received", "under reviewing", "accepted", "declined"],
         layout: "dropdown",
       },
       initialValue: "pending",

@@ -14,8 +14,9 @@ type BasketContextType = {
   handleAddProductToBasket: (product: ProductInBasketType) => void;
   handleRemoveProductFromBasket: (product: ProductInBasketType) => void;
   handleQuantityChange: (
-    action: "increase" | "decrease",
-    product?: ProductInBasketType
+    action?: "increase" | "decrease",
+    product?: ProductInBasketType,
+    value?: number
   ) => void;
   handleClearBasket: () => void;
 };
@@ -38,6 +39,15 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
       JSON.parse(localStorage.getItem("basketTotalQuantity")!)
     );
   }, []);
+
+  useEffect(() => {
+    const totalQty = productsInBasket
+      ? productsInBasket.reduce((acc, item) => acc + item.quantity, 0)
+      : 0;
+
+    setBasketTotalQuantity(totalQty);
+    localStorage.setItem("basketTotalQuantity", JSON.stringify(totalQty));
+  }, [productsInBasket]);
 
   const handleAddProductToBasket = useCallback(
     (product: ProductInBasketType) => {
@@ -67,15 +77,6 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
         return updatedBasket;
       });
 
-      setBasketTotalQuantity((prev) => {
-        const updatedQuantity = prev + product.quantity;
-        localStorage.setItem(
-          "basketTotalQuantity",
-          JSON.stringify(updatedQuantity)
-        );
-        return updatedQuantity;
-      });
-
       toast.success("Product added to basket!");
     },
     []
@@ -94,74 +95,60 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
         return updatedBasket;
       });
 
-      setBasketTotalQuantity((prev) => {
-        const newTotalQuantity = prev - product.quantity;
-        localStorage.setItem(
-          "basketTotalQuantity",
-          JSON.stringify(newTotalQuantity)
-        );
-        return newTotalQuantity;
-      });
-
       toast.success("Product removed from basket !");
     },
     []
   );
 
   const handleQuantityChange = useCallback(
-    (action: "increase" | "decrease", product?: ProductInBasketType) => {
-      if (
-        product!.quantity === product?.variant.color?.stock &&
-        action === "increase"
-      ) {
-        toast.error("Maximum Quantity for this item reached!");
-        return;
-      }
+    (
+      action?: "increase" | "decrease",
+      product?: ProductInBasketType,
+      value?: number
+    ) => {
+      if (!product) return;
+
       setProductsInBasket((prev) => {
         const currentBasket = prev ?? [];
-
-        // Case: remove item if quantity is 1 and action is decrease
-        if (product!.quantity === 1 && action === "decrease") {
-          const updatedCart = currentBasket.filter(
-            (item) =>
-              !(
-                item.variant._id === product!.variant._id &&
-                item.variant.color?.colorCode ===
-                  product!.variant.color?.colorCode
-              )
-          );
-
-          localStorage.setItem("basketProducts", JSON.stringify(updatedCart));
-          return updatedCart;
-        }
-
-        // Else: adjust quantity
         const updatedCart = [...currentBasket];
+
         const productIndex = updatedCart.findIndex(
           (item) =>
-            item.variant._id === product!.variant._id &&
-            item.variant.color?.colorCode === product!.variant.color?.colorCode
+            item.variant._id === product.variant._id &&
+            item.variant.color?.colorCode === product.variant.color?.colorCode
         );
 
-        if (productIndex !== -1) {
-          const newQuantity =
-            action === "increase"
-              ? updatedCart[productIndex].quantity + 1
-              : updatedCart[productIndex].quantity - 1;
+        if (productIndex === -1) return currentBasket;
 
-          updatedCart[productIndex] = {
-            ...updatedCart[productIndex],
-            quantity: newQuantity,
-          };
+        const prevQty = updatedCart[productIndex].quantity;
+
+        let newQty: number;
+        if (value !== undefined) {
+          newQty = Math.max(0, value); // Prevent negatives
+        } else {
+          newQty =
+            action === "increase"
+              ? prevQty + 1
+              : action === "decrease"
+                ? prevQty - 1
+                : prevQty;
         }
+
+        // Remove item if quantity drops to 0
+        if (newQty <= 0) {
+          const filtered = updatedCart.filter((_, i) => i !== productIndex);
+          localStorage.setItem("basketProducts", JSON.stringify(filtered));
+          return filtered;
+        }
+
+        // Update quantity
+        updatedCart[productIndex] = {
+          ...updatedCart[productIndex],
+          quantity: newQty,
+        };
 
         localStorage.setItem("basketProducts", JSON.stringify(updatedCart));
         return updatedCart;
-      });
-      setBasketTotalQuantity((prevQty) => {
-        const newQty = action === "increase" ? prevQty + 1 : prevQty - 1;
-        localStorage.setItem("basketTotalQuantity", JSON.stringify(newQty));
-        return newQty;
       });
     },
     []
@@ -170,8 +157,8 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
   const handleClearBasket = useCallback(() => {
     setProductsInBasket([]);
     setBasketTotalQuantity(0);
-    localStorage.removeItem("basketProducts");
-    localStorage.removeItem("basketTotalQuantity");
+    localStorage.setItem("basketProducts", "[]");
+    localStorage.setItem("basketTotalQuantity", "0");
   }, []);
 
   const value = {

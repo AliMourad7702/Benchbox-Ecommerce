@@ -6,41 +6,6 @@ import {
   getAllVariantsStock,
 } from "@/utils/isProductOutOfStock";
 
-interface SelectedVartiantType {
-  _id: string;
-  label: string | null;
-  sku: string | null;
-  price: number | null;
-  color: SelectedColorType;
-  specs:
-    | Array<{
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?:
-          | "blockquote"
-          | "h1"
-          | "h2"
-          | "h3"
-          | "h4"
-          | "h5"
-          | "h6"
-          | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }>[]
-    | null;
-}
 interface SetVariantProps {
   variants: AdjustedVariantType[];
   productInBasket: ProductInBasketType;

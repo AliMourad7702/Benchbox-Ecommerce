@@ -27,7 +27,7 @@ const Header = () => {
     }
   };
 
-  const { basketTotalQuantity } = useBasket();
+  const { basketTotalQuantity, productsInBasket } = useBasket();
 
   return (
     <header className="flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
@@ -42,6 +42,7 @@ const Header = () => {
             className="min-w-7"
             width={200}
             height={200}
+            priority
           />
         </Link>
 
@@ -64,9 +65,9 @@ const Header = () => {
           >
             <TrolleyIcon className="w-6 h-6" />
             <span>My Basket</span>
-            {basketTotalQuantity > 0 && (
+            {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
               <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
-                <span>{basketTotalQuantity}</span>
+                <span>{productsInBasket?.length}</span>
               </span>
             )}
           </Link>

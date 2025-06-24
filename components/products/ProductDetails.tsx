@@ -11,6 +11,7 @@ import SetColor from "./SetColor";
 import SetQuantity from "./SetQuantity";
 import SetVariant from "./SetVariant";
 import { useBasket } from "@/hooks/useBasket";
+import toast from "react-hot-toast";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -170,19 +171,46 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   );
 
   const handleQuantityChange = useCallback(
-    (action: "increase" | "decrease") => {
+    (
+      action?: "increase" | "decrease",
+      product?: ProductInBasketType,
+      value?: number
+    ) => {
+      const isManual = value !== undefined;
+
+      if (
+        (isManual && value! <= 0) ||
+        (action === "decrease" && productInBasket.quantity <= 1)
+      ) {
+        toast.error("Minimum Quantity is 1");
+        return;
+      }
+
       setProductInBasket((prev) => {
-        return {
-          ...prev,
-          quantity:
-            action === "increase"
-              ? prev.quantity < prev.variant!.color!.stock!
-                ? prev.quantity + 1
-                : prev.quantity
-              : prev.quantity > 1
-                ? prev.quantity - 1
-                : 1,
-        };
+        // Manual input (overrides action)
+        if (isManual) {
+          return {
+            ...prev,
+            quantity: value!,
+          };
+        }
+
+        // Action-based update
+        if (action === "increase") {
+          return {
+            ...prev,
+            quantity: prev.quantity + 1,
+          };
+        }
+
+        if (action === "decrease") {
+          return {
+            ...prev,
+            quantity: prev.quantity - 1,
+          };
+        }
+
+        return prev; // fallback
       });
     },
     [productInBasket.quantity]
@@ -271,14 +299,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             <SetQuantity
               productInBasket={productInBasket}
               handleQuantityChange={handleQuantityChange}
-              isOutOfStock={isOutOfStock}
             />
           </div>
           <Horizontal />
           <Button
             className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
             size={"lg"}
-            disabled={productInBasket.variant.color?.stock === 0}
             onClick={() => handleAddProductToBasket(productInBasket)}
           >
             Add to Basket
