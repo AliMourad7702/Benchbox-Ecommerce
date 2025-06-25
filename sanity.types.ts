@@ -48,7 +48,7 @@ export type Quote = {
     _type: "item";
     _key: string;
   }>;
-  status?: "pending" | "reviewed" | "replied";
+  status?: "received" | "under reviewing" | "accepted" | "declined";
   createdAt?: string;
 };
 

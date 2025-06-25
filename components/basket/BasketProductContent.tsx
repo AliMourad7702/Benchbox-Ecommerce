@@ -20,7 +20,12 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
   return (
     <div className="grid grid-cols-6 text-xs md:text-sm gap-4 border-t-[1.5px] border-slate-200 py-4 items-center">
       <div className="justify-self-start col-span-2 flex gap-2 md:gap-4">
-        <Link href={`/product/${product?.productSlug}`}>
+        <Link
+          href={{
+            pathname: `/product/${product?.productSlug}`,
+            query: { variant: product.variant.label },
+          }}
+        >
           <div className="relative w-[70px] aspect-square">
             <Image
               src={product?.variant.color?.images![0]!}
@@ -37,7 +42,10 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
         </Link>
         <div className="flex flex-col justify-between">
           <Link
-            href={`/product/${product?.productSlug}`}
+            href={{
+              pathname: `/product/${product?.productSlug}`,
+              query: { variant: product.variant.label },
+            }}
             className="truncate hover:text-slate-500"
           >
             {product?.productName ?? product?.productSlug}

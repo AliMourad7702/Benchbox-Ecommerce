@@ -35,7 +35,7 @@ const SetVariant: React.FC<SetVariantProps> = ({
                 {item.label?.toUpperCase()}
               </div>
               {getAllVariantsStock(item) === 0 && (
-                <span className="text-red-500 absolute text-xl select-none hover:cursor-pointer">
+                <span className="text-red-500 absolute text-2xl select-none hover:cursor-pointer -top-1">
                   X
                 </span>
               )}

@@ -31,7 +31,7 @@ const SetColor: React.FC<SetColorProps> = ({
                 className={`flex justify-center items-center  h-5 w-5 rounded-full border-[1px] border-slate-300 hover:cursor-pointer hover:opacity-70 ${item?.stock === 0 && "opacity-50"}`}
               ></div>
               {item?.stock === 0 && (
-                <span className="text-red-500 absolute text-xl select-none hover:cursor-pointer">
+                <span className="text-red-500 absolute text-2xl select-none hover:cursor-pointer -top-1">
                   X
                 </span>
               )}

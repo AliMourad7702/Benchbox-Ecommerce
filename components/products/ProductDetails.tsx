@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
+  selectedVariant?: AdjustedVariantType;
 }
 
 export type ProductInBasketType = {
@@ -68,6 +69,7 @@ const Horizontal = () => {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({
   product,
+  selectedVariant,
 }: ProductDetailsProps) => {
   const { basketTotalQuantity, productsInBasket, handleAddProductToBasket } =
     useBasket();
@@ -83,27 +85,25 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     productSlug: product!.slug!,
     productName: product!.name,
     variant: {
-      _id: product!.variants![0]._id,
-      label: product!.variants![0].label,
-      sku: product!.variants![0].sku,
-      price: product!.variants![0].price,
-      specs: product!.variants![0].specs,
+      _id: selectedVariant!._id,
+      label: selectedVariant!.label,
+      sku: selectedVariant!.sku,
+      price: selectedVariant!.price,
       color: {
-        colorName: product!.variants![0].colorOptions![0].colorName,
-        colorCode: product!.variants![0].colorOptions![0].colorCode,
-        images: product!.variants![0].colorOptions![0].images,
-        stock: product!.variants![0].colorOptions![0].stock,
+        colorName: selectedVariant!.colorOptions![0].colorName,
+        colorCode: selectedVariant!.colorOptions![0].colorCode,
+        images: selectedVariant!.colorOptions![0].images,
+        stock: selectedVariant!.colorOptions![0].stock,
       },
+      specs: selectedVariant!.specs,
     },
     quantity: 1,
   });
 
   const [selectedImage, setSelectedImage] = useState<SelectedImageType>({
     index: 0,
-    url: productInBasket.variant.color?.images![0]!,
+    url: selectedVariant!.colorOptions![0].images![0]!,
   });
-
-  const isOutOfStock = productInBasket.variant.color?.stock === 0;
 
   console.log("Product In Basket: ", productInBasket);
 

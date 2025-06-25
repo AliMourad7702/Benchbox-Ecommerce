@@ -217,15 +217,19 @@
           "of": [
             {
               "type": "string",
-              "value": "pending"
+              "value": "received"
             },
             {
               "type": "string",
-              "value": "reviewed"
+              "value": "under reviewing"
             },
             {
               "type": "string",
-              "value": "replied"
+              "value": "accepted"
+            },
+            {
+              "type": "string",
+              "value": "declined"
             }
           ]
         },

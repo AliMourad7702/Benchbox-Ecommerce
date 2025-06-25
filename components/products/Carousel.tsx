@@ -214,7 +214,10 @@ export default function Carousel({
                 )}
               </div>
               <Link
-                href={`/product/${parentProductInfo.slug}`}
+                href={{
+                  pathname: `/product/${parentProductInfo.slug}`,
+                  query: { variant: item.label },
+                }}
                 className="h-full w-full"
               >
                 <div className="p-4">
