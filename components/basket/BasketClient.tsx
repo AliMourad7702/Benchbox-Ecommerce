@@ -1,7 +1,6 @@
 "use client";
 
 import { useBasket } from "@/hooks/useBasket";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";

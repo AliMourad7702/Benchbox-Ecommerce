@@ -311,6 +311,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           </Button>
         </div>
       </div>
+      <div className="flex flex-col gap-2 col-span-1 md:col-span-2">
+        {/* TODO create related product section here (based on category slug) */}
+        Related products section here
+      </div>
     </div>
   );
 };

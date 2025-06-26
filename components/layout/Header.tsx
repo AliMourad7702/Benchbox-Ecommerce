@@ -66,8 +66,10 @@ const Header = () => {
             <TrolleyIcon className="w-6 h-6" />
             <span>My Basket</span>
             {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
-                <span>{productsInBasket?.length}</span>
+              <span className="absolute -top-1.5 -right-1.5 bg-white text-blue-500 text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
+                <span className="absolute -inset-y-[0.05rem]">
+                  {productsInBasket?.length}
+                </span>
               </span>
             )}
           </Link>

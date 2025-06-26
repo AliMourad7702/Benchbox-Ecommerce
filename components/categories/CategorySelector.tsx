@@ -1,13 +1,25 @@
-import { ALL_CATEGORIES_QUERYResult, Category } from "@/sanity.types";
-import React from "react";
+import { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
+import FlowingMenu from "../ui/FlowingMenu/FlowingMenu";
 
 interface CategorySelectorProps {
   // Define the props for the CategorySelector component
-  categories: Category[] | ALL_CATEGORIES_QUERYResult;
+  category: ALL_CATEGORIES_QUERYResult[0];
 }
 
-const CategorySelector = ({ categories }: CategorySelectorProps) => {
-  return <div>Category Selector Component</div>;
+const CategorySelector = ({ category }: CategorySelectorProps) => {
+  return (
+    <div className="relative w-full h-[6rem]">
+      <FlowingMenu
+        items={[
+          {
+            text: category!.title!,
+            link: `/category/${category!.slug!}`,
+            image: "/images/fabric-chair.png",
+          },
+        ]}
+      />
+    </div>
+  );
 };
 
 export default CategorySelector;

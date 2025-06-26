@@ -41,6 +41,18 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --translate-101: 101%;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  --animation-marquee: marquee 25s linear infinite;
 }
 
 :root {
@@ -122,6 +134,16 @@
 .no-spinner {
   -moz-appearance: textfield; /* Firefox */
 }
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+  }
+  .translate-101 {
+    transform: translateX(101%);
+  }
+}
+
 
 @layer base {
   * {
