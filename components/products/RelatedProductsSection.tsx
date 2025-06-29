@@ -69,7 +69,7 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col i justify-top min-h-screen bg-gray-100 p-4">
+        <div className="flex flex-col i justify-top bg-gray-100 p-4">
           <div className="bg-white p-8 rounded-lg shadow-md w-full">
             <h1 className="text-l font-bold mb-6 text-center">
               No Products with same {filterOption} found
