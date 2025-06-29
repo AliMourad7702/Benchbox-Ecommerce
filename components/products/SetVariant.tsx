@@ -3,7 +3,7 @@ import React from "react";
 import { ProductInBasketType, SelectedColorType } from "./ProductDetails";
 import {
   AdjustedVariantType,
-  getAllVariantsStock,
+  getAllVariantStock,
 } from "@/utils/isProductOutOfStock";
 
 interface SetVariantProps {
@@ -30,11 +30,11 @@ const SetVariant: React.FC<SetVariantProps> = ({
               onClick={() => handleVariantChange(item)}
             >
               <div
-                className={`flex justify-center items-center  h-5 w-5 rounded-full border-[1px] border-slate-300 bg-slate-200 hover:cursor-pointer hover:opacity-70 ${getAllVariantsStock(item) === 0 && "opacity-50"}`}
+                className={`flex justify-center items-center  h-5 w-5 rounded-full border-[1px] border-slate-300 bg-slate-200 hover:cursor-pointer hover:opacity-70 ${getAllVariantStock(item) === 0 && "opacity-50"}`}
               >
                 {item.label?.toUpperCase()}
               </div>
-              {getAllVariantsStock(item) === 0 && (
+              {getAllVariantStock(item) === 0 && (
                 <span className="text-red-500 absolute text-2xl select-none hover:cursor-pointer -top-1">
                   X
                 </span>

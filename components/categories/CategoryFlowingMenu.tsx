@@ -1,12 +1,12 @@
 import { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 import FlowingMenu from "../ui/FlowingMenu/FlowingMenu";
 
-interface CategorySelectorProps {
+interface CategoryFlowingMenuProps {
   // Define the props for the CategorySelector component
   category: ALL_CATEGORIES_QUERYResult[0];
 }
 
-const CategorySelector = ({ category }: CategorySelectorProps) => {
+const CategoryFlowingMenu = ({ category }: CategoryFlowingMenuProps) => {
   return (
     <div className="relative w-full h-[6rem]">
       <FlowingMenu
@@ -22,4 +22,4 @@ const CategorySelector = ({ category }: CategorySelectorProps) => {
   );
 };
 
-export default CategorySelector;
+export default CategoryFlowingMenu;

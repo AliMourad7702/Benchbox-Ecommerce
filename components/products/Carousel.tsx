@@ -5,7 +5,7 @@ import { JSX, useEffect, useRef, useState } from "react";
 // replace icons with your own if needed
 import {
   AdjustedVariantType,
-  getAllVariantsStock,
+  getAllVariantStock,
 } from "@/utils/isProductOutOfStock";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
@@ -168,7 +168,7 @@ export default function Carousel({
         onAnimationComplete={handleAnimationComplete}
       >
         {carouselItems.map((item, index) => {
-          const isOutOfStock = getAllVariantsStock(item) === 0;
+          const isOutOfStock = getAllVariantStock(item) === 0;
           const range = [
             -(index + 1) * trackItemOffset,
             -index * trackItemOffset,

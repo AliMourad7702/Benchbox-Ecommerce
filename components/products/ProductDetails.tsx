@@ -12,6 +12,7 @@ import SetQuantity from "./SetQuantity";
 import SetVariant from "./SetVariant";
 import { useBasket } from "@/hooks/useBasket";
 import toast from "react-hot-toast";
+import RelatedProductsSection from "./RelatedProductsSection";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -313,7 +314,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       </div>
       <div className="flex flex-col gap-2 col-span-1 md:col-span-2">
         {/* TODO create related product section here (based on category slug) */}
-        Related products section here
+        <RelatedProductsSection
+          product={productInBasket}
+          categorySlug={product?.category?.slug!}
+        />
       </div>
     </div>
   );

@@ -1,12 +1,14 @@
 "use client";
 
-import { ALL_PRODUCTS_QUERYResult, Product } from "@/sanity.types";
+import {
+  ALL_PRODUCTS_QUERYResult,
+  RELATED_PRODUCTS_QUERYResult,
+} from "@/sanity.types";
 import { AnimatePresence, motion } from "framer-motion";
-import React from "react";
 import ProductThumbnail from "./ProductThumbnail";
 
 interface ProductGridProps {
-  products: ALL_PRODUCTS_QUERYResult;
+  products: ALL_PRODUCTS_QUERYResult | RELATED_PRODUCTS_QUERYResult;
 }
 
 const ProductGrid = ({ products }: ProductGridProps) => {

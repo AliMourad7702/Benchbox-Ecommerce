@@ -28,10 +28,15 @@ export const getProductBySlug = async (slug: string) => {
   }
     `);
 
-  const product = await sanityFetch({
-    query: PRODUCT_BY_SLUG_QUERY,
-    params: { slug },
-  });
+  try {
+    const product = await sanityFetch({
+      query: PRODUCT_BY_SLUG_QUERY,
+      params: { slug },
+    });
 
-  return product.data || null;
+    return product.data || null;
+  } catch (error) {
+    console.error("Error fetching product by slug", error);
+    throw error;
+  }
 };

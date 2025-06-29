@@ -27,10 +27,16 @@ export const getProductsByCategory = async (categorySlug: string) => {
       }
     }
     `);
-  const products = await sanityFetch({
-    query: PRODUCTS_BY_CATEGORY_QUERY,
-    params: { categorySlug },
-  });
 
-  return products.data || [];
+  try {
+    const products = await sanityFetch({
+      query: PRODUCTS_BY_CATEGORY_QUERY,
+      params: { categorySlug },
+    });
+
+    return products.data || [];
+  } catch (error) {
+    console.error("Error fetching products by category", error);
+    throw error;
+  }
 };

@@ -31,7 +31,7 @@ export interface AdjustedVariantType {
   }> | null;
 }
 
-export const getAllVariantsStock = (variant: AdjustedVariantType) => {
+export const getAllVariantStock = (variant: AdjustedVariantType) => {
   const totalVartiantsStock =
     variant!.colorOptions?.reduce((colorsSum, colorOption) => {
       return colorsSum + colorOption!.stock! || 0;
@@ -48,7 +48,7 @@ export const isProductOutOfStock = (
   }
 
   const totalStock = product!.variants.reduce((sum, variant) => {
-    return sum + getAllVariantsStock(variant);
+    return sum + getAllVariantStock(variant);
   }, 0);
 
   return totalStock <= 0;

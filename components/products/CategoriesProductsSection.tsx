@@ -1,11 +1,9 @@
 import {
   ALL_CATEGORIES_QUERYResult,
   ALL_PRODUCTS_QUERYResult,
-  Category,
 } from "@/sanity.types";
-import React from "react";
+import CategoryFlowingMenu from "../categories/CategoryFlowingMenu";
 import ProductGrid from "./ProductGrid";
-import CategorySelector from "../categories/CategorySelector";
 
 interface ProductsViewProps {
   products: ALL_PRODUCTS_QUERYResult;
@@ -20,7 +18,7 @@ const CategoriesProductsSection = ({
     <div className="flex flex-col w-full">
       {/* category here */}
 
-      <CategorySelector category={category} />
+      <CategoryFlowingMenu category={category} />
 
       {/* products here */}
       <div className="flex-1">
