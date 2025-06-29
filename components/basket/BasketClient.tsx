@@ -2,10 +2,11 @@
 
 import { useBasket } from "@/hooks/useBasket";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import { Button } from "../ui/button";
 import BasketProductContent from "./BasketProductContent";
+import QuotationForm from "../quotation/QuotationForm";
 
 const BasketClient = () => {
   const { productsInBasket, handleClearBasket, basketTotalPrice } = useBasket();
@@ -81,9 +82,11 @@ const BasketClient = () => {
             Taxes and shipping calculated after quotation request
           </p>
 
-          <Button className="w-full max-w-[200px]">
-            Request Quotation <MdArrowForward />
-          </Button>
+          <QuotationForm
+            dialogTriggerContent="Request Quotation"
+            dialogTitle="Quotation Request"
+            dialogDescription="Please fill out the form below to request a quotation for your products."
+          />
 
           <Link
             href={"/"}

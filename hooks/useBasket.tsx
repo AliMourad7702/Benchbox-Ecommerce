@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
@@ -30,10 +31,18 @@ export const BasketContext = createContext<BasketContextType | null>(null);
 
 export const BasketContextProvider = (props: BasketContextProviderProps) => {
   const [basketTotalQuantity, setBasketTotalQuantity] = useState(0);
+
   const [productsInBasket, setProductsInBasket] = useState<
     ProductInBasketType[] | null
   >(null);
-  const [basketTotalPrice, setBasketTotalPrice] = useState(0);
+
+  const basketTotalPrice = useMemo(() => {
+    return (
+      productsInBasket?.reduce((acc, item) => {
+        return acc + item.variant.price! * item.quantity;
+      }, 0) || 0
+    );
+  }, [productsInBasket]);
 
   useEffect(() => {
     setProductsInBasket(JSON.parse(localStorage.getItem("basketProducts")!));
@@ -49,17 +58,6 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
 
     setBasketTotalQuantity(totalQty);
     localStorage.setItem("basketTotalQuantity", JSON.stringify(totalQty));
-
-    const totalPrice = Number(
-      productsInBasket
-        ?.reduce(
-          (acc, product) => acc + product.variant.price! * product.quantity,
-          0
-        )
-        .toFixed(2)
-    );
-
-    setBasketTotalPrice(totalPrice);
   }, [productsInBasket]);
 
   const handleAddProductToBasket = useCallback(
