@@ -38,6 +38,7 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
         </Button>
         <input
           type="number"
+          id="quantity"
           value={productInBasket.quantity}
           className="w-12 h-10 text-center border-[1.2px] border-slate-300 rounded no-spinner"
           onChange={(e) => {

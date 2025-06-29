@@ -56,7 +56,7 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
           onChange={(e) => {
             setFilterOption(e.target.value as "category" | "color");
           }}
-          className="hover:cursor-pointer border border-slate-600 rounded-sm p-1"
+          className="hover:cursor-pointer border border-slate-600 rounded-sm p-1 pb-1"
         >
           <option value="category">Category</option>
           <option value="color">Color</option>

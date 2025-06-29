@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import BasketProductContent from "./BasketProductContent";
 
 const BasketClient = () => {
-  const { productsInBasket, handleClearBasket } = useBasket();
+  const { productsInBasket, handleClearBasket, basketTotalPrice } = useBasket();
 
   if (!productsInBasket || productsInBasket.length === 0) {
     return (
@@ -73,21 +73,12 @@ const BasketClient = () => {
         <div className="text-sm flex flex-col gap-1 items-start">
           <div className="flex justify-between w-full items-center font-semibold text-base">
             <span>Subtotal</span>
-            <span>
-              SAR{" "}
-              {productsInBasket
-                .reduce(
-                  (acc, product) =>
-                    acc + product.variant.price! * product.quantity,
-                  0
-                )
-                .toFixed(2)}
-            </span>
+            <span>SAR {basketTotalPrice.toFixed(2)}</span>
           </div>
 
           {/* TODO adjust this the way Wassim asked you */}
           <p className="text-slate-500">
-            Taxes and shipping calculated at quotation request
+            Taxes and shipping calculated after quotation request
           </p>
 
           <Button className="w-full max-w-[200px]">
