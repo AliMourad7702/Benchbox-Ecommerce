@@ -45,9 +45,42 @@ export type Quote = {
       [internalGroqTypeReferenceTo]?: "variant";
     };
     quantity?: number;
+    itemTotal?: number;
+    productId?: string;
+    productName?: string;
+    productSlug?: string;
+    baseSku?: string;
+    variantLabel?: string;
+    variantSku?: string;
+    variantPrice?: number;
+    color?: {
+      colorName?: string;
+      colorCode?: string;
+      images?: Array<string>;
+      stock?: number;
+    };
+    specs?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
     _type: "item";
     _key: string;
   }>;
+  totalPrice?: number;
   status?: "received" | "under reviewing" | "accepted" | "declined";
   createdAt?: string;
 };

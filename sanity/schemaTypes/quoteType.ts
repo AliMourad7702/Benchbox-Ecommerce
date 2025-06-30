@@ -84,33 +84,116 @@ export const quoteType = defineType({
           name: "item",
           type: "object",
           fields: [
-            {
+            // Reference
+            defineField({
               name: "variant",
-              title: "Selected Variant",
+              title: "Selected Variant (Reference)",
               type: "reference",
               to: [{ type: "variant" }],
               validation: (Rule) => Rule.required(),
-            },
-            {
+            }),
+
+            defineField({
               name: "quantity",
-              title: "Quantity",
+              title: "Quantity Requested",
               type: "number",
               validation: (Rule) => Rule.required().min(1),
+            }),
+            {
+              name: "itemTotal",
+              title: "Item Total (Price x Quantity)",
+              type: "number",
+              readOnly: true,
             },
+            // Snapshot fields
+            defineField({
+              name: "productId",
+              title: "Product ID",
+              type: "string",
+              readOnly: true,
+            }),
+            defineField({
+              name: "productName",
+              title: "Product Name",
+              type: "string",
+              readOnly: true,
+            }),
+            defineField({
+              name: "productSlug",
+              title: "Product Slug",
+              type: "string",
+              readOnly: true,
+            }),
+            defineField({
+              name: "baseSku",
+              title: "Product Base SKU",
+              type: "string",
+              readOnly: true,
+            }),
+            defineField({
+              name: "variantLabel",
+              title: "Variant Label",
+              type: "string",
+              readOnly: true,
+            }),
+            defineField({
+              name: "variantSku",
+              title: "Variant SKU",
+              type: "string",
+              readOnly: true,
+            }),
+            defineField({
+              name: "variantPrice",
+              title: "Variant Price (Snapshot)",
+              type: "number",
+              readOnly: true,
+            }),
+
+            defineField({
+              name: "color",
+              title: "Color Details (Snapshot)",
+              type: "object",
+              readOnly: true,
+              fields: [
+                { name: "colorName", title: "Color Name", type: "string" },
+                { name: "colorCode", title: "Color Code", type: "string" },
+                {
+                  name: "images",
+                  title: "Color Images",
+                  type: "array",
+                  of: [{ type: "url" }],
+                  validation: (Rule) => Rule.min(1),
+                },
+                {
+                  name: "stock",
+                  title: "Color Stock at Time of Request",
+                  type: "number",
+                },
+              ],
+            }),
+
+            defineField({
+              name: "specs",
+              title: "Specifications (Snapshot)",
+              type: "array",
+              of: [{ type: "block" }],
+              readOnly: true,
+            }),
           ],
           preview: {
             select: {
-              variantLabel: "variant.label",
-              sku: "variant.sku",
-              color: "variant.colorOptions.0.colorName",
+              sku: "variantSku",
               quantity: "quantity",
-              price: "variant.price",
-              media: "variant.colorOptions.0.images.0.asset",
+              price: "variantPrice",
+              color: "color.colorName",
+              media: "color.images.0",
             },
-            prepare({ variantLabel, sku, quantity, media, price, color }) {
+            prepare({ sku, quantity, price, color, media }) {
+              const total =
+                price && quantity ? (price * quantity).toFixed(2) : "0.00";
               return {
-                title: `${sku} - ${variantLabel} x ${quantity}`,
-                subtitle: `SAR ${price} - Color ${color}`,
+                title: `${sku || "Unknown SKU"} x ${quantity}`,
+                subtitle: `SAR ${price?.toFixed(2) || "0.00"} each · Total: SAR ${total} · Color: ${color || "N/A"}`,
                 media,
               };
             },
@@ -119,6 +202,15 @@ export const quoteType = defineType({
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
+    defineField({
+      name: "totalPrice",
+      title: "Total Quotation Price (Snapshot)",
+      type: "number",
+      readOnly: true,
+      description:
+        "Automatically calculated: sum of all requested items at time of submission.",
+    }),
+
     defineField({
       name: "status",
       title: "Status",
@@ -137,4 +229,28 @@ export const quoteType = defineType({
       readOnly: true,
     }),
   ],
+  preview: {
+    select: {
+      name: "name",
+      email: "email",
+      total: "totalPrice",
+      status: "status",
+      isGuest: "isGuest",
+    },
+    prepare({ name, email, total, status, isGuest }) {
+      const statusIcons = {
+        received: "📥",
+        "under reviewing": "🔍",
+        accepted: "✅",
+        declined: "❌",
+      };
+
+      const statusIcon =
+        statusIcons[status as keyof typeof statusIcons] || "⏳";
+      return {
+        title: `${isGuest ? "Guest" : name} — SAR ${total?.toFixed(2) || "0.00"}`,
+        subtitle: `${statusIcon} ${status} • ${email}`,
+      };
+    },
+  },
 });
