@@ -41,14 +41,14 @@ const BasketClient = () => {
         Basket Products
       </h2>
 
-      <div className="grid grid-cols-6 text-xs gap-4 pb-2 items-center mt-8">
+      <div className="hidden md:grid grid-cols-6 text-xs gap-4 pb-2 items-center mt-8">
         <div className="col-span-2 justify-self-start">PRODUCT</div>
         <div className="justify-self-center">VARIANT</div>
         <div className="justify-self-center">PRICE</div>
         <div className="justify-self-center">QUANTITY</div>
         <div className="justify-self-end">TOTAL</div>
       </div>
-      <div>
+      <div className="flex flex-col gap-4">
         {productsInBasket &&
           productsInBasket.map((product) => {
             return (
@@ -61,25 +61,23 @@ const BasketClient = () => {
             );
           })}
       </div>
-      {/* TODO make the div below sticky */}
-      <div className="flex justify-between border-t-[1px] border-slate-200 px-2 py-4">
-        <div className="w-[90px]">
-          <Button
-            onClick={handleClearBasket}
-            variant={"outline"}
-            size={"sm"}
-          >
-            Clear Basket
-          </Button>
-        </div>
-        <div className="text-sm flex flex-col gap-1 items-start">
+      <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-8 border-t-[1px] border-slate-200 px-4 py-4 sticky bottom-0 left-0 right-0 z-10 bg-slate-100 ">
+        <Button
+          onClick={handleClearBasket}
+          variant={"outline"}
+          size={"sm"}
+          className="w-full md:w-auto bg-slate-300!"
+        >
+          Clear Basket
+        </Button>
+        <div className="text-sm flex flex-col gap-1 items-start w-full md:w-auto">
           <div className="flex justify-between w-full items-center font-semibold text-base">
             <span>Subtotal</span>
             <span>SAR {basketTotalPrice.toFixed(2)}</span>
           </div>
 
           {/* TODO adjust this the way Wassim asked you */}
-          <p className="text-slate-500">
+          <p className="text-slate-500 text-xs">
             Taxes and shipping calculated after quotation request
           </p>
 
@@ -91,7 +89,7 @@ const BasketClient = () => {
 
           <Link
             href={"/"}
-            className="text-slate-500 flex items-center gap-1 hover:text-slate-800"
+            className="text-slate-500 flex items-center gap-1 hover:text-slate-800 text-sm"
           >
             <MdArrowBack />
             <span>Continue Browsing</span>
