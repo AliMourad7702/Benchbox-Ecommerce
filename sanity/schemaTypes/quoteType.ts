@@ -219,7 +219,7 @@ export const quoteType = defineType({
         list: ["received", "under reviewing", "accepted", "declined"],
         layout: "dropdown",
       },
-      initialValue: "pending",
+      initialValue: "received",
     }),
     defineField({
       name: "createdAt",
