@@ -61,6 +61,7 @@ const BasketClient = () => {
             );
           })}
       </div>
+      {/* TODO make the div below sticky */}
       <div className="flex justify-between border-t-[1px] border-slate-200 px-2 py-4">
         <div className="w-[90px]">
           <Button
