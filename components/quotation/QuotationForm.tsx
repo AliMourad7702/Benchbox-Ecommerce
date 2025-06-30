@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,24 +22,38 @@ interface QuotationFormProps {
   dialogDescription?: string;
 }
 
+type QuotationFormData = {
+  name: string;
+  email: string;
+  phone?: string;
+  address: {
+    line1: string;
+    line2?: string;
+    city: string;
+    postalCode: string;
+    country?: string;
+  };
+  notes?: string;
+};
+
 const QuotationForm: React.FC<QuotationFormProps> = ({
   dialogTriggerContent,
   dialogTitle,
   dialogDescription,
 }) => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<QuotationFormData>();
   const { productsInBasket, basketTotalPrice, handleClearBasket } = useBasket();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const onSubmit = async (data: ProductInBasketType[] | null) => {
+  const onSubmit: SubmitHandler<QuotationFormData> = async (formData) => {
     setLoading(true);
     try {
       const response = await fetch("/api/quotation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...data,
+          ...formData,
           isGuest: true,
           items: productsInBasket,
           totalPrice: basketTotalPrice,
@@ -82,7 +96,10 @@ const QuotationForm: React.FC<QuotationFormProps> = ({
         </DialogHeader>
 
         {!submitted && (
-          <form className="grid gap-4 py-4">
+          <form
+            className="grid gap-4 py-4"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             {/* Notice */}
             <div className="text-sm text-muted-foreground bg-muted/30 p-2 rounded">
               <strong>Note:</strong> Additional fees may apply for delivery and
@@ -135,7 +152,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({
                 className="border p-2 rounded w-full"
               />
               <input
-                {...register("address.line1")}
+                {...register("address.line2")}
                 placeholder="Address Line 2 (optional)"
                 className="border p-2 rounded w-full"
               />
@@ -170,7 +187,12 @@ const QuotationForm: React.FC<QuotationFormProps> = ({
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button type="submit">Submit Request</Button>
+              <Button
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Submit Request"}
+              </Button>
             </DialogFooter>
           </form>
         )}

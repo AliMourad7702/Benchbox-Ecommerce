@@ -186,15 +186,13 @@ export const quoteType = defineType({
               quantity: "quantity",
               price: "variantPrice",
               color: "color.colorName",
-              media: "color.images.0",
             },
-            prepare({ sku, quantity, price, color, media }) {
+            prepare({ sku, quantity, price, color }) {
               const total =
                 price && quantity ? (price * quantity).toFixed(2) : "0.00";
               return {
                 title: `${sku || "Unknown SKU"} x ${quantity}`,
                 subtitle: `SAR ${price?.toFixed(2) || "0.00"} each · Total: SAR ${total} · Color: ${color || "N/A"}`,
-                media,
               };
             },
           },

@@ -1,15 +1,12 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { client } from "@/sanity/lib/client";
+import { NextResponse } from "next/server";
+import { ProductInBasketType } from "@/components/products/ProductDetails";
+import { backendClient } from "@/sanity/lib/backendCLient";
+import { v4 as uuidv4 } from "uuid";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") return res.status(405).end();
-
-  const data = req.body;
-
+export async function POST(req: Request) {
   try {
+    const data = await req.json();
+
     const doc = {
       _type: "quote",
       isGuest: true,
@@ -19,14 +16,15 @@ export default async function handler(
       address: data.address,
       notes: data.notes || "",
       totalPrice: data.totalPrice,
-      items: data.items.map((item: any) => ({
+      items: data.items.map((item: ProductInBasketType) => ({
+        _key: uuidv4(),
         _type: "item",
         variant: {
           _type: "reference",
           _ref: item.variant._id,
         },
         quantity: item.quantity,
-        itemTotal: item.variant.price * item.quantity,
+        itemTotal: item.variant.price! * item.quantity,
         productId: item.productId,
         productName: item.productName,
         productSlug: item.productSlug,
@@ -35,10 +33,10 @@ export default async function handler(
         variantSku: item.variant.sku,
         variantPrice: item.variant.price,
         color: {
-          colorName: item.variant.color.colorName,
-          colorCode: item.variant.color.colorCode,
-          images: item.variant.color.images,
-          stock: item.variant.color.stock,
+          colorName: item.variant.color!.colorName,
+          colorCode: item.variant.color!.colorCode,
+          images: item.variant.color!.images,
+          stock: item.variant.color!.stock,
         },
         specs: item.variant.specs,
       })),
@@ -46,10 +44,14 @@ export default async function handler(
       status: "received",
     };
 
-    await client.create(doc);
-    res.status(200).json({ success: true });
+    await backendClient.create(doc);
+
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Error creating quote in Sanity:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
