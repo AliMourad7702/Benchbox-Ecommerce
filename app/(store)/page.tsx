@@ -1,6 +1,5 @@
 import CategoriesProductsSection from "@/components/products/CategoriesProductsSection";
 import { getAllCategories } from "@/sanity/lib/categories/getAllCategories";
-import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
 import { getProductsByCategory } from "@/sanity/lib/products/getProductsByCategory";
 
 export default async function Home() {

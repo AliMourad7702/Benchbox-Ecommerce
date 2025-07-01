@@ -3,7 +3,7 @@ import { sanityFetch } from "../live";
 
 export const getProductsByCategory = async (categorySlug: string) => {
   const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`
-    *[_type == "product" && category->slug.current == $categorySlug]{
+    *[_type == "product" && category->slug.current == $categorySlug] | order(_createdAt desc)[0...4]{
       _id,
       name,
       baseSku,

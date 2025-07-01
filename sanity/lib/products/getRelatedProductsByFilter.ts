@@ -21,7 +21,7 @@ export const getRelatedProductsByFilter = async ({
         $filterOption == "color" &&
         count(variants[]->colorOptions[colorName==$colorName])>0
       ) 
-    ][0...5]{
+    ][0...4]{
       _id,
       name,
       baseSku,

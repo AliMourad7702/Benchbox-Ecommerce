@@ -1,9 +1,20 @@
+import CategoryProductsPage from "@/components/categories/CategoryProductsPage";
 import React from "react";
 
-const Category = () => {
+interface CategoryPageProps {
+  params: { slug: string };
+}
+
+async function CategoryPage({ params }: CategoryPageProps) {
   // TODO finish category page
   // TODO add pagination
-  return <div>this is the category page</div>;
-};
 
-export default Category;
+  const { slug } = await params;
+  return (
+    <div>
+      <CategoryProductsPage categorySlug={slug} />
+    </div>
+  );
+}
+
+export default CategoryPage;
