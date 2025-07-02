@@ -99,6 +99,7 @@ export const variantType = defineType({
       title: "Parent Product",
       type: "reference",
       to: [{ type: "product" }],
+      weak: true,
     }),
   ],
   preview: {

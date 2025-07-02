@@ -11,6 +11,7 @@ export const quoteType = defineType({
       title: "Submitted By",
       type: "reference",
       to: [{ type: "user" }],
+      weak: true,
       description:
         "Optional — links to user document if submitted while logged in.",
     }),
@@ -90,6 +91,7 @@ export const quoteType = defineType({
               title: "Selected Variant (Reference)",
               type: "reference",
               to: [{ type: "variant" }],
+              weak: true,
               validation: (Rule) => Rule.required(),
             }),
 

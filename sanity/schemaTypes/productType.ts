@@ -35,6 +35,7 @@ export const productType = defineType({
       title: "Category",
       type: "reference",
       to: [{ type: "category" }],
+      weak: true,
       validation: (Rule) => Rule.required(),
     }),
 
@@ -47,6 +48,7 @@ export const productType = defineType({
         {
           type: "reference",
           to: [{ type: "variant" }],
+          weak: true,
         },
       ],
       validation: (Rule) => Rule.min(1),
