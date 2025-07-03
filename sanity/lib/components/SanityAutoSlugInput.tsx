@@ -21,13 +21,15 @@ export default function SanityAutoSlugInput(props: any) {
 
     let cancelled = false;
 
+    console.log("Source:", source);
+
     const generateUniqueSlug = async () => {
       const baseSlug = source
         .toLowerCase()
         .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w\-]+/g, "")
-        .replace(/--+/g, "-")
+        .replace(/\s+/g, "-") // Replace spaces with dashes
+        .replace(/[^a-z0-9\-]/g, "") // Keep lowercase letters, numbers, and dashes
+        .replace(/--+/g, "-") // Replace multiple dashes with one
         .replace(/^-+|-+$/g, "") // Trim leading/trailing dashes
         .slice(0, 200);
 
@@ -42,7 +44,6 @@ export default function SanityAutoSlugInput(props: any) {
       };
 
       const existingSlugs = await client.fetch(query, params);
-      console.log("existingSlugs: ", existingSlugs);
 
       let uniqueSlug = baseSlug;
       let counter = 1;
@@ -53,8 +54,16 @@ export default function SanityAutoSlugInput(props: any) {
 
       if (!cancelled) {
         setGeneratedSlug(uniqueSlug);
-        if (!currentSlug && onChange && typeof onChange === "function") {
-          onChange(PatchEvent.from([set({ current: uniqueSlug })]));
+
+        if (onChange && typeof onChange === "function") {
+          // Only patch if the document is a draft or in editable state
+          if (doc._id?.startsWith("drafts.")) {
+            onChange(PatchEvent.from([set({ current: uniqueSlug })]));
+          } else {
+            console.warn(
+              "Slug not patched because document is not editable yet"
+            );
+          }
         }
       }
     };

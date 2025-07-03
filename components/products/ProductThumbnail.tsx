@@ -9,6 +9,7 @@ interface ProductThumbnailProps {
 }
 
 const ProductThumbnail = ({ product }: ProductThumbnailProps) => {
+  console.log("product.slug: ", product.slug);
   return (
     <div
       className={`group flex flex-col rounded-lg border min-w-fit bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden `}

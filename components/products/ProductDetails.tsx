@@ -220,7 +220,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div
-        className={`relative aspect-square overflow-hidden rounded-lg shadow-lg `}
+        className={`relative w-full aspect-square overflow-hidden rounded-lg shadow-lg bg-white`}
       >
         {productInBasket!.variant.color!.images?.length! > 0 && (
           <ProductImage

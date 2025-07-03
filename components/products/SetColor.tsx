@@ -19,7 +19,6 @@ const SetColor: React.FC<SetColorProps> = ({
       <span className="text-sm font-semibold">COLOR:</span>
       <div className="flex w-full max-w-[30%] gap-1">
         {colors?.map((item) => {
-          console.log("item stock: ", item?.colorName, ": ", item?.stock);
           return (
             <div
               className={`h-7 w-7 rounded-full  flex items-center justify-center relative ${productInBasket.variant.color?.colorName === item?.colorName ? (productInBasket.variant.color?.stock === 0 ? "border-[1.5px] border-red-400" : "border-[1.5px] border-green-400") : "border-none"}`}
