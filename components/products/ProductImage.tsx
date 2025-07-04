@@ -1,13 +1,8 @@
 "use client";
 
-import React from "react";
-import {
-  ProductInBasketType,
-  SelectedColorType,
-  SelectedImageType,
-} from "./ProductDetails";
-import { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
 import Image from "next/image";
+import React from "react";
+import { ProductInBasketType, SelectedImageType } from "./ProductDetails";
 
 interface ProductImageProps {
   productInBasket: ProductInBasketType;
@@ -22,21 +17,21 @@ const ProductImage: React.FC<ProductImageProps> = ({
 }) => {
   return (
     <div className="relative grid grid-cols-6 h-full min-h-[300px] sm:min-h-[400px]">
-      {/* FIXME fix the behavior of the side images when there is 7 or more to display*/}
       <div
-        className={`flex flex-col items-center justify-center gap-4 cursor-pointer border-r h-full bg-white  ${productInBasket.variant.color?.images?.length! >= 7 && "max-h-full overflow-y-auto"}`}
+        className={`flex flex-col items-center  gap-4 cursor-pointer border-r h-full bg-white  ${productInBasket.variant.color?.images?.length! >= 7 ? "max-h-full overflow-y-auto justify-start py-4" : "justify-center"}`}
       >
         {productInBasket.variant.color?.images?.map((imageUrl, index) => {
           return (
             <div
               key={index}
               onClick={() => handleImageSelect(index)}
-              className={`relative w-[80%] aspect-square rounded border-green-400 ${imageUrl === selectedImage.url ? "border-[1.5px] " : "hover:border-[1.2px] hover:border-slate-400"} ${productInBasket.variant.color?.images?.length! >= 7 && index === 0 && "mt-[20rem] sm:mt-[22rem] md:mt-[14rem] lg:mt-[20rem] xl:mt-[22rem]"}`}
+              className={`relative w-[80%] aspect-square rounded border-green-400 ${imageUrl === selectedImage.url ? "border-[1.5px] " : "hover:border-[1.2px] hover:border-slate-400"}`}
             >
               <Image
-                src={imageUrl!}
+                src={`${imageUrl}?w=400&h=400&fit=max&auto=format`}
                 alt={productInBasket.productName ?? "product image"}
                 fill
+                loading="eager"
                 className="object-contain"
               />
             </div>
