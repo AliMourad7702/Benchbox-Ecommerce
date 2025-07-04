@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,16 +9,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { MdArrowForward } from "react-icons/md";
 import { useBasket } from "@/hooks/useBasket";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { ProductInBasketType } from "../products/ProductDetails";
+import { MdArrowForward } from "react-icons/md";
 
 interface QuotationFormProps {
   dialogTriggerContent?: string;
   dialogTitle?: string;
   dialogDescription?: string;
 }
+
+// TODO check the quotation sample pdf and adjust fields accordingly
+// TODO after checking fields, enable emailing logic
 
 type QuotationFormData = {
   name: string;
