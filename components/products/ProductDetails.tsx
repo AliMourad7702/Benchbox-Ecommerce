@@ -28,26 +28,7 @@ export type ProductInBasketType = {
     _id: string;
     label: string | null;
     sku: string | null;
-    price: number | null;
     color: SelectedColorType;
-    specs: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }> | null;
   };
   quantity: number;
 };
@@ -56,7 +37,26 @@ export type SelectedColorType = {
   colorName: string | null;
   colorCode: string | null;
   images: Array<string | null> | null;
+  price: number | null;
   stock: number | null;
+  specs: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
 } | null;
 
 export type SelectedImageType = {
@@ -89,14 +89,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       _id: selectedVariant!._id,
       label: selectedVariant!.label,
       sku: selectedVariant!.sku,
-      price: selectedVariant!.price,
+
       color: {
         colorName: selectedVariant!.colorOptions![0].colorName,
         colorCode: selectedVariant!.colorOptions![0].colorCode,
         images: selectedVariant!.colorOptions![0].images,
+        price: selectedVariant!.colorOptions![0].price,
         stock: selectedVariant!.colorOptions![0].stock,
+        specs: selectedVariant!.colorOptions![0].specs,
       },
-      specs: selectedVariant!.specs,
     },
     quantity: 1,
   });
@@ -130,13 +131,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             ...prev.variant,
             _id: variant._id,
             label: variant.label,
-            price: variant.price,
-            specs: variant.specs,
+
             color: {
               colorName: variant.colorOptions![0].colorName,
               colorCode: variant.colorOptions![0].colorCode,
               images: variant.colorOptions![0].images,
+              price: variant.colorOptions![0].price,
               stock: variant.colorOptions![0].stock,
+              specs: variant.colorOptions![0].specs,
             },
           },
 
@@ -238,12 +240,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               : product!.baseSku + " " + productInBasket.variant!.label}
           </h1>
           <div className="text-xl font-semibold mb-4">
-            SAR {productInBasket.variant.price?.toFixed(2)}
+            SAR {productInBasket.variant.color?.price?.toFixed(2)}
           </div>
           <Horizontal />
           <div className="prose max-w-none mb-6 text-black">
-            {Array.isArray(productInBasket.variant.specs) && (
-              <PortableText value={productInBasket.variant.specs} />
+            {Array.isArray(productInBasket.variant.color?.specs) && (
+              <PortableText value={productInBasket.variant.color?.specs} />
             )}
           </div>
           <Horizontal />

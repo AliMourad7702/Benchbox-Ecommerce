@@ -39,7 +39,7 @@ export const BasketContextProvider = (props: BasketContextProviderProps) => {
   const basketTotalPrice = useMemo(() => {
     return (
       productsInBasket?.reduce((acc, item) => {
-        return acc + item.variant.price! * item.quantity;
+        return acc + item.variant.color!.price! * item.quantity;
       }, 0) || 0
     );
   }, [productsInBasket]);

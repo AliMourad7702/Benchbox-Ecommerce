@@ -28,6 +28,7 @@ const CategoriesProductsSection = ({
           {/* <hr className="w-1/2 sm:w-3/4 my-6" /> */}
         </div>
       </div>
+      {/* TODO add a view all button that redirects to the '/category/slug' page */}
     </div>
   );
 };

@@ -19,19 +19,6 @@ export const variantType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "price",
-      title: "Price (SAR)",
-      type: "number",
-      validation: (Rule) => Rule.required().positive(),
-    }),
-    defineField({
-      name: "specs",
-      title: "Specifications / Remarks",
-      type: "array",
-      of: [{ type: "block" }],
-      validation: (Rule) => Rule.required().min(1),
-    }),
-    defineField({
       name: "colorOptions",
       title: "Color Options",
       type: "array",
@@ -71,15 +58,28 @@ export const variantType = defineType({
               validation: (Rule) => Rule.required().min(1),
             }),
             defineField({
+              name: "price",
+              title: "Price (SAR)",
+              type: "number",
+              validation: (Rule) => Rule.required().positive(),
+            }),
+            defineField({
               name: "stock",
               title: "Stock",
               type: "number",
               validation: (Rule) => Rule.required().min(0),
             }),
+            defineField({
+              name: "specs",
+              title: "Specifications / Remarks",
+              type: "array",
+              of: [{ type: "block" }],
+              validation: (Rule) => Rule.required().min(1),
+            }),
           ],
           preview: {
             select: {
-              title: "color.hex",
+              title: "colorName",
               media: "images.0.asset",
             },
             prepare({ title, media }) {

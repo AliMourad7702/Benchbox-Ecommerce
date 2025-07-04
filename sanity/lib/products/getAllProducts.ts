@@ -16,13 +16,13 @@ export const getAllProducts = async () => {
       _id,
       label,
       sku,
-      price,
-      specs,
       colorOptions[]{
           colorName,
           "colorCode": color.hex,
           "images":images[].asset->url,
+          price,
           stock,
+          specs,
         }
     }
   }

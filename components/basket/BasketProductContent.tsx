@@ -67,7 +67,7 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
       </div>
       <div className="md:justify-self-center ">
         <span className="md:hidden font-semibold">Price: </span>
-        SAR {product?.variant.price?.toFixed(2)}
+        SAR {product?.variant.color!.price?.toFixed(2)}
       </div>
       <div className="md:justify-self-center flex gap-2 items-center">
         <span className="md:hidden font-semibold mb-">Qty: </span>
@@ -79,7 +79,7 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
       </div>
       <div className="md:justify-self-end">
         <span className="md:hidden font-semibold">Total: </span>
-        SAR {(product?.quantity! * product?.variant.price!).toFixed(2)}
+        SAR {(product?.quantity! * product?.variant.color!.price!).toFixed(2)}
       </div>
     </div>
   );

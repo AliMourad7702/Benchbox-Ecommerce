@@ -145,13 +145,6 @@ export const quoteType = defineType({
               readOnly: true,
             }),
             defineField({
-              name: "variantPrice",
-              title: "Variant Price (Snapshot)",
-              type: "number",
-              readOnly: true,
-            }),
-
-            defineField({
               name: "color",
               title: "Color Details (Snapshot)",
               type: "object",
@@ -166,20 +159,25 @@ export const quoteType = defineType({
                   of: [{ type: "url" }],
                   validation: (Rule) => Rule.min(1),
                 },
+                defineField({
+                  name: "variantPrice",
+                  title: "Variant Price (Snapshot)",
+                  type: "number",
+                  readOnly: true,
+                }),
                 {
                   name: "stock",
                   title: "Color Stock at Time of Request",
                   type: "number",
                 },
+                defineField({
+                  name: "specs",
+                  title: "Specifications (Snapshot)",
+                  type: "array",
+                  of: [{ type: "block" }],
+                  readOnly: true,
+                }),
               ],
-            }),
-
-            defineField({
-              name: "specs",
-              title: "Specifications (Snapshot)",
-              type: "array",
-              of: [{ type: "block" }],
-              readOnly: true,
             }),
           ],
           preview: {

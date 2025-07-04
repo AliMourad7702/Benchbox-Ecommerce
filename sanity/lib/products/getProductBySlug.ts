@@ -16,13 +16,13 @@ export const getProductBySlug = async (slug: string) => {
       _id,
       label,
       sku,
-      price,
-      specs,
       colorOptions[]{
           colorName,
           "colorCode": color.hex,
           "images":images[].asset->url,
+          price,
           stock,
+          specs,
         }
     }
   }

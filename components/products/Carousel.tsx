@@ -1,5 +1,11 @@
 "use client";
-import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  PanInfo,
+  Transition,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { JSX, useEffect, useRef, useState } from "react";
 
 // replace icons with your own if needed
@@ -31,7 +37,11 @@ const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
 const GAP = 16;
 // const SPRING_OPTIONS = { type: "spring", stiffness: 100, damping: 40 };
-const SPRING_OPTIONS = { type: "tween", duration: 0.5, ease: "easeInOut" };
+const SPRING_OPTIONS: Transition = {
+  type: "tween",
+  duration: 0.5,
+  ease: "easeInOut",
+};
 
 export default function Carousel({
   items,
@@ -236,12 +246,12 @@ export default function Carousel({
                   </div>
 
                   <div className="mt-2 text-sm text-gray-600 line-clamp-2">
-                    {Array.isArray(item.specs) && (
-                      <PortableText value={item.specs} />
+                    {Array.isArray(item.colorOptions![0]!.specs) && (
+                      <PortableText value={item.colorOptions![0]!.specs} />
                     )}
                   </div>
                   <p className="mt-2 text-lg font-bold text-gray-900">
-                    SAR {item.price?.toFixed(2)}
+                    SAR {item.colorOptions![0].price?.toFixed(2)}
                   </p>
                 </div>
               </Link>
