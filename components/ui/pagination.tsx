@@ -64,7 +64,8 @@ function PaginationLink({
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        className
+        className,
+        isActive && "bg-slate-300!"
       )}
       {...props}
     />

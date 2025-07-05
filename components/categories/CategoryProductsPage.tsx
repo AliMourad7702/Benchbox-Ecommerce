@@ -13,7 +13,6 @@ import {
   PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult,
   PRODUCTS_BY_CATEGORY_QUERYResult,
 } from "@/sanity.types";
-import { getProductsByCategoryPaginated } from "@/sanity/lib/products/getProductsByCategoryPaginated";
 import { TbArrowBadgeRight } from "react-icons/tb";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,6 +55,12 @@ export default function CategoryProductsPage({
     router.push(`?page=${pageNumber}`);
   };
 
+  useEffect(() => {
+    if (page > totalPages || page <= 0) {
+      goToPage(1);
+    }
+  }, [page]);
+
   console.log("productsByCategory: ", products);
   console.log("total: ", total);
 
@@ -72,47 +77,49 @@ export default function CategoryProductsPage({
       )}
 
       {/* Pagination UI */}
-      {/* {totalPages > 1 && ( */}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            {page > 1 && <PaginationPrevious href={`?page=${page - 1}`} />}
-          </PaginationItem>
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              {page > 1 && <PaginationPrevious href={`?page=${page - 1}`} />}
+            </PaginationItem>
 
-          {/* Simple logic: show first 3 pages, current page, last page */}
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const pageNumber = i + 1;
-            if (
-              pageNumber === 1 ||
-              pageNumber === totalPages ||
-              (pageNumber >= page - 1 && pageNumber <= page + 1)
-            ) {
-              return (
-                <PaginationItem key={pageNumber}>
-                  <PaginationLink
-                    href={`?page=${pageNumber}`}
-                    isActive={pageNumber === page}
-                  >
-                    {pageNumber}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            } else if (pageNumber === page - 2 || pageNumber === page + 2) {
-              return (
-                <PaginationItem key={`ellipsis-${pageNumber}`}>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              );
-            }
-            return null;
-          })}
+            {/* Simple logic: show first 3 pages, current page, last page */}
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const pageNumber = i + 1;
+              if (
+                pageNumber === 1 ||
+                pageNumber === totalPages ||
+                (pageNumber >= page - 1 && pageNumber <= page + 1)
+              ) {
+                return (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      href={`?page=${pageNumber}`}
+                      isActive={pageNumber === page}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              } else if (pageNumber === page - 2 || pageNumber === page + 2) {
+                return (
+                  <PaginationItem key={`ellipsis-${pageNumber}`}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                );
+              }
+              return null;
+            })}
 
-          <PaginationItem>
-            {page < totalPages && <PaginationNext href={`?page=${page + 1}`} />}
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-      {/* )} */}
+            <PaginationItem>
+              {page < totalPages && (
+                <PaginationNext href={`?page=${page + 1}`} />
+              )}
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }
