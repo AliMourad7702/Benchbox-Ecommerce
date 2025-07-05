@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,8 +12,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useBasket } from "@/hooks/useBasket";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useUser } from "@clerk/nextjs";
 import toast from "react-hot-toast";
 import { MdArrowForward } from "react-icons/md";
 
@@ -43,10 +46,38 @@ const QuotationForm: React.FC<QuotationFormProps> = ({
   dialogTitle,
   dialogDescription,
 }) => {
-  const { register, handleSubmit, reset } = useForm<QuotationFormData>();
+  const { register, handleSubmit, reset } = useForm<QuotationFormData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      address: {
+        line1: "",
+        line2: "",
+        city: "",
+        postalCode: "",
+        country: "",
+      },
+      notes: "",
+    },
+  });
+
   const { productsInBasket, basketTotalPrice, handleClearBasket } = useBasket();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      reset((prev) => ({
+        ...prev,
+        name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+        email: user.primaryEmailAddress?.emailAddress || "",
+        // Optionally fill more fields here if stored in user.publicMetadata
+      }));
+    }
+  }, [user, reset]);
 
   const onSubmit: SubmitHandler<QuotationFormData> = async (formData) => {
     setLoading(true);

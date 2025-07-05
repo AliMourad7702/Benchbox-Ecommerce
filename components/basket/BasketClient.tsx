@@ -78,7 +78,6 @@ const BasketClient = () => {
             <span>SAR {basketTotalPrice.toFixed(2)}</span>
           </div>
 
-          {/* TODO adjust this the way Wassim asked you */}
           <p className="text-slate-500 text-xs">
             Taxes and shipping calculated after quotation request
           </p>

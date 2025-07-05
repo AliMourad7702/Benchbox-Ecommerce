@@ -63,7 +63,6 @@ export const quoteType = defineType({
           type: "string",
           validation: (Rule) => Rule.required(),
         },
-        // TODO remove the country field because its not necessary (the shop is local)
         {
           name: "country",
           title: "Country (Optional)",

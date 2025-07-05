@@ -6,8 +6,6 @@ interface CategoryPageProps {
 }
 
 async function CategoryPage({ params }: CategoryPageProps) {
-  // TODO test pagination after adding products
-
   const { slug } = await params;
   return (
     <div>

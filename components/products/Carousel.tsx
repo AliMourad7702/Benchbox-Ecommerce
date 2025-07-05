@@ -235,7 +235,7 @@ export default function Carousel({
                     <h2 className="text-lg font-semibold text-gray-800 truncate">
                       {parentProductInfo.name
                         ? `${parentProductInfo.name}`
-                        : `${baseSku}-${item.label}`}
+                        : `${baseSku}${item.label}`}
                     </h2>
 
                     {parentProductInfo.name && (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useBasket } from "@/hooks/useBasket";
 import {
   ClerkLoaded,
   SignedIn,
@@ -7,13 +8,11 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
+import { ClipboardIcon, TrolleyIcon } from "@sanity/icons";
+import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import Form from "next/form";
-import { PackageIcon, TrolleyIcon } from "@sanity/icons";
 import { Button } from "../ui/button";
-import { useBasket } from "@/hooks/useBasket";
 
 const Header = () => {
   const { user } = useUser();
@@ -79,11 +78,11 @@ const Header = () => {
             {/* <SignedIn> tag is a built in tag from Clerk that renders children only if the user is logged in */}
             <SignedIn>
               <Link
-                href={"/orders"}
+                href={"/requested-quotes"}
                 className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                <PackageIcon className="w-6 h-6" />
-                <span>My Orders</span>
+                <ClipboardIcon className="w-6 h-6" />
+                <span>My Quotations</span>
               </Link>
             </SignedIn>
 
