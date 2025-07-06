@@ -25,7 +25,10 @@ interface QuotationFormProps {
 }
 
 // TODO check the quotation sample pdf and adjust fields accordingly
+
 // TODO after checking fields, enable emailing logic
+
+// TODO link the user saved in sanity with clerk id to the quotation form (if logged in)
 
 type QuotationFormData = {
   name: string;

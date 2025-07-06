@@ -1,7 +1,5 @@
 import React from "react";
 
-// TODO change this to MyQuotesPage (also change the parent folder name to quotes)
-
 // TODO finish this page
 
 const MyQuotesPage = () => {

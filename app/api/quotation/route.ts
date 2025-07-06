@@ -3,6 +3,8 @@ import { ProductInBasketType } from "@/components/products/ProductDetails";
 import { backendClient } from "@/sanity/lib/backendCLient";
 import { v4 as uuidv4 } from "uuid";
 
+// TODO add user field
+
 export async function POST(req: Request) {
   try {
     const data = await req.json();

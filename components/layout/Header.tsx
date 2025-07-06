@@ -63,7 +63,7 @@ const Header = () => {
             className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:opacity-50 text-white font-bold py-2 px-4 rounded"
           >
             <TrolleyIcon className="w-6 h-6" />
-            <span>My Basket</span>
+            <span className="text-[0.7rem] md:text-base">My Basket</span>
             {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
               <span className="absolute -top-1.5 -right-1.5 bg-white text-blue-500 text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
                 <span className="absolute -inset-y-[0.05rem]">
@@ -82,7 +82,9 @@ const Header = () => {
                 className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 <ClipboardIcon className="w-6 h-6" />
-                <span>My Quotations</span>
+                <span className="text-[0.7rem] md:text-base">
+                  My Quotations
+                </span>
               </Link>
             </SignedIn>
 
@@ -96,7 +98,7 @@ const Header = () => {
               </div>
             ) : (
               <SignInButton mode="modal">
-                <Button className="text-white text-md bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-5 px-4 rounded cursor-pointer!">
+                <Button className="text-white text-[0.7rem] md:text-base bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-5 px-4 rounded cursor-pointer!">
                   Sign In
                 </Button>
               </SignInButton>
