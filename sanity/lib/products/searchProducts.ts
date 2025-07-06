@@ -38,7 +38,7 @@ export const searchProducts = async (searchParams: string) => {
         name match $searchParams ||
         baseSku match $searchParams ||
         category->title match $searchParams ||
-        count(variants[@->specs[].children[].text match $searchParams])>0
+        count(variants[]->colorOptions[specs[].children[].text match $searchParams])>0
       ) 
     ] | order(_updatedAt desc) {
         _id,

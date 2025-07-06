@@ -13,6 +13,12 @@ import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import dynamic from "next/dynamic";
+import AuthClientWrapper from "./AuthClientWrapper";
+
+const AuthClientWrapperNoSSR = dynamic(() => import("./AuthClientWrapper"), {
+  ssr: false,
+});
 
 const Header = () => {
   const { user } = useUser();
@@ -72,13 +78,14 @@ const Header = () => {
               </span>
             )}
           </Link>
-
+          {/* FIXME fix hydration error */}
           {/* User Area */}
           <ClerkLoaded>
             {/* <SignedIn> tag is a built in tag from Clerk that renders children only if the user is logged in */}
             <SignedIn>
               <Link
                 href={"/requested-quotes"}
+                passHref
                 className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 <ClipboardIcon className="w-6 h-6" />
@@ -87,27 +94,22 @@ const Header = () => {
                 </span>
               </Link>
             </SignedIn>
-
-            {user ? (
-              <div className="flex items-center space-x-2">
-                <UserButton />
-                <div className="hidden sm:block text-xs">
-                  <p className="text-gray-400">Welcome Back</p>
-                  <p className="font-bold text-blue-500">{user.fullName} !</p>
-                </div>
-              </div>
-            ) : (
-              <SignInButton mode="modal">
-                <Button className="text-white text-[0.7rem] md:text-base bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-5 px-4 rounded cursor-pointer!">
-                  Sign In
-                </Button>
-              </SignInButton>
+            {user?.publicMetadata.role === "admin" && (
+              <Link
+                href={"/studio"}
+                className="bg-white hover:bg-blue-700 text-[0.7rem] md:text-base hover:text-white animate-pulse text-blue-500 font-bold py-[0.44rem] px-4 rounded border-blue-300 border "
+              >
+                Studio
+              </Link>
             )}
+            {/* <AuthClientWrapper /> */}
+
+            <AuthClientWrapperNoSSR />
 
             {user?.passkeys.length === 0 && (
               <button
                 onClick={createClerkPasskey}
-                className="bg-white hover:bg-blue-700 hover:text-white animate-pulse text-blue-500 font-bold py-2 px-4 rounded border-blue-300 border"
+                className="bg-white hover:bg-blue-700 hover:text-white text-[0.7rem] md:text-base animate-pulse text-blue-500 font-bold py-[0.44rem] px-4 rounded border-blue-300 border"
               >
                 Create passkey
               </button>

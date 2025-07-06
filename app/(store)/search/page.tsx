@@ -11,7 +11,7 @@ async function SearchPage({
   };
 }) {
   const { query } = await searchParams;
-  if (query.length === 0) {
+  if (query.length === 0 || query === "") {
     return redirect("/");
   }
 
