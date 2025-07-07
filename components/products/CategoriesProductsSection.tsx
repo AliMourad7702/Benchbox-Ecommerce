@@ -4,6 +4,8 @@ import {
 } from "@/sanity.types";
 import CategoryFlowingMenu from "../categories/CategoryFlowingMenu";
 import ProductGrid from "./ProductGrid";
+import Link from "next/link";
+import { MdArrowForward } from "react-icons/md";
 
 interface ProductsViewProps {
   products: ALL_PRODUCTS_QUERYResult;
@@ -28,7 +30,15 @@ const CategoriesProductsSection = ({
           {/* <hr className="w-1/2 sm:w-3/4 my-6" /> */}
         </div>
       </div>
-      {/* TODO add a view all button that redirects to the '/category/slug' page */}
+      <div className="flex justify-center">
+        <Link
+          href={`/category/${category.slug}`}
+          className="bg-black text-white px-4 py-2 rounded-md mt-4 hover:opacity-70 flex items-center justify-center gap-1"
+        >
+          View All
+          <MdArrowForward />
+        </Link>
+      </div>
     </div>
   );
 };

@@ -14,7 +14,8 @@ const CategoryFlowingMenu = ({ category }: CategoryFlowingMenuProps) => {
           {
             text: category!.title!,
             link: `/category/${category!.slug!}`,
-            image: "/images/fabric-chair.png",
+            // TODO adjust the image to make it dynamic
+            image: category.imageUrl,
           },
         ]}
       />

@@ -8,7 +8,7 @@ import { MdArrowRight } from "react-icons/md";
 interface MenuItemProps {
   link: string;
   text: string;
-  image: string;
+  image: string | null;
 }
 
 interface FlowingMenuProps {
@@ -78,10 +78,12 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
         <span className="text-[#060010] uppercase font-normal text-sm leading-[1.2] p-[1vh_1vw_0]">
           {text}
         </span>
-        <div
-          className="w-[200px] h-[9vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center"
-          style={{ backgroundImage: `url(${image})` }}
-        />
+        {image && (
+          <div
+            className="w-[180px] h-[11vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center"
+            style={{ backgroundImage: `url(${image})` }}
+          />
+        )}
       </React.Fragment>
     ));
   }, [text, image]);

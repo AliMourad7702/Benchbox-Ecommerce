@@ -6,6 +6,7 @@ export const getAllCategories = async () => {
   *[_type == "category"]{
     _id,
     title,
+    "imageUrl": image.asset->url,
     description,
     "slug": slug.current
   }
