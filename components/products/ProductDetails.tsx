@@ -131,6 +131,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             ...prev.variant,
             _id: variant._id,
             label: variant.label,
+            sku: variant.sku,
 
             color: {
               colorName: variant.colorOptions![0].colorName,
