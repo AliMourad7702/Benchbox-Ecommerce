@@ -90,7 +90,8 @@ const QuotationForm: React.FC<QuotationFormProps> = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          isGuest: true,
+          isGuest: !user,
+          clerkId: user?.id || null,
           items: productsInBasket,
           totalPrice: basketTotalPrice,
         }),

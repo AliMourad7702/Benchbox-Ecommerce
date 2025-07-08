@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ProductInBasketType } from "@/components/products/ProductDetails";
 import { backendClient } from "@/sanity/lib/backendCLient";
 import { v4 as uuidv4 } from "uuid";
+import { getSanityUserIdByClerkId } from "@/sanity/lib/users/getSanityUserIdByClerkId";
 
 // TODO add user field
 
@@ -18,12 +19,20 @@ export async function POST(req: Request) {
       address: data.address,
       notes: data.notes || "",
       totalPrice: data.totalPrice,
+      ...(data.clerkId && {
+        user: {
+          _type: "reference",
+          _ref: await getSanityUserIdByClerkId(data.clerkId),
+          _weak: true,
+        },
+      }),
       items: data.items.map((item: ProductInBasketType) => ({
         _key: uuidv4(),
         _type: "item",
         variant: {
           _type: "reference",
           _ref: item.variant._id,
+          _weak: true,
         },
         quantity: item.quantity,
         itemTotal: item.variant.color!.price! * item.quantity,

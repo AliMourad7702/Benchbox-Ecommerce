@@ -183,7 +183,7 @@ export const quoteType = defineType({
             select: {
               sku: "variantSku",
               quantity: "quantity",
-              price: "variantPrice",
+              price: "color.variantPrice",
               color: "color.colorName",
             },
             prepare({ sku, quantity, price, color }) {
@@ -245,7 +245,7 @@ export const quoteType = defineType({
       const statusIcon =
         statusIcons[status as keyof typeof statusIcons] || "⏳";
       return {
-        title: `${isGuest ? "Guest" : name} — SAR ${total?.toFixed(2) || "0.00"}`,
+        title: `${name} — SAR ${total?.toFixed(2) || "0.00"}`,
         subtitle: `${statusIcon} ${status} • ${email}`,
       };
     },

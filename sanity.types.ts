@@ -663,6 +663,13 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
   }> | null;
 }>;
 
+// Source: ./sanity/lib/users/getSanityUserIdByClerkId.ts
+// Variable: GET_SANITY_USER_BY_CLERK_ID
+// Query: *[_type == "user" && clerkId == $clerkId][0]{_id}
+export type GET_SANITY_USER_BY_CLERK_IDResult = {
+  _id: string;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -674,5 +681,6 @@ declare module "@sanity/client" {
     "\n  {\n    \"items\": *[_type == \"product\" && category->slug.current == $categorySlug]\n      | order(_createdAt desc)[$offset...$limit] {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          colorOptions[] {\n            colorName,\n            \"colorCode\": color.hex,\n            \"images\": images[].asset->url,\n            price,\n            stock,\n            specs,\n          }\n        }\n    },\n    \"total\": count(*[_type == \"product\" && category->slug.current == $categorySlug])\n  }\n": PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult;
     "\n    *[\n      _type == \"product\" &&\n      baseSku != $baseSku &&\n      (\n        $filterOption == \"category\" && category->slug.current==$categorySlug ||\n        $filterOption == \"color\" &&\n        count(variants[]->colorOptions[colorName==$colorName])>0\n      ) \n    ][0...4]{\n      _id,\n      name,\n      baseSku,\n      \"slug\": slug.current,\n      category->{\n        title,\n        \"slug\": slug.current\n      },\n      variants[]->{\n        _id,\n        label,\n        sku,\n        colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\": images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n      }\n    }\n    ": RELATED_PRODUCTS_QUERYResult;
     "\n    *[_type == \"product\" && (\n        name match $searchParams ||\n        baseSku match $searchParams ||\n        category->title match $searchParams ||\n        count(variants[]->colorOptions[specs[].children[].text match $searchParams])>0\n      ) \n    ] | order(_updatedAt desc) {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          colorOptions[]{\n              colorName,\n              \"colorCode\": color.hex,\n              \"images\":images[].asset->url,\n              price,\n              stock,\n              specs,\n          }\n        }\n      }\n  ": PRODUCT_SEARCH_QUERYResult;
+    "\n    *[_type == \"user\" && clerkId == $clerkId][0]{_id}\n    ": GET_SANITY_USER_BY_CLERK_IDResult;
   }
 }
