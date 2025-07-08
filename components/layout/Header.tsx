@@ -1,20 +1,18 @@
 "use client";
 
 import { useBasket } from "@/hooks/useBasket";
-import {
-  ClerkLoaded,
-  SignedIn,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { ClerkLoaded, SignedIn, useUser } from "@clerk/nextjs";
 import { ClipboardIcon, TrolleyIcon } from "@sanity/icons";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import dynamic from "next/dynamic";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
-import dynamic from "next/dynamic";
-import AuthClientWrapper from "./AuthClientWrapper";
 
 const AuthClientWrapperNoSSR = dynamic(() => import("./AuthClientWrapper"), {
   ssr: false,
@@ -23,14 +21,14 @@ const AuthClientWrapperNoSSR = dynamic(() => import("./AuthClientWrapper"), {
 const Header = () => {
   const { user } = useUser();
 
-  const createClerkPasskey = async () => {
-    try {
-      const response = await user?.createPasskey();
-      // console.log(response);
-    } catch (err) {
-      console.error("Error: ", JSON.stringify(err, null, 2));
-    }
-  };
+  // const createClerkPasskey = async () => {
+  //   try {
+  //     const response = await user?.createPasskey();
+  //     // console.log(response);
+  //   } catch (err) {
+  //     console.error("Error: ", JSON.stringify(err, null, 2));
+  //   }
+  // };
 
   const { basketTotalQuantity, productsInBasket } = useBasket();
 
@@ -63,30 +61,26 @@ const Header = () => {
           />
         </Form>
 
-        <div className="flex items-center justify-between gap-2 flex-1 md:flex-none space-x-4 mt-2 sm:mt-0">
-          <Link
-            href="/basket"
-            className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:opacity-50 text-white font-bold py-2 px-4 rounded"
-          >
-            <TrolleyIcon className="w-6 h-6" />
-            <span className="text-[0.7rem] md:text-base">My Basket</span>
-            {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-white text-blue-500 text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
-                <span className="absolute -inset-y-[0.05rem]">
-                  {productsInBasket?.length}
-                </span>
-              </span>
-            )}
-          </Link>
-          {/* FIXME fix hydration error */}
-          {/* User Area */}
+        {/* Desktop layout: show all links normally on sm+ */}
+        <div className="hidden sm:flex items-center justify-between flex-wrap gap-2 flex-1 md:flex-none mt-2 sm:mt-0">
           <ClerkLoaded>
-            {/* <SignedIn> tag is a built in tag from Clerk that renders children only if the user is logged in */}
+            <Link
+              href="/basket"
+              className="relative flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              <TrolleyIcon className="w-6 h-6" />
+              <span className="text-[0.7rem] md:text-base">My Basket</span>
+              {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-white text-blue-500 text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
+                  {productsInBasket!.length!}
+                </span>
+              )}
+            </Link>
+
             <SignedIn>
               <Link
-                href={"/requested-quotes"}
-                passHref
-                className="flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                href="/requested-quotes"
+                className="relative flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 <ClipboardIcon className="w-6 h-6" />
                 <span className="text-[0.7rem] md:text-base">
@@ -96,25 +90,62 @@ const Header = () => {
             </SignedIn>
             {user?.publicMetadata.role === "admin" && (
               <Link
-                href={"/studio"}
-                className="bg-white hover:bg-blue-700 text-[0.7rem] md:text-base hover:text-white animate-pulse text-blue-500 font-bold py-[0.44rem] px-4 rounded border-blue-300 border "
+                href="/studio"
+                className="bg-white hover:bg-blue-700 text-blue-500 hover:text-white text-[0.7rem] md:text-base font-bold py-[0.44rem] px-4 rounded border-blue-300 border"
               >
                 Studio
               </Link>
             )}
-            {/* <AuthClientWrapper /> */}
-
             <AuthClientWrapperNoSSR />
-
-            {user?.passkeys.length === 0 && (
-              <button
-                onClick={createClerkPasskey}
-                className="bg-white hover:bg-blue-700 hover:text-white text-[0.7rem] md:text-base animate-pulse text-blue-500 font-bold py-[0.44rem] px-4 rounded border-blue-300 border"
-              >
-                Create passkey
-              </button>
-            )}
           </ClerkLoaded>
+        </div>
+
+        {/* Mobile layout: collapse everything below form into one accordion */}
+        <div className="sm:hidden w-full mt-4">
+          <Accordion
+            type="single"
+            collapsible
+          >
+            <AccordionItem value="mobile-actions">
+              <AccordionTrigger className="text-white">Menu</AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-3">
+                <ClerkLoaded>
+                  <Link
+                    href="/basket"
+                    className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-between"
+                  >
+                    <div className="flex gap-2 items-center">
+                      <TrolleyIcon className="w-6 h-6" />
+                      My Basket
+                    </div>
+
+                    <div className="flex rounded-full bg-white text-blue-500 aspect-square w-6 h-6 items-center justify-center text-sm">
+                      {productsInBasket?.length || 11}
+                    </div>
+                  </Link>
+
+                  <SignedIn>
+                    <Link
+                      href="/requested-quotes"
+                      className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      <ClipboardIcon className="w-6 h-6" />
+                      My Quotations
+                    </Link>
+                  </SignedIn>
+                  {user?.publicMetadata.role === "admin" && (
+                    <Link
+                      href="/studio"
+                      className="bg-white hover:bg-blue-700 text-blue-500 hover:text-white font-bold py-2 px-4 rounded border border-blue-300"
+                    >
+                      Studio
+                    </Link>
+                  )}
+                  <AuthClientWrapperNoSSR />
+                </ClerkLoaded>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </header>

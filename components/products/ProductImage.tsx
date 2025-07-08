@@ -18,7 +18,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
   return (
     <div className="relative grid grid-cols-6 h-full min-h-[300px] sm:min-h-[400px]">
       <div
-        className={`flex flex-col items-center  gap-4 cursor-pointer border-r h-full bg-white scrollbar-hide ${productInBasket.variant.color?.images?.length! >= 7 ? "max-h-full overflow-y-auto justify-start py-4 " : "justify-center"}`}
+        className={`flex flex-col items-center  gap-4 cursor-pointer border-r h-full bg-white  ${productInBasket.variant.color?.images?.length! >= 7 ? "max-h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent justify-start py-4 " : "justify-center"}`}
       >
         {productInBasket.variant.color?.images?.map((imageUrl, index) => {
           return (

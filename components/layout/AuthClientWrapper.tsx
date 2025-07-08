@@ -7,10 +7,10 @@ const AuthClientWrapper = () => {
   const { user } = useUser();
 
   return user ? (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 flex-1 sm:flex-2 justify-center sm:justify-start bg-white rounded py-1 px-2">
       <UserButton />
-      <div className="hidden sm:block text-xs">
-        <p className="text-gray-400">Welcome Back</p>
+      <div className=" text-xs">
+        <p className="text-slate-800">Welcome Back</p>
         <p className="font-bold text-blue-500">{user.fullName}!</p>
       </div>
     </div>

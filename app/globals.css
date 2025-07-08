@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @plugin '@tailwindcss/typography';
 @plugin 'tailwind-scrollbar-hide';
+@plugin 'tailwind-scrollbar';
 
 
 @theme inline {
