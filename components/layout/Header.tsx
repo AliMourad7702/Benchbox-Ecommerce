@@ -66,6 +66,7 @@ const Header = () => {
           <ClerkLoaded>
             <Link
               href="/basket"
+              passHref
               className="relative flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               <TrolleyIcon className="w-6 h-6" />
@@ -80,6 +81,7 @@ const Header = () => {
             <SignedIn>
               <Link
                 href="/requested-quotes"
+                passHref
                 className="relative flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 <ClipboardIcon className="w-6 h-6" />
@@ -91,6 +93,7 @@ const Header = () => {
             {user?.publicMetadata.role === "admin" && (
               <Link
                 href="/studio"
+                passHref
                 className="bg-white hover:bg-blue-700 text-blue-500 hover:text-white text-[0.7rem] md:text-base font-bold py-[0.44rem] px-4 rounded border-blue-300 border"
               >
                 Studio
@@ -112,6 +115,7 @@ const Header = () => {
                 <ClerkLoaded>
                   <Link
                     href="/basket"
+                    passHref
                     className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-between"
                   >
                     <div className="flex gap-2 items-center">
@@ -120,13 +124,14 @@ const Header = () => {
                     </div>
 
                     <div className="flex rounded-full bg-white text-blue-500 aspect-square w-6 h-6 items-center justify-center text-sm">
-                      {productsInBasket?.length || 11}
+                      {productsInBasket?.length || 0}
                     </div>
                   </Link>
 
                   <SignedIn>
                     <Link
                       href="/requested-quotes"
+                      passHref
                       className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     >
                       <ClipboardIcon className="w-6 h-6" />

@@ -16,7 +16,7 @@ const AuthClientWrapper = () => {
     </div>
   ) : (
     <SignInButton mode="modal">
-      <Button className="text-white text-[0.7rem] md:text-base bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-5 px-4 rounded cursor-pointer!">
+      <Button className="text-white text-sm md:text-base bg-blue-500 hover:bg-blue-700 hover:opacity-50 font-bold py-5 px-4 rounded cursor-pointer!">
         Sign In
       </Button>
     </SignInButton>

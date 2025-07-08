@@ -16,6 +16,8 @@ import {
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export interface CarouselProps {
   items: AdjustedVariantType[];
@@ -58,6 +60,9 @@ export default function Carousel({
     name: "",
   },
 }: CarouselProps): JSX.Element {
+  const router = useRouter();
+  const dragStartX = useRef<number | null>(null);
+  const dragThreshold = 10; // in pixels
   const containerPadding = 0;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
@@ -212,6 +217,33 @@ export default function Carousel({
                     className="object-contain h-full w-full transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px): 33vw"
                     draggable={false}
+                    onMouseDown={(e) => {
+                      dragStartX.current = e.clientX;
+                    }}
+                    onMouseUp={(e) => {
+                      if (
+                        dragStartX.current !== null &&
+                        Math.abs(e.clientX - dragStartX.current) < dragThreshold
+                      ) {
+                        router.push(
+                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}`
+                        );
+                      }
+                    }}
+                    onTouchStart={(e) => {
+                      dragStartX.current = e.touches[0].clientX;
+                    }}
+                    onTouchEnd={(e) => {
+                      const endX = e.changedTouches[0].clientX;
+                      if (
+                        dragStartX.current !== null &&
+                        Math.abs(endX - dragStartX.current) < dragThreshold
+                      ) {
+                        router.push(
+                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}`
+                        );
+                      }
+                    }}
                   />
                 )}
 
