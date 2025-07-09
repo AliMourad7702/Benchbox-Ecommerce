@@ -663,6 +663,64 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
   }> | null;
 }>;
 
+// Source: ./sanity/lib/quotations/getQuotationById.ts
+// Variable: GET_QUOTATION_BY_ID
+// Query: *[_type == "quote" && _id == $quoteId][0]{      _id,       name,       email,      phone,      address,      notes,       totalPrice,      status,      createdAt,       "user": user->_id,      items[]{          quantity,          itemTotal,          productId,          productName,          productSlug,          baseSku,          variantLabel,          variantSku,          "variantId": variant->_id,          color{            colorName,            colorCode,            "firstImage": images[0],            variantPrice,            stock,            specs          }      }    }
+export type GET_QUOTATION_BY_IDResult = {
+  _id: string;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  address: {
+    line1?: string;
+    line2?: string;
+    city?: string;
+    postalCode?: string;
+    country?: string;
+  } | null;
+  notes: string | null;
+  totalPrice: number | null;
+  status: "accepted" | "declined" | "received" | "under reviewing" | null;
+  createdAt: string | null;
+  user: string | null;
+  items: Array<{
+    quantity: number | null;
+    itemTotal: number | null;
+    productId: string | null;
+    productName: string | null;
+    productSlug: string | null;
+    baseSku: string | null;
+    variantLabel: string | null;
+    variantSku: string | null;
+    variantId: string | null;
+    color: {
+      colorName: string | null;
+      colorCode: string | null;
+      firstImage: string | null;
+      variantPrice: number | null;
+      stock: number | null;
+      specs: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }> | null;
+    } | null;
+  }> | null;
+} | null;
+
 // Source: ./sanity/lib/quotations/getQuotationsByClerkId.ts
 // Variable: GET_QUOTATIONS_BY_CLERK_ID
 // Query: *[_type=="quote" && user->clerkId == $clerkId] | order(_createdAt desc){    _id,     name,     email,    phone,    address,    notes,     totalPrice,    status,    createdAt,     "user": user->_id,    items[]{        quantity,        itemTotal,        productId,        productName,        productSlug,        baseSku,        variantLabel,        variantSku,        "variantId": variant->_id,        color{          colorName,          colorCode,          "firstImage": images[0],          variantPrice,          stock,          specs        }      }  }
@@ -739,6 +797,7 @@ declare module "@sanity/client" {
     "\n  {\n    \"items\": *[_type == \"product\" && category->slug.current == $categorySlug]\n      | order(_createdAt desc)[$offset...$limit] {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          colorOptions[] {\n            colorName,\n            \"colorCode\": color.hex,\n            \"images\": images[].asset->url,\n            price,\n            stock,\n            specs,\n          }\n        }\n    },\n    \"total\": count(*[_type == \"product\" && category->slug.current == $categorySlug])\n  }\n": PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult;
     "\n    *[\n      _type == \"product\" &&\n      baseSku != $baseSku &&\n      (\n        $filterOption == \"category\" && category->slug.current==$categorySlug ||\n        $filterOption == \"color\" &&\n        count(variants[]->colorOptions[colorName==$colorName])>0\n      ) \n    ][0...4]{\n      _id,\n      name,\n      baseSku,\n      \"slug\": slug.current,\n      category->{\n        title,\n        \"slug\": slug.current\n      },\n      variants[]->{\n        _id,\n        label,\n        sku,\n        colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\": images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n      }\n    }\n    ": RELATED_PRODUCTS_QUERYResult;
     "\n    *[_type == \"product\" && (\n        name match $searchParams ||\n        baseSku match $searchParams ||\n        category->title match $searchParams ||\n        count(variants[]->colorOptions[specs[].children[].text match $searchParams])>0\n      ) \n    ] | order(_updatedAt desc) {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          colorOptions[]{\n              colorName,\n              \"colorCode\": color.hex,\n              \"images\":images[].asset->url,\n              price,\n              stock,\n              specs,\n          }\n        }\n      }\n  ": PRODUCT_SEARCH_QUERYResult;
+    "\n    *[_type == \"quote\" && _id == $quoteId][0]{\n      _id, \n      name, \n      email,\n      phone,\n      address,\n      notes, \n      totalPrice,\n      status,\n      createdAt, \n      \"user\": user->_id,\n      items[]{\n          quantity,\n          itemTotal,\n          productId,\n          productName,\n          productSlug,\n          baseSku,\n          variantLabel,\n          variantSku,\n          \"variantId\": variant->_id,\n          color{\n            colorName,\n            colorCode,\n            \"firstImage\": images[0],\n            variantPrice,\n            stock,\n            specs\n          }\n      }\n    }\n    ": GET_QUOTATION_BY_IDResult;
     "\n  *[_type==\"quote\" && user->clerkId == $clerkId] | order(_createdAt desc){\n    _id, \n    name, \n    email,\n    phone,\n    address,\n    notes, \n    totalPrice,\n    status,\n    createdAt, \n    \"user\": user->_id,\n    items[]{\n        quantity,\n        itemTotal,\n        productId,\n        productName,\n        productSlug,\n        baseSku,\n        variantLabel,\n        variantSku,\n        \"variantId\": variant->_id,\n        color{\n          colorName,\n          colorCode,\n          \"firstImage\": images[0],\n          variantPrice,\n          stock,\n          specs\n        }\n      }\n  }\n      ": GET_QUOTATIONS_BY_CLERK_IDResult;
     "\n    *[_type == \"user\" && clerkId == $clerkId][0]{_id}\n    ": GET_SANITY_USER_BY_CLERK_IDResult;
   }

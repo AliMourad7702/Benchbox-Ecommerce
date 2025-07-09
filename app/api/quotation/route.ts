@@ -3,6 +3,8 @@ import { ProductInBasketType } from "@/components/products/ProductDetails";
 import { backendClient } from "@/sanity/lib/backendCLient";
 import { v4 as uuidv4 } from "uuid";
 import { getSanityUserIdByClerkId } from "@/sanity/lib/users/getSanityUserIdByClerkId";
+import { generateQuotePdf } from "@/lib/pdf/generateQuotePdf";
+import { sendResendEmailBatch } from "@/lib/email/sendResendEmail";
 
 // TODO add user field
 
@@ -56,7 +58,22 @@ export async function POST(req: Request) {
       status: "received",
     };
 
-    await backendClient.create(doc);
+    const createdQuote = await backendClient.create(doc);
+
+    const pdfBuffer = await generateQuotePdf(createdQuote._id);
+
+    await sendResendEmailBatch({
+      userEmail: createdQuote.email,
+      userContent: {
+        subject: "Your BenchBox Quotation",
+        html: `<p>Hi ${createdQuote.name},<br/>Thank you for requesting a quotation. Please find your PDF attached.<br/><br/>Best regards,<br/>BenchBox Team</p>`,
+      },
+      adminContent: {
+        subject: `New Quotation Received from ${createdQuote.name}`,
+        html: `<p>A new quotation has been submitted by <strong>${createdQuote.name}</strong>.<br/>Phone: ${createdQuote.phone || "N/A"}<br/>Email: ${createdQuote.email}<br/><br/>The full PDF is attached.</p>`,
+      },
+      attachment: pdfBuffer,
+    });
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
