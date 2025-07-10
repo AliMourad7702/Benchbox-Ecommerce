@@ -54,7 +54,7 @@ export const getProductsByCategoryPaginated = async (
       total: data?.total || 0,
     };
   } catch (error) {
-    console.error("Error fetching paginated products by category", error);
+    console.error("Error fetching paginated products by category:", error);
     throw error;
   }
 };
