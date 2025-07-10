@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const ADMIN_EMAILS = ["admin@benchbox.sa", "sales@benchbox.sa"];
+const ADMIN_EMAILS = ["thexali123@gmail.com"];
 
 interface EmailContent {
   subject: string;
@@ -40,7 +40,8 @@ export async function sendResendEmailBatch({
     // Send to admins
     const adminRes = await resend.emails.send({
       from: "BenchBox Quotes <onboarding@resend.dev>",
-      to: ADMIN_EMAILS,
+      // to: ADMIN_EMAILS,
+      to: userEmail,
       subject: adminContent.subject,
       html: adminContent.html,
       attachments: [

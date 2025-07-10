@@ -3,6 +3,8 @@ import { ALL_CATEGORIES_QUERYResult, Category } from "@/sanity.types";
 import { getAllCategories } from "@/sanity/lib/categories/getAllCategories";
 import { getProductsByCategory } from "@/sanity/lib/products/getProductsByCategory";
 
+// TODO remove all console logs
+
 interface CategoriesObject {
   "mesh-fabric-chairs": ALL_CATEGORIES_QUERYResult[0];
   "leather-chairs": ALL_CATEGORIES_QUERYResult[0];

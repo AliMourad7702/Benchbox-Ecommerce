@@ -6,8 +6,6 @@ import { getSanityUserIdByClerkId } from "@/sanity/lib/users/getSanityUserIdByCl
 import { generateQuotePdf } from "@/lib/pdf/generateQuotePdf";
 import { sendResendEmailBatch } from "@/lib/email/sendResendEmail";
 
-// TODO add user field
-
 export async function POST(req: Request) {
   try {
     const data = await req.json();
@@ -66,7 +64,7 @@ export async function POST(req: Request) {
       userEmail: createdQuote.email,
       userContent: {
         subject: "Your BenchBox Quotation",
-        html: `<p>Hi ${createdQuote.name},<br/>Thank you for requesting a quotation. Please find your PDF attached.<br/><br/>Best regards,<br/>BenchBox Team</p>`,
+        html: `<p>Hi ${createdQuote.name},<br/>Thank you for requesting a quotation. Please find your PDF attached.<br/>Our team will reach out to you soon.<br/><br/>Best regards,<br/>BenchBox Team</p>`,
       },
       adminContent: {
         subject: `New Quotation Received from ${createdQuote.name}`,

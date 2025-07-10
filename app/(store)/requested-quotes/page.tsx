@@ -13,7 +13,8 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { MdArrowBack } from "react-icons/md";
 
-// TODO finish this page
+// TODO add pagination
+// TODO (Optional) add filtering / search
 
 const RequestedQuotesPage = async () => {
   const { userId } = await auth();
@@ -78,12 +79,12 @@ const RequestedQuotesPage = async () => {
                         </p>
                         <p className="font-medium">
                           {quotation.createdAt
-                            ? new Date(quotation.createdAt).toLocaleDateString(
-                                "en-GB",
+                            ? new Date(quotation.createdAt!).toLocaleDateString(
+                                "en-US",
                                 {
-                                  day: "2-digit",
-                                  month: "2-digit",
                                   year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
                                 }
                               )
                             : "N/A"}
