@@ -23,7 +23,10 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
         <Link
           href={{
             pathname: `/product/${product?.productSlug}`,
-            query: { variant: product.variant.label },
+            query: {
+              variant: product.variant.label,
+              color: product.variant.color?.colorName,
+            },
           }}
         >
           <div className="relative w-[70px] aspect-square">
@@ -44,7 +47,10 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
           <Link
             href={{
               pathname: `/product/${product?.productSlug}`,
-              query: { variant: product.variant.label },
+              query: {
+                variant: product.variant.label,
+                color: product.variant.color?.colorName,
+              },
             }}
             className="truncate hover:text-slate-500 font-medium"
           >

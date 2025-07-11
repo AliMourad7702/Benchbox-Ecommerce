@@ -34,7 +34,10 @@ export const getRelatedProductsByFilter = async ({
         _id,
         label,
         sku,
-        colorOptions[]{
+        "colorOptions": select(
+        $filterOption == "color" => colorOptions[colorName == $colorName],
+        true => colorOptions
+      )[]{
           colorName,
           "colorCode": color.hex,
           "images": images[].asset->url,

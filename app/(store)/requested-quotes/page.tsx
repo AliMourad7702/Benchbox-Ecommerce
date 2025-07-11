@@ -22,6 +22,7 @@ import { MdArrowBack } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 import { GET_QUOTATIONS_BY_CLERK_IDResult } from "@/sanity.types";
+import { color } from "@sanity/color-input";
 
 const QUOTATIONS_PER_PAGE = 4;
 
@@ -178,7 +179,10 @@ export default function RequestedQuotesPage() {
                             key={i}
                             href={{
                               pathname: `/product/${item.productSlug}`,
-                              query: { variant: item.variantLabel },
+                              query: {
+                                variant: item.variantLabel,
+                                color: item.color?.colorName,
+                              },
                             }}
                             className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-2 border-b last:border-b-0"
                           >

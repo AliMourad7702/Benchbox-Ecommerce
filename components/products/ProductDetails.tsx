@@ -17,6 +17,7 @@ import RelatedProductsSection from "./RelatedProductsSection";
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
   selectedVariant?: AdjustedVariantType;
+  SelectedColor?: SelectedColorType;
 }
 
 export type ProductInBasketType = {
@@ -71,14 +72,13 @@ const Horizontal = () => {
 const ProductDetails: React.FC<ProductDetailsProps> = ({
   product,
   selectedVariant,
+  SelectedColor,
 }: ProductDetailsProps) => {
   const { basketTotalQuantity, productsInBasket, handleAddProductToBasket } =
     useBasket();
 
   console.log("basketTotalQuantity: ", basketTotalQuantity);
   console.log("productsInBasket: ", productsInBasket);
-
-  productsInBasket;
 
   const [productInBasket, setProductInBasket] = useState<ProductInBasketType>({
     productId: product!._id,
@@ -91,12 +91,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       sku: selectedVariant!.sku,
 
       color: {
-        colorName: selectedVariant!.colorOptions![0].colorName,
-        colorCode: selectedVariant!.colorOptions![0].colorCode,
-        images: selectedVariant!.colorOptions![0].images,
-        price: selectedVariant!.colorOptions![0].price,
-        stock: selectedVariant!.colorOptions![0].stock,
-        specs: selectedVariant!.colorOptions![0].specs,
+        colorName:
+          SelectedColor?.colorName ||
+          selectedVariant!.colorOptions![0].colorName,
+        colorCode:
+          SelectedColor?.colorCode ||
+          selectedVariant!.colorOptions![0].colorCode,
+        images:
+          SelectedColor?.images || selectedVariant!.colorOptions![0].images,
+        price: SelectedColor?.price || selectedVariant!.colorOptions![0].price,
+        stock: SelectedColor?.stock || selectedVariant!.colorOptions![0].stock,
+        specs: SelectedColor?.specs || selectedVariant!.colorOptions![0].specs,
       },
     },
     quantity: 1,
@@ -104,7 +109,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   const [selectedImage, setSelectedImage] = useState<SelectedImageType>({
     index: 0,
-    url: selectedVariant!.colorOptions![0].images![0]!,
+    url:
+      SelectedColor?.images![0] ||
+      selectedVariant!.colorOptions![0].images![0]!,
   });
 
   console.log("Product In Basket: ", productInBasket);

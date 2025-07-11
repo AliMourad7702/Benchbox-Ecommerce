@@ -1,4 +1,6 @@
-import ProductDetails from "@/components/products/ProductDetails";
+import ProductDetails, {
+  SelectedColorType,
+} from "@/components/products/ProductDetails";
 import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug";
 import {
   AdjustedVariantType,
@@ -12,12 +14,13 @@ interface ProductPageProps {
   }>;
   searchParams: {
     variant?: string;
+    color?: string;
   };
 }
 
 async function ProductPage({ params, searchParams }: ProductPageProps) {
   const { slug } = await params;
-  const { variant } = await searchParams;
+  const { variant, color } = await searchParams;
   const variantLabel = variant;
 
   const product = await getProductBySlug(slug);
@@ -25,6 +28,8 @@ async function ProductPage({ params, searchParams }: ProductPageProps) {
   if (!product) return notFound();
 
   let initialVariant: AdjustedVariantType | undefined = product.variants![0];
+  let initialColor: SelectedColorType | undefined =
+    initialVariant.colorOptions![0];
 
   if (variantLabel) {
     const foundVariant = product.variants!.find(
@@ -33,11 +38,19 @@ async function ProductPage({ params, searchParams }: ProductPageProps) {
     initialVariant = foundVariant;
   }
 
+  if (color) {
+    const foundColor = initialVariant!.colorOptions!.find(
+      (c) => c.colorName === color
+    );
+    initialColor = foundColor;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <ProductDetails
         product={product}
         selectedVariant={initialVariant}
+        SelectedColor={initialColor}
       />
     </div>
   );

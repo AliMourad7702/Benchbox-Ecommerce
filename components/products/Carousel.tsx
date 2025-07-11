@@ -226,7 +226,7 @@ export default function Carousel({
                         Math.abs(e.clientX - dragStartX.current) < dragThreshold
                       ) {
                         router.push(
-                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}`
+                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}&color=${item.colorOptions![0].colorName}`
                         );
                       }
                     }}
@@ -240,7 +240,7 @@ export default function Carousel({
                         Math.abs(endX - dragStartX.current) < dragThreshold
                       ) {
                         router.push(
-                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}`
+                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}&color=${item.colorOptions![0].colorName}`
                         );
                       }
                     }}
@@ -258,7 +258,10 @@ export default function Carousel({
               <Link
                 href={{
                   pathname: `/product/${parentProductInfo.slug}`,
-                  query: { variant: item.label },
+                  query: {
+                    variant: item.label,
+                    color: item.colorOptions![0].colorName,
+                  },
                 }}
                 className="h-full w-full"
               >
