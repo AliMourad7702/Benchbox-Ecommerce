@@ -95,7 +95,7 @@ export default function RequestedQuotesPage() {
         </h2>
 
         <div className="flex flex-col gap-2">
-          {quotations.map((quotation, index) => (
+          {quotations.map((quotation) => (
             <div
               key={quotation._id}
               className="text-slate-500 border border-slate-200 p-5 sm:p-7 shadow-sm overflow-hidden"
