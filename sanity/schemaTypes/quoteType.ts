@@ -191,7 +191,7 @@ export const quoteType = defineType({
                 price && quantity ? (price * quantity).toFixed(2) : "0.00";
               return {
                 title: `${sku || "Unknown SKU"} x ${quantity}`,
-                subtitle: `SAR ${price?.toFixed(2) || "0.00"} each · Total: SAR ${total} · Color: ${color || "N/A"}`,
+                subtitle: `SR ${price?.toFixed(2) || "0.00"} each · Total: SR ${total} · Color: ${color || "N/A"}`,
               };
             },
           },
@@ -245,7 +245,7 @@ export const quoteType = defineType({
       const statusIcon =
         statusIcons[status as keyof typeof statusIcons] || "⏳";
       return {
-        title: `${name} — SAR ${total?.toFixed(2) || "0.00"}`,
+        title: `${name} — SR ${total?.toFixed(2) || "0.00"}`,
         subtitle: `${statusIcon} ${status} • ${email}`,
       };
     },

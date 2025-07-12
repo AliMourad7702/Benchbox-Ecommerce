@@ -248,7 +248,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               : product!.baseSku + " " + productInBasket.variant!.label}
           </h1>
           <div className="text-xl font-semibold mb-4">
-            SAR {productInBasket.variant.color?.price?.toFixed(2)}
+            SR {productInBasket.variant.color?.price?.toFixed(2)}
           </div>
           <Horizontal />
           <div className="prose max-w-none mb-6 text-black">

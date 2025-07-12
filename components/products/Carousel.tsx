@@ -286,7 +286,7 @@ export default function Carousel({
                     )}
                   </div>
                   <p className="mt-2 text-lg font-bold text-gray-900">
-                    SAR {item.colorOptions![0].price?.toFixed(2)}
+                    SR {item.colorOptions![0].price?.toFixed(2)}
                   </p>
                 </div>
               </Link>

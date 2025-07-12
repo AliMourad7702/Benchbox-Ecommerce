@@ -76,7 +76,7 @@ const BasketClient = () => {
           <div className="text-sm flex flex-col gap-1 items-start w-full md:w-auto">
             <div className="flex justify-between w-full items-center font-semibold text-base">
               <span>Subtotal</span>
-              <span>SAR {basketTotalPrice.toFixed(2)}</span>
+              <span>SR {basketTotalPrice.toFixed(2)}</span>
             </div>
 
             <p className="text-slate-500 text-xs">

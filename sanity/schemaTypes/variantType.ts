@@ -59,7 +59,7 @@ export const variantType = defineType({
             }),
             defineField({
               name: "price",
-              title: "Price (SAR)",
+              title: "Price (SR)",
               type: "number",
               validation: (Rule) => Rule.required().positive(),
             }),

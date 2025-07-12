@@ -117,10 +117,10 @@ export default async function QuoteTemplatePage({
             </div>
             <div className="mt-3 sm:mt-0 sm:text-right">
               <p className="text-sm text-slate-500">
-                Item price: SAR {item.color?.variantPrice?.toFixed(2)}
+                Item price: SR {item.color?.variantPrice?.toFixed(2)}
               </p>
               <p className="text-sm font-semibold text-slate-700">
-                Subtotal: SAR{" "}
+                Subtotal: SR{" "}
                 {(item.color?.variantPrice! * item.quantity!).toFixed(2)}
               </p>
             </div>
@@ -156,16 +156,16 @@ export default async function QuoteTemplatePage({
           <p className="text-base ">
             Total without VAT:{" "}
             <span className="font-bold">
-              SAR {quotation.totalPrice!.toFixed(2)}
+              SR {quotation.totalPrice!.toFixed(2)}
             </span>
           </p>
           <p>
             + VAT {`(${vatPercentage}%)`}:{" "}
-            <span className="font-bold">SAR {vatPrice.toFixed(2)}</span>
+            <span className="font-bold">SR {vatPrice.toFixed(2)}</span>
           </p>
           <hr className="border-slate-300 text-right w-full " />
           <p className="text-base font-bold">
-            Total: SAR {(quotation.totalPrice! + vatPrice).toFixed(2)}
+            Total: SR {(quotation.totalPrice! + vatPrice).toFixed(2)}
           </p>
           <p className="text-slate-800 text-xs">
             <strong>Payment Terms :</strong> 100% Upon Delivery &

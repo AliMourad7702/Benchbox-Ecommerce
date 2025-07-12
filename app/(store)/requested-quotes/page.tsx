@@ -154,7 +154,7 @@ export default function RequestedQuotesPage() {
                   <div className="sm:text-right">
                     <p className="text-sm text-slate-500 mb-1">Total Amount</p>
                     <p className="font-bold text-lg">
-                      SAR {quotation.totalPrice?.toFixed(2)}
+                      SR {quotation.totalPrice?.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -211,11 +211,11 @@ export default function RequestedQuotesPage() {
                             </div>
                             <div className="flex flex-col justify-center gap-1">
                               <p className="text-sm font-medium text-right sm:text-base text-slate-500">
-                                Item price: SAR{" "}
+                                Item price: SR{" "}
                                 {item.color?.variantPrice?.toFixed(2)}
                               </p>
                               <p className="text-sm font-medium text-right sm:text-base text-slate-700">
-                                Subtotal: SAR{" "}
+                                Subtotal: SR{" "}
                                 {(
                                   item.color?.variantPrice! * item.quantity!
                                 ).toFixed(2)}
