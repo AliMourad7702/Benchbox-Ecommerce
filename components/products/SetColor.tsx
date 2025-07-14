@@ -14,15 +14,16 @@ const SetColor: React.FC<SetColorProps> = ({
   productInBasket,
   handleColorSelect,
 }) => {
+  console.log("colors of this product: ", colors);
   return (
     <div className="flex items-center gap-4">
       <span className="text-sm font-semibold">COLOR:</span>
       <div className="flex w-full max-w-[30%] gap-1">
-        {colors?.map((item) => {
+        {colors?.map((item, index) => {
           return (
             <div
               className={`h-7 w-7 rounded-full  flex items-center justify-center relative ${productInBasket.variant.color?.colorName === item?.colorName ? (productInBasket.variant.color?.stock === 0 ? "border-[1.5px] border-red-400" : "border-[1.5px] border-green-400") : "border-none"}`}
-              key={item?.colorCode}
+              key={index}
               onClick={() => handleColorSelect(item)}
             >
               <div
