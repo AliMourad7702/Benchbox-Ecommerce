@@ -198,6 +198,7 @@ export type Category = {
     _type: "image";
   };
   description?: string;
+  featured?: boolean;
 };
 
 export type BlockContent = Array<{
@@ -389,6 +390,17 @@ export declare const internalGroqTypeReferenceTo: unique symbol;
 // Variable: ALL_CATEGORIES_QUERY
 // Query: *[_type == "category"]{    _id,    title,    "imageUrl": image.asset->url,    description,    "slug": slug.current  }
 export type ALL_CATEGORIES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  imageUrl: string | null;
+  description: string | null;
+  slug: string | null;
+}>;
+
+// Source: ./sanity/lib/categories/getFeaturedCategories.ts
+// Variable: FEATURED_CATEGORIES_QUERY
+// Query: *[_type == "category" && featured == true]{      _id,      title,      "imageUrl": image.asset->url,      description,      "slug": slug.current    }
+export type FEATURED_CATEGORIES_QUERYResult = Array<{
   _id: string;
   title: string | null;
   imageUrl: string | null;
@@ -899,6 +911,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n  *[_type == \"category\"]{\n    _id,\n    title,\n    \"imageUrl\": image.asset->url,\n    description,\n    \"slug\": slug.current\n  }\n    ": ALL_CATEGORIES_QUERYResult;
+    "\n    *[_type == \"category\" && featured == true]{\n      _id,\n      title,\n      \"imageUrl\": image.asset->url,\n      description,\n      \"slug\": slug.current\n    }\n  ": FEATURED_CATEGORIES_QUERYResult;
     "\n    *[_type == \"product\"] | order(_updatedAt desc) {\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
     "\n    *[_type == \"product\" && slug.current==$slug][0]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n    }\n  }\n    ": PRODUCT_BY_SLUG_QUERYResult;
     "\n    *[_type == \"product\" && category->slug.current == $categorySlug] | order(_createdAt desc)[0...4]{\n      _id,\n      name,\n      baseSku,\n      \"slug\": slug.current,\n      category->{\n        title,\n        \"slug\": slug.current\n      },\n      variants[]->{\n        _id,\n        label,\n        sku,\n        colorOptions[] {\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\": images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n      }\n    }\n    ": PRODUCTS_BY_CATEGORY_QUERYResult;

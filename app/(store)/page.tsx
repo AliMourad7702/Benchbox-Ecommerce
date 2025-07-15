@@ -1,6 +1,5 @@
 import CategoriesProductsSection from "@/components/products/CategoriesProductsSection";
-import { ALL_CATEGORIES_QUERYResult, Category } from "@/sanity.types";
-import { getAllCategories } from "@/sanity/lib/categories/getAllCategories";
+import { getFeaturedCategories } from "@/sanity/lib/categories/getFeaturedCategories";
 import { getProductsByCategory } from "@/sanity/lib/products/getProductsByCategory";
 
 // TODO remove all console logs
@@ -8,27 +7,17 @@ import { getProductsByCategory } from "@/sanity/lib/products/getProductsByCatego
 export const dynamic = "force-static";
 export const revalidate = 120;
 
-interface CategoriesObject {
-  "mesh-fabric-chairs": ALL_CATEGORIES_QUERYResult[0];
-  "leather-chairs": ALL_CATEGORIES_QUERYResult[0];
-}
-
 export default async function Home() {
-  const categories = await getAllCategories();
-  const categoriesObject: CategoriesObject = {
-    "mesh-fabric-chairs": categories.find(
-      (category) => category.slug === "mesh-fabric-chairs"
-    )!,
-    "leather-chairs": categories.find(
-      (category) => category.slug === "leather-chairs"
-    )!,
-  };
-  const meshChairs = await getProductsByCategory(
-    categoriesObject["mesh-fabric-chairs"].slug!
-  );
+  const featuredCategories = await getFeaturedCategories();
 
-  const leatherChairs = await getProductsByCategory(
-    categoriesObject["leather-chairs"].slug!
+  const categoryWithProducts = await Promise.all(
+    featuredCategories.map(async (category) => {
+      const products = await getProductsByCategory(category.slug!);
+      return {
+        category: { ...category },
+        products,
+      };
+    })
   );
 
   // console.log(
@@ -40,14 +29,13 @@ export default async function Home() {
     <div>
       <div>
         <div className="flex flex-col items-center min-h-screen p-4 gap-9">
-          <CategoriesProductsSection
-            products={meshChairs}
-            category={categoriesObject["mesh-fabric-chairs"]}
-          />
-          <CategoriesProductsSection
-            products={leatherChairs}
-            category={categoriesObject["leather-chairs"]}
-          />
+          {categoryWithProducts.map(({ category, products }) => (
+            <CategoriesProductsSection
+              key={category.slug}
+              products={products}
+              category={category}
+            />
+          ))}
         </div>
       </div>
     </div>

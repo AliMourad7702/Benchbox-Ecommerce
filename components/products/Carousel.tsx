@@ -41,7 +41,7 @@ const GAP = 16;
 // const SPRING_OPTIONS = { type: "spring", stiffness: 100, damping: 40 };
 const SPRING_OPTIONS: Transition = {
   type: "tween",
-  duration: 0.5,
+  duration: 0.8,
   ease: "easeInOut",
 };
 
@@ -266,7 +266,9 @@ export default function Carousel({
                 className="h-full w-full"
               >
                 <div className="p-4">
-                  <div className="flex justify-between items-center">
+                  <div
+                    className={`flex ${item.label?.length! > 1 ? "flex-col justify-center" : "justify-between items-center"} `}
+                  >
                     <h2 className="text-lg font-semibold text-gray-800 truncate">
                       {parentProductInfo.name
                         ? `${parentProductInfo.name}`

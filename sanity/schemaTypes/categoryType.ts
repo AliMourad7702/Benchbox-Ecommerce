@@ -37,6 +37,14 @@ export const categoryType = defineType({
       title: "Description",
       type: "text",
     }),
+    defineField({
+      name: "featured",
+      title: "Featured on Homepage",
+      type: "boolean",
+      description:
+        "Enable to show this category and its products on the homepage.",
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {
