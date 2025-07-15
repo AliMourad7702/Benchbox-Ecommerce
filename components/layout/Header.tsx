@@ -32,6 +32,8 @@ const Header = () => {
 
   const { basketTotalQuantity, productsInBasket } = useBasket();
 
+  // TODO add a button to go to /categories page
+
   return (
     <header className="flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
       <div className="w-full flex flex-wrap justify-between items-center">

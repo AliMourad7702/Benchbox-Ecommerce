@@ -174,6 +174,7 @@ export default function RequestedQuotesPage() {
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="space-y-3 sm:space-y-1">
+                        {/* FIXME fix the slugs with spaces behavior in the query values (variant and color) in all the files that follows this logic */}
                         {quotation.items?.map((item, i) => (
                           <Link
                             key={i}

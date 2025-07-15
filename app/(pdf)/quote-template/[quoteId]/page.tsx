@@ -82,8 +82,7 @@ export default async function QuoteTemplatePage({
           </p>
           <p>{quotation.address?.country}</p>
           <p className="text-sm">
-            {/* TODO make the value of the delivery period dynamic when we start adding products that are not chairs */}
-            <strong>Delivery Period:</strong> 1 - 2 weeks
+            <strong>Delivery Period:</strong> TBA
           </p>
         </div>
       </div>
