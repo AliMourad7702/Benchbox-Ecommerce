@@ -5,6 +5,9 @@ import { getProductsByCategory } from "@/sanity/lib/products/getProductsByCatego
 
 // TODO remove all console logs
 
+export const dynamic = "force-static";
+export const revalidate = 120;
+
 interface CategoriesObject {
   "mesh-fabric-chairs": ALL_CATEGORIES_QUERYResult[0];
   "leather-chairs": ALL_CATEGORIES_QUERYResult[0];

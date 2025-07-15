@@ -18,6 +18,11 @@ interface ProductPageProps {
   };
 }
 
+export const dynamic = "force-static";
+
+// cache revalidation after 30 minutes
+export const revalidate = 1800;
+
 async function ProductPage({ params, searchParams }: ProductPageProps) {
   const { slug } = await params;
   const { variant, color } = await searchParams;

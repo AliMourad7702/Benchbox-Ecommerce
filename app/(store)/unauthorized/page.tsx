@@ -1,5 +1,7 @@
-// app/unauthorized/page.tsx
 import Link from "next/link";
+
+export const dynamic = "force-static";
+export const revalidate = false;
 
 export default function UnauthorizedPage() {
   return (
