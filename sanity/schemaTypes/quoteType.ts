@@ -84,7 +84,15 @@ export const quoteType = defineType({
           name: "item",
           type: "object",
           fields: [
-            // Reference
+            // References
+            defineField({
+              name: "product",
+              title: "Product (Reference)",
+              type: "reference",
+              to: [{ type: "product" }],
+              weak: true,
+              readOnly: true,
+            }),
             defineField({
               name: "variant",
               title: "Selected Variant (Reference)",

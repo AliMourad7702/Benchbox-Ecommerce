@@ -16,7 +16,6 @@ import {
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 export interface CarouselProps {
@@ -226,7 +225,7 @@ export default function Carousel({
                         Math.abs(e.clientX - dragStartX.current) < dragThreshold
                       ) {
                         router.push(
-                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}&color=${item.colorOptions![0].colorName}`
+                          `/product/${parentProductInfo.slug}?variant=${item.label!}&color=${item.colorOptions![0].colorName}`
                         );
                       }
                     }}
@@ -240,7 +239,7 @@ export default function Carousel({
                         Math.abs(endX - dragStartX.current) < dragThreshold
                       ) {
                         router.push(
-                          `/product/${parentProductInfo.slug}?variant=${encodeURIComponent(item.label!)}&color=${item.colorOptions![0].colorName}`
+                          `/product/${parentProductInfo.slug}?variant=${item.label!}&color=${item.colorOptions![0].colorName}`
                         );
                       }
                     }}

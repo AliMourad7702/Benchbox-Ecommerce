@@ -32,6 +32,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
                 alt={productInBasket.productName ?? "product image"}
                 fill
                 loading="eager"
+                priority
                 className="object-contain"
               />
             </div>
@@ -43,6 +44,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
           src={selectedImage.url!}
           alt={`Product: ${productInBasket.baseSku} - ${productInBasket.variant.label} ${productInBasket.variant.color?.colorName} image-${selectedImage.index}`}
           fill
+          priority
           className="object-contain w-full h-full transition-transform duration-300 hover:scale-102 outline-none border-none"
         />
         {productInBasket.variant.color?.stock === 0 && (

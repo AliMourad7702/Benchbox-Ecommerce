@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       items: data.items.map((item: ProductInBasketType) => ({
         _key: uuidv4(),
         _type: "item",
+        product: { _type: "reference", _ref: item.productId, _weak: true },
         variant: {
           _type: "reference",
           _ref: item.variant._id,

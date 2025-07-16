@@ -30,6 +30,7 @@ export const getQuotationsByClerkIdPaginated = async (
         baseSku,
         variantLabel,
         variantSku,
+        "category": product->category->{title, slug},
         "variantId": variant->_id,
         color{
           colorName,

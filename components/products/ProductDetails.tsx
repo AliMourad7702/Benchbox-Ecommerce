@@ -126,60 +126,54 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         };
       });
     },
-    [selectedImage]
+    [productInBasket]
   );
 
-  const handleVariantChange = useCallback(
-    (variant: AdjustedVariantType) => {
-      setProductInBasket((prev) => {
-        return {
-          ...prev,
-          variant: {
-            ...prev.variant,
-            _id: variant._id,
-            label: variant.label,
-            sku: variant.sku,
+  const handleVariantChange = useCallback((variant: AdjustedVariantType) => {
+    setProductInBasket((prev) => {
+      return {
+        ...prev,
+        variant: {
+          ...prev.variant,
+          _id: variant._id,
+          label: variant.label,
+          sku: variant.sku,
 
-            color: {
-              colorName: variant.colorOptions![0].colorName,
-              colorCode: variant.colorOptions![0].colorCode,
-              images: variant.colorOptions![0].images,
-              price: variant.colorOptions![0].price,
-              stock: variant.colorOptions![0].stock,
-              specs: variant.colorOptions![0].specs,
-            },
+          color: {
+            colorName: variant.colorOptions![0].colorName,
+            colorCode: variant.colorOptions![0].colorCode,
+            images: variant.colorOptions![0].images,
+            price: variant.colorOptions![0].price,
+            stock: variant.colorOptions![0].stock,
+            specs: variant.colorOptions![0].specs,
           },
+        },
 
-          quantity:
-            prev.quantity > variant.colorOptions![0].stock! ? 1 : prev.quantity,
-        };
-      });
-      setSelectedImage({ index: 0, url: variant.colorOptions![0].images![0] });
-    },
-    [productInBasket.variant]
-  );
+        quantity:
+          prev.quantity > variant.colorOptions![0].stock! ? 1 : prev.quantity,
+      };
+    });
+    setSelectedImage({ index: 0, url: variant.colorOptions![0].images![0] });
+  }, []);
 
-  const handleColorSelect = useCallback(
-    (color: SelectedColorType) => {
-      setProductInBasket((prev) => {
-        return {
-          ...prev,
-          variant: {
-            ...prev.variant,
-            color: color,
-          },
-          quantity: prev.quantity > color?.stock! ? 1 : prev.quantity,
-        };
-      });
-      setSelectedImage((prev) => {
-        return {
-          ...prev,
-          url: color?.images![prev.index] ?? color?.images![0]!,
-        };
-      });
-    },
-    [productInBasket.variant.color]
-  );
+  const handleColorSelect = useCallback((color: SelectedColorType) => {
+    setProductInBasket((prev) => {
+      return {
+        ...prev,
+        variant: {
+          ...prev.variant,
+          color: color,
+        },
+        quantity: prev.quantity > color?.stock! ? 1 : prev.quantity,
+      };
+    });
+    setSelectedImage((prev) => {
+      return {
+        ...prev,
+        url: color?.images![prev.index] ?? color?.images![0]!,
+      };
+    });
+  }, []);
 
   const handleQuantityChange = useCallback(
     (

@@ -114,6 +114,11 @@ export default async function QuoteTemplatePage({
                 <p className="text-slate-500">Quantity: {item.quantity}</p>
               </div>
             </div>
+
+            <p className="text-sm text-slate-500 flex flex-col justify-center">
+              {item.category?.title}
+            </p>
+
             <div className="mt-3 sm:mt-0 sm:text-right">
               <p className="text-sm text-slate-500">
                 Item price: SR {item.color?.variantPrice?.toFixed(2)}

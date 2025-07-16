@@ -23,6 +23,7 @@ export const getQuotationsByClerkId = async (clerkId: string) => {
         baseSku,
         variantLabel,
         variantSku,
+        "category": product->category->{title, slug},
         "variantId": variant->_id,
         color{
           colorName,

@@ -174,42 +174,62 @@ export default function RequestedQuotesPage() {
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="space-y-3 sm:space-y-1">
-                        {/* FIXME fix the slugs with spaces behavior in the query values (variant and color) in all the files that follows this logic */}
                         {quotation.items?.map((item, i) => (
-                          <Link
+                          <div
                             key={i}
-                            href={{
-                              pathname: `/product/${item.productSlug}`,
-                              query: {
-                                variant: item.variantLabel,
-                                color: item.color?.colorName,
-                              },
-                            }}
                             className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-2 border-b last:border-b-0"
                           >
-                            <div className="flex items-center gap-3 sm:gap-4">
-                              {item.color?.firstImage && (
-                                <div className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-md overflow-hidden">
-                                  <Image
-                                    src={item.color?.firstImage}
-                                    alt={`item ${i}`}
-                                    className="object-cover"
-                                    fill
-                                  />
-                                </div>
-                              )}
-                              <div>
-                                <p className="font-medium text-sm sm:text-base text-slate-800">
-                                  {item.variantSku}
-                                </p>
-                                <p className="text-sm text-slate-500">
-                                  {item.color?.colorName}
-                                </p>
-                                <p className="text-sm text-slate-500">
-                                  Quantity: {item.quantity ?? "N/A"}
-                                </p>
+                            {/* TODO adjust the spacing in this div (on smaller screens) */}
+                            <div className="flex items-center justify-between sm:gap-4">
+                              <div className=" flex justify-between min-w-fit  gap-2">
+                                {item.color?.firstImage && (
+                                  <Link
+                                    href={{
+                                      pathname: `/product/${item.productSlug}`,
+                                      query: {
+                                        variant: item.variantLabel,
+                                        color: item.color?.colorName,
+                                      },
+                                    }}
+                                    className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-md overflow-hidden"
+                                  >
+                                    <Image
+                                      src={item.color?.firstImage}
+                                      alt={`item ${i}`}
+                                      className="object-cover"
+                                      fill
+                                    />
+                                  </Link>
+                                )}
+                                <Link
+                                  href={{
+                                    pathname: `/product/${item.productSlug}`,
+                                    query: {
+                                      variant: item.variantLabel,
+                                      color: item.color?.colorName,
+                                    },
+                                  }}
+                                >
+                                  <p className="font-medium text-sm sm:text-base text-slate-800">
+                                    {item.variantSku}
+                                  </p>
+                                  <p className="text-sm text-slate-500">
+                                    {item.color?.colorName}
+                                  </p>
+                                  <p className="text-sm text-slate-500">
+                                    Quantity: {item.quantity ?? "N/A"}
+                                  </p>
+                                </Link>
                               </div>
+
+                              <Link
+                                href={`/categories/${item.category?.slug?.current}`}
+                                className="text-sm text-slate-500 flex flex-col justify-center hover:text-slate-700 min-w-full text-center"
+                              >
+                                {item.category?.title}
+                              </Link>
                             </div>
+
                             <div className="flex flex-col justify-center gap-1">
                               <p className="text-sm font-medium text-right sm:text-base text-slate-500">
                                 Item price: SR{" "}
@@ -222,7 +242,7 @@ export default function RequestedQuotesPage() {
                                 ).toFixed(2)}
                               </p>
                             </div>
-                          </Link>
+                          </div>
                         ))}
                       </div>
                     </AccordionContent>
