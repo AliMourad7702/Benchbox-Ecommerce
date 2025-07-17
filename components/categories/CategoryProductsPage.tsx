@@ -20,6 +20,8 @@ import ProductGrid from "../products/ProductGrid";
 
 const PRODUCTS_PER_PAGE = 8;
 
+// TODO add Filter component and logic
+
 export default function CategoryProductsPage({
   categorySlug,
 }: {

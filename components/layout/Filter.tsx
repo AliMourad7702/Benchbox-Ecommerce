@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { useDebounce } from "@/hooks/useDebounce";
 
-type FilterSidebarProps = {
+type FilterProps = {
   statusOptions?: string[];
   selectedStatuses?: string[];
   onStatusChange?: (statuses: string[]) => void;
@@ -20,7 +20,7 @@ type FilterSidebarProps = {
   onPriceChange?: (range: { min: number; max: number }) => void;
 };
 
-export default function FilterSidebar({
+export default function Filter({
   statusOptions = [],
   selectedStatuses = [],
   onStatusChange,
@@ -28,7 +28,7 @@ export default function FilterSidebar({
   minPrice = 0,
   maxPrice = 100000,
   onPriceChange,
-}: FilterSidebarProps) {
+}: FilterProps) {
   const [selected, setSelected] = useState<string[]>(selectedStatuses || []);
   const [priceMin, setPriceMin] = useState<number | undefined>(minPrice);
   const [priceMax, setPriceMax] = useState<number | undefined>(maxPrice);

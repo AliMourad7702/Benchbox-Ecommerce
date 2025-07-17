@@ -1,6 +1,6 @@
 "use client";
 
-import FilterSidebar from "@/components/layout/FilterSidebar";
+import Filter from "@/components/layout/Filter";
 import {
   Accordion,
   AccordionContent,
@@ -151,11 +151,11 @@ export default function RequestedQuotesPage() {
   return (
     <div className="flex flex-col items-center justify-start min-h-screen p-8">
       <div className="flex-1 bg-white p-5 sm:p-8 rounded-xl shadow-lg w-full max-w-4xl">
-        <h2 className="text-3xl text-slate-900 font-bold tracking-tight mb-8">
+        <h2 className="text-3xl text-slate-900 font-bold tracking-tight mb-2">
           My Quotations
         </h2>
 
-        <FilterSidebar
+        <Filter
           statusOptions={STATUS_OPTIONS}
           selectedStatuses={statuses}
           onStatusChange={setStatuses}
@@ -164,7 +164,7 @@ export default function RequestedQuotesPage() {
           maxPrice={priceRange.max}
           onPriceChange={setPriceRange}
         />
-        <div className="flex flex-col gap-2 mt-8">
+        <div className="flex flex-col gap-2 mt-6">
           {quotations.map((quotation) => (
             <div
               key={quotation._id}
