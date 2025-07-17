@@ -13,15 +13,32 @@ export async function GET(req: Request) {
     const clerkId = searchParams.get("clerkId");
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "5", 10);
+    const status = searchParams.get("status") || undefined;
+    const minTotal = searchParams.get("minPrice") || undefined;
+    const maxTotal = searchParams.get("maxPrice") || undefined;
 
     if (!clerkId || clerkId !== userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    console.log(
+      "mintotal:",
+      minTotal,
+      "maxtotal:",
+      maxTotal,
+      "status:",
+      status
+    );
+
     const { items, total } = await getQuotationsByClerkIdPaginated(
       clerkId,
       page,
-      limit
+      limit,
+      {
+        status,
+        minTotal: minTotal ? Number(minTotal) : undefined,
+        maxTotal: maxTotal ? Number(maxTotal) : undefined,
+      }
     );
 
     return NextResponse.json({ items, total });

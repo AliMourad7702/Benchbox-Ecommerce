@@ -1,27 +1,50 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "../live";
 
+interface Filters {
+  status?: string;
+  minTotal?: number;
+  maxTotal?: number;
+}
+
 export const getQuotationsByClerkIdPaginated = async (
   clerkId: string,
-  page: number = 1,
-  limit: number = 10
+  page = 1,
+  limit = 10,
+  filters: Filters = {}
 ) => {
   const offset = (page - 1) * limit;
   const sliceEnd = offset + limit;
+  const { status, minTotal, maxTotal } = filters;
+
+  console.log("Filters in sanity function: ", filters);
+
+  const statusArray = status ? status.split(",").map((s) => s.trim()) : [];
+
+  // --- Dynamically build filter conditions ---
+  const filterConditions = [`_type == "quote"`, `user->clerkId == $clerkId`];
+
+  if (statusArray.length > 0) filterConditions.push(`status in $statusArray`);
+  if (minTotal !== undefined) filterConditions.push(`totalPrice >= $minTotal`);
+  if (maxTotal !== undefined) filterConditions.push(`totalPrice <= $maxTotal`);
+
+  const filtersString = filterConditions.join(" && ");
+
+  // --- GROQ Query ---
   const GET_QUOTATIONS_BY_CLERK_ID_PAGINATED = defineQuery(`
   {
-    "items": *[_type=="quote" && user->clerkId == $clerkId] | order(_createdAt desc)[$offset...$limit]{
-    _id, 
-    name, 
-    email,
-    phone,
-    address,
-    notes, 
-    totalPrice,
-    status,
-    createdAt, 
-    "user": user->_id,
-    items[]{
+    "items": *[${filtersString}] | order(_createdAt desc)[${offset}...${sliceEnd}] {
+      _id, 
+      name, 
+      email,
+      phone,
+      address,
+      notes, 
+      totalPrice,
+      status,
+      createdAt, 
+      "user": user->_id,
+      items[]{
         quantity,
         itemTotal,
         productId,
@@ -41,14 +64,23 @@ export const getQuotationsByClerkIdPaginated = async (
           specs
         }
       }
-  },
-    "total": count(*[_type=="quote" && user->clerkId == $clerkId])
-      }`);
+    },
+    "total": count(*[${filtersString}])
+  }`);
 
+  // --- Parameters ---
+  const params: Record<string, any> = {
+    clerkId,
+    ...(statusArray.length > 0 && { statusArray }),
+    ...(minTotal !== undefined && { minTotal }),
+    ...(maxTotal !== undefined && { maxTotal }),
+  };
+
+  // --- Fetch ---
   try {
     const quotations = await sanityFetch({
       query: GET_QUOTATIONS_BY_CLERK_ID_PAGINATED,
-      params: { clerkId, offset, limit: sliceEnd },
+      params,
     });
 
     return quotations.data || [];

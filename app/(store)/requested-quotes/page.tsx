@@ -1,5 +1,6 @@
 "use client";
 
+import FilterSidebar from "@/components/layout/FilterSidebar";
 import {
   Accordion,
   AccordionContent,
@@ -24,6 +25,7 @@ import { useEffect, useState } from "react";
 import { MdArrowBack } from "react-icons/md";
 
 const QUOTATIONS_PER_PAGE = 4;
+const STATUS_OPTIONS = ["received", "under reviewing", "accepted", "declined"];
 
 export default function RequestedQuotesPage() {
   const { user } = useUser();
@@ -34,8 +36,21 @@ export default function RequestedQuotesPage() {
 
   const [quotations, setQuotations] =
     useState<GET_QUOTATIONS_BY_CLERK_IDResult>([]);
+
   const [total, setTotal] = useState(0);
   const totalPages = Math.ceil(total / QUOTATIONS_PER_PAGE);
+
+  const [statuses, setStatuses] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<{
+    min: number | undefined;
+    max: number | undefined;
+  }>({
+    min: 0,
+    max: 1000000000,
+  });
+  const [hasAnyQuotations, setHasAnyQuotations] = useState<boolean | null>(
+    null
+  );
 
   const goToPage = (pageNumber: number) => {
     router.push(`?page=${pageNumber}`);
@@ -52,9 +67,17 @@ export default function RequestedQuotesPage() {
 
     const fetchQuotations = async () => {
       try {
-        const res = await fetch(
-          `/api/quotations-by-clerkId?clerkId=${user.id}&page=${page}&limit=${QUOTATIONS_PER_PAGE}`
-        );
+        const params = new URLSearchParams({
+          clerkId: user.id,
+          page: String(page),
+          limit: String(QUOTATIONS_PER_PAGE),
+          ...(statuses.length > 0 && { status: statuses.join(",") }),
+          minPrice: String(priceRange.min),
+          maxPrice: String(priceRange.max),
+        });
+
+        console.log("params: ", String(params));
+        const res = await fetch(`/api/quotations-by-clerkId?${params}`);
 
         const { items, total } = await res.json();
         setQuotations(items);
@@ -66,11 +89,29 @@ export default function RequestedQuotesPage() {
 
     fetchQuotations();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [user?.id, page]);
+  }, [user?.id, page, statuses, priceRange]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const checkIfAnyQuotationsExist = async () => {
+      try {
+        const res = await fetch(
+          `/api/quotations-by-clerkId?clerkId=${user.id}&limit=1`
+        );
+        const { total } = await res.json();
+        setHasAnyQuotations(total > 0);
+      } catch (err) {
+        console.error("Error checking if quotations exist:", err);
+      }
+    };
+
+    checkIfAnyQuotationsExist();
+  }, [user?.id]);
 
   if (!user) return null;
 
-  if (!quotations || quotations.length === 0) {
+  if (!hasAnyQuotations) {
     return (
       <div className="flex flex-col items-center text-center px-4 py-8">
         <div className="text-2xl">You haven't requested any quotations</div>
@@ -87,14 +128,43 @@ export default function RequestedQuotesPage() {
     );
   }
 
+  if (quotations.length === 0 && hasAnyQuotations) {
+    return (
+      <div className="flex flex-col items-center text-center px-4 py-8">
+        <div className="text-xl text-slate-700">
+          No quotations match your current filters.
+        </div>
+        <button
+          onClick={() => {
+            setStatuses([]);
+            setPriceRange({ min: 0, max: 1000000000 });
+            router.push("?page=1");
+          }}
+          className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300"
+        >
+          Reset filters
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center justify-start min-h-screen p-8">
-      <div className="bg-white p-5 sm:p-8 rounded-xl shadow-lg w-full max-w-4xl">
+      <div className="flex-1 bg-white p-5 sm:p-8 rounded-xl shadow-lg w-full max-w-4xl">
         <h2 className="text-3xl text-slate-900 font-bold tracking-tight mb-8">
           My Quotations
         </h2>
 
-        <div className="flex flex-col gap-2">
+        <FilterSidebar
+          statusOptions={STATUS_OPTIONS}
+          selectedStatuses={statuses}
+          onStatusChange={setStatuses}
+          enablePriceFilter
+          minPrice={priceRange.min}
+          maxPrice={priceRange.max}
+          onPriceChange={setPriceRange}
+        />
+        <div className="flex flex-col gap-2 mt-8">
           {quotations.map((quotation) => (
             <div
               key={quotation._id}
