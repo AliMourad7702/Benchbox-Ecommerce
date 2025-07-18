@@ -40,13 +40,14 @@ export default function RequestedQuotesPage() {
   const [total, setTotal] = useState(0);
   const totalPages = Math.ceil(total / QUOTATIONS_PER_PAGE);
 
+  const [searchTerm, setSearchTerm] = useState("");
   const [statuses, setStatuses] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<{
-    min: number | undefined;
-    max: number | undefined;
+    min: number | string | undefined;
+    max: number | string | undefined;
   }>({
-    min: 0,
-    max: 1000000000,
+    min: undefined,
+    max: undefined,
   });
   const [hasAnyQuotations, setHasAnyQuotations] = useState<boolean | null>(
     null
@@ -71,9 +72,16 @@ export default function RequestedQuotesPage() {
           clerkId: user.id,
           page: String(page),
           limit: String(QUOTATIONS_PER_PAGE),
+          ...(searchTerm && { searchTerm }),
           ...(statuses.length > 0 && { status: statuses.join(",") }),
-          minPrice: String(priceRange.min),
-          maxPrice: String(priceRange.max),
+          ...(priceRange.min !== "" &&
+            !Number.isNaN(priceRange.min) && {
+              minPrice: String(priceRange.min),
+            }),
+          ...(priceRange.max !== "" &&
+            !Number.isNaN(priceRange.max) && {
+              maxPrice: String(priceRange.max),
+            }),
         });
 
         console.log("params: ", String(params));
@@ -89,7 +97,11 @@ export default function RequestedQuotesPage() {
 
     fetchQuotations();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [user?.id, page, statuses, priceRange]);
+  }, [user?.id, page, statuses, priceRange, searchTerm]);
+
+  useEffect(() => {
+    router.push("?page=1");
+  }, [statuses, priceRange, searchTerm]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -136,8 +148,9 @@ export default function RequestedQuotesPage() {
         </div>
         <button
           onClick={() => {
+            setSearchTerm("");
             setStatuses([]);
-            setPriceRange({ min: 0, max: 1000000000 });
+            setPriceRange({ min: undefined, max: undefined });
             router.push("?page=1");
           }}
           className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300"
@@ -160,9 +173,12 @@ export default function RequestedQuotesPage() {
           selectedStatuses={statuses}
           onStatusChange={setStatuses}
           enablePriceFilter
-          minPrice={priceRange.min}
-          maxPrice={priceRange.max}
+          minPrice={Number(priceRange.min)}
+          maxPrice={Number(priceRange.max)}
           onPriceChange={setPriceRange}
+          enableSearch
+          searchFieldName="id"
+          onSearchChange={setSearchTerm}
         />
         <div className="flex flex-col gap-2 mt-6">
           {quotations.map((quotation) => (

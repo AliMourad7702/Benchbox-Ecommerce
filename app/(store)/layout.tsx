@@ -6,9 +6,10 @@ import { SanityLive } from "@/sanity/lib/live";
 import BasketProvider from "@/providers/BasketProvider";
 import { Toaster } from "react-hot-toast";
 
+// TODO adjust metadata for all pages (even the dynamic ones) after checking with wassim
+
 export const metadata: Metadata = {
   title: "BenchBox",
-  // TODO add description
   description: "to be added",
 };
 

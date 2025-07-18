@@ -15,9 +15,13 @@ type FilterProps = {
   onStatusChange?: (statuses: string[]) => void;
 
   enablePriceFilter?: boolean;
-  minPrice?: number;
-  maxPrice?: number;
+  minPrice?: number | string;
+  maxPrice?: number | string;
   onPriceChange?: (range: { min: number; max: number }) => void;
+
+  enableSearch?: boolean;
+  searchFieldName?: string;
+  onSearchChange?: (query: string) => void;
 };
 
 export default function Filter({
@@ -25,32 +29,41 @@ export default function Filter({
   selectedStatuses = [],
   onStatusChange,
   enablePriceFilter = false,
-  minPrice = 0,
-  maxPrice = 100000,
+  minPrice,
+  maxPrice,
   onPriceChange,
+  enableSearch = false,
+  searchFieldName,
+  onSearchChange,
 }: FilterProps) {
   const [selected, setSelected] = useState<string[]>(selectedStatuses || []);
-  const [priceMin, setPriceMin] = useState<number | undefined>(minPrice);
-  const [priceMax, setPriceMax] = useState<number | undefined>(maxPrice);
+
+  const [priceMin, setPriceMin] = useState<number | string | undefined>(
+    minPrice
+  );
+  const [priceMax, setPriceMax] = useState<number | string | undefined>(
+    maxPrice
+  );
+
+  const [search, setSearch] = useState("");
 
   // Debounce the current input values
   const debouncedMin = useDebounce(priceMin, 800);
   const debouncedMax = useDebounce(priceMax, 800);
+  const debouncedSearch = useDebounce(search, 800);
 
   useEffect(() => {
-    if (
-      onStatusChange &&
-      typeof debouncedMin === "number" &&
-      typeof debouncedMax === "number"
-    )
-      onStatusChange(selected);
+    if (onStatusChange) onStatusChange(selected);
   }, [selected]);
 
-  // Debounced price range change
   useEffect(() => {
     if (onPriceChange)
-      onPriceChange({ min: debouncedMin!, max: debouncedMax! });
+      onPriceChange({ min: Number(debouncedMin)!, max: Number(debouncedMax)! });
   }, [debouncedMin, debouncedMax]);
+
+  useEffect(() => {
+    if (onSearchChange) onSearchChange(debouncedSearch);
+  }, [debouncedSearch]);
 
   const toggleStatus = (status: string) => {
     setSelected((prev) =>
@@ -76,24 +89,42 @@ export default function Filter({
           </AccordionTrigger>
           <AccordionContent>
             <div className="bg-white p-4 rounded-md border border-slate-200 space-y-6">
+              {enableSearch && (
+                <div>
+                  <h3 className="text-base font-medium mb-2 text-slate-700">
+                    Search
+                  </h3>
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full border border-slate-300 rounded-md p-1 text-sm"
+                    placeholder={`Search by ${searchFieldName || "name"}`}
+                  />
+                </div>
+              )}
+
               {statusOptions.length > 0 && (
                 <div>
                   <h3 className="text-base font-medium mb-2 text-slate-700">
-                    Status
+                    Status{" "}
+                    <span className="text-slate-500">
+                      {selected.length > 0 ? "" : "(showing all)"}
+                    </span>
                   </h3>
                   <div className="flex flex-col gap-2">
                     {statusOptions.map((status) => (
                       <label
                         key={status}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 hover:cursor-pointer"
                       >
                         <input
                           type="checkbox"
                           checked={selected.includes(status)}
                           onChange={() => toggleStatus(status)}
-                          className="form-checkbox h-4 w-4 text-slate-600"
+                          className="form-checkbox h-4 w-4 text-slate-600 hover:cursor-pointer"
                         />
-                        <span className="text-sm capitalize text-slate-700">
+                        <span className="text-sm capitalize text-slate-700 hover:cursor-pointer">
                           {status}
                         </span>
                       </label>
@@ -109,9 +140,13 @@ export default function Filter({
                   </h3>
                   <div className="flex items-center gap-2">
                     <input
-                      type="number"
+                      type="text"
                       min={0}
-                      value={priceMin !== undefined ? priceMin : ""}
+                      value={
+                        priceMin !== undefined && !Number.isNaN(priceMin)
+                          ? priceMin
+                          : ""
+                      }
                       onChange={(e) =>
                         setPriceMin(
                           e.target.value ? Number(e.target.value) : undefined
@@ -122,9 +157,13 @@ export default function Filter({
                     />
                     <span className="text-slate-500">-</span>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
-                      value={priceMax !== undefined ? priceMax : ""}
+                      value={
+                        priceMax !== undefined && !Number.isNaN(priceMax)
+                          ? priceMax
+                          : ""
+                      }
                       onChange={(e) =>
                         setPriceMax(
                           e.target.value ? Number(e.target.value) : undefined

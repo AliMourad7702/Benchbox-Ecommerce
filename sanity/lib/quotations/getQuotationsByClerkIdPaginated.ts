@@ -5,6 +5,7 @@ interface Filters {
   status?: string;
   minTotal?: number;
   maxTotal?: number;
+  searchTerm?: string;
 }
 
 export const getQuotationsByClerkIdPaginated = async (
@@ -15,7 +16,7 @@ export const getQuotationsByClerkIdPaginated = async (
 ) => {
   const offset = (page - 1) * limit;
   const sliceEnd = offset + limit;
-  const { status, minTotal, maxTotal } = filters;
+  const { status, minTotal, maxTotal, searchTerm } = filters;
 
   console.log("Filters in sanity function: ", filters);
 
@@ -25,8 +26,16 @@ export const getQuotationsByClerkIdPaginated = async (
   const filterConditions = [`_type == "quote"`, `user->clerkId == $clerkId`];
 
   if (statusArray.length > 0) filterConditions.push(`status in $statusArray`);
-  if (minTotal !== undefined) filterConditions.push(`totalPrice >= $minTotal`);
-  if (maxTotal !== undefined) filterConditions.push(`totalPrice <= $maxTotal`);
+
+  if (minTotal !== undefined && !Number.isNaN(minTotal))
+    filterConditions.push(`totalPrice >= $minTotal`);
+
+  if (maxTotal !== undefined && !Number.isNaN(minTotal))
+    filterConditions.push(`totalPrice <= $maxTotal`);
+
+  if (searchTerm) {
+    filterConditions.push(`_id match $searchTerm`);
+  }
 
   const filtersString = filterConditions.join(" && ");
 
@@ -74,6 +83,7 @@ export const getQuotationsByClerkIdPaginated = async (
     ...(statusArray.length > 0 && { statusArray }),
     ...(minTotal !== undefined && { minTotal }),
     ...(maxTotal !== undefined && { maxTotal }),
+    ...(searchTerm && { searchTerm: `*${searchTerm}*` }),
   };
 
   // --- Fetch ---
