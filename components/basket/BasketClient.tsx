@@ -8,8 +8,6 @@ import { Button } from "../ui/button";
 import BasketProductContent from "./BasketProductContent";
 import QuotationForm from "../quotation/QuotationForm";
 
-// TODO optional - add responsive accordion behavior on mobile screens for each product in basket
-
 const BasketClient = () => {
   const { productsInBasket, handleClearBasket, basketTotalPrice } = useBasket();
 

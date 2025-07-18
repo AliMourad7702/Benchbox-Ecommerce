@@ -43,8 +43,6 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
 
   console.log("relatedFilteredProducts: ", relatedFilteredProducts);
 
-  // TODO ask abdullah if this looks good on the products page
-
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-2 mb-4 text-xl font-bold">
