@@ -49,6 +49,7 @@ export default function RequestedQuotesPage() {
     min: undefined,
     max: undefined,
   });
+
   const [hasAnyQuotations, setHasAnyQuotations] = useState<boolean | null>(
     null
   );

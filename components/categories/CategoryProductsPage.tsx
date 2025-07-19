@@ -17,6 +17,7 @@ import { TbArrowBadgeRight } from "react-icons/tb";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductGrid from "../products/ProductGrid";
+import Filter from "../layout/Filter";
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -35,23 +36,59 @@ export default function CategoryProductsPage({
     useState<PRODUCTS_BY_CATEGORY_QUERYResult | null>(null);
   const [total, setTotal] = useState(0);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statuses, setStatuses] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<{
+    min: number | string | undefined;
+    max: number | string | undefined;
+  }>({
+    min: undefined,
+    max: undefined,
+  });
+
+  const [availableColors, setAvailableColors] = useState<string[]>([]);
+  const [selectedColor, setSelectedColor] = useState<string | undefined>("");
+
   const totalPages = Math.ceil(total / PRODUCTS_PER_PAGE);
 
   useEffect(() => {
-    async function fetchProducts() {
-      const res = await fetch(
-        `/api/products-by-category?category=${categorySlug}&page=${page}&limit=${PRODUCTS_PER_PAGE}`
-      );
+    async function loadColors() {
+      const res = await fetch(`/api/colors?category=${categorySlug}`);
+      const colorData = await res.json();
+      console.log("colorData: ", colorData);
+      setAvailableColors(colorData);
+    }
+    loadColors();
+  }, [categorySlug]);
 
-      const { items, total }: PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult =
-        await res.json();
-      setProducts(items);
-      setTotal(total);
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const params = new URLSearchParams({
+          category: categorySlug,
+          page: String(page),
+          limit: String(PRODUCTS_PER_PAGE),
+          ...(selectedColor &&
+            selectedColor !== "" && {
+              color: selectedColor,
+            }),
+        });
+        const res = await fetch(`/api/products-by-category?${params}`);
+
+        const { items, total }: PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult =
+          await res.json();
+
+        console.log("Fetched filtered products by category: ", items);
+        setProducts(items);
+        setTotal(total);
+      } catch (error) {
+        console.error("Error fetching quotations:");
+      }
     }
 
     fetchProducts();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [categorySlug, page]);
+  }, [categorySlug, page, selectedColor]);
 
   const goToPage = (pageNumber: number) => {
     router.push(`?page=${pageNumber}`);
@@ -74,6 +111,14 @@ export default function CategoryProductsPage({
             <TbArrowBadgeRight />
             {products[0].category?.title}
           </h2>
+          <div className="px-10">
+            <Filter
+              colorOptions={availableColors}
+              selectedColor={selectedColor}
+              onColorChange={setSelectedColor}
+            />
+          </div>
+
           <ProductGrid products={products} />
         </div>
       )}

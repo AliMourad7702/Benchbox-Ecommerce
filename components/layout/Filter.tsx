@@ -22,6 +22,10 @@ type FilterProps = {
   enableSearch?: boolean;
   searchFieldName?: string;
   onSearchChange?: (query: string) => void;
+
+  colorOptions?: string[];
+  selectedColor?: string;
+  onColorChange?: (colors: string) => void;
 };
 
 export default function Filter({
@@ -35,8 +39,17 @@ export default function Filter({
   enableSearch = false,
   searchFieldName,
   onSearchChange,
+  colorOptions = [],
+  selectedColor,
+  onColorChange,
 }: FilterProps) {
-  const [selected, setSelected] = useState<string[]>(selectedStatuses || []);
+  const [selectedStats, setSelectedStats] = useState<string[]>(
+    selectedStatuses || []
+  );
+
+  const [selectedCol, setSelectedCol] = useState<string | undefined>(
+    selectedColor
+  );
 
   const [priceMin, setPriceMin] = useState<number | string | undefined>(
     minPrice
@@ -53,8 +66,8 @@ export default function Filter({
   const debouncedSearch = useDebounce(search, 800);
 
   useEffect(() => {
-    if (onStatusChange) onStatusChange(selected);
-  }, [selected]);
+    if (onStatusChange) onStatusChange(selectedStats);
+  }, [selectedStats]);
 
   useEffect(() => {
     if (onPriceChange)
@@ -65,8 +78,16 @@ export default function Filter({
     if (onSearchChange) onSearchChange(debouncedSearch);
   }, [debouncedSearch]);
 
+  useEffect(() => {
+    if (onColorChange) onColorChange(selectedCol || "");
+  }, [selectedCol]);
+
+  const handleColorClick = (color: string) => {
+    setSelectedCol((prev) => (prev === color ? undefined : color));
+  };
+
   const toggleStatus = (status: string) => {
-    setSelected((prev) =>
+    setSelectedStats((prev) =>
       prev.includes(status)
         ? prev.filter((s) => s !== status)
         : [...prev, status]
@@ -109,7 +130,7 @@ export default function Filter({
                   <h3 className="text-base font-medium mb-2 text-slate-700">
                     Status{" "}
                     <span className="text-slate-500">
-                      {selected.length > 0 ? "" : "(showing all)"}
+                      {selectedStats.length > 0 ? "" : "(showing all)"}
                     </span>
                   </h3>
                   <div className="flex flex-col gap-2">
@@ -120,7 +141,7 @@ export default function Filter({
                       >
                         <input
                           type="checkbox"
-                          checked={selected.includes(status)}
+                          checked={selectedStats.includes(status)}
                           onChange={() => toggleStatus(status)}
                           className="form-checkbox h-4 w-4 text-slate-600 hover:cursor-pointer"
                         />
@@ -172,6 +193,29 @@ export default function Filter({
                       className="w-full border border-slate-300 rounded-md p-1 text-sm"
                       placeholder="Max"
                     />
+                  </div>
+                </div>
+              )}
+
+              {colorOptions.length > 0 && (
+                <div>
+                  <h3 className="text-base font-medium mb-2 text-slate-700">
+                    Colors
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {colorOptions.map((color, index) => (
+                      <button
+                        key={`${color} - ${index}`}
+                        onClick={() => handleColorClick(color)}
+                        style={{ backgroundColor: color }}
+                        className={`w-6 h-6 rounded-full border-2 p-2 transition-transform duration-300 hover:scale-105  hover:cursor-pointer ${
+                          selectedCol === color
+                            ? "border-green-600"
+                            : "border-gray-300"
+                        }`}
+                        title={color}
+                      />
+                    ))}
                   </div>
                 </div>
               )}

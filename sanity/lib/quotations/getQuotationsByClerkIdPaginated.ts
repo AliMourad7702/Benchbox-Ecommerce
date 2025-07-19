@@ -1,11 +1,12 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "../live";
 
-interface Filters {
+export interface Filters {
   status?: string;
   minTotal?: number;
   maxTotal?: number;
   searchTerm?: string;
+  color?: string;
 }
 
 export const getQuotationsByClerkIdPaginated = async (

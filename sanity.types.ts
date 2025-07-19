@@ -458,6 +458,17 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
   }> | null;
 }>;
 
+// Source: ./sanity/lib/products/getAvailableColorsByCategory.ts
+// Variable: GET_AVAILABLE_COLORS_BY_CATEGORY_SLUG_QUERY
+// Query: *[_type == "product" && category->slug.current == $slug]{    variants[]->{      colorOptions[]{        "colorCode": color.hex      }    }  }
+export type GET_AVAILABLE_COLORS_BY_CATEGORY_SLUG_QUERYResult = Array<{
+  variants: Array<{
+    colorOptions: Array<{
+      colorCode: string | null;
+    }> | null;
+  }> | null;
+}>;
+
 // Source: ./sanity/lib/products/getProductBySlug.ts
 // Variable: PRODUCT_BY_SLUG_QUERY
 // Query: *[_type == "product" && slug.current==$slug][0]{    _id,    name,    baseSku,    "slug": slug.current,    category->{      title,      "slug": slug.current    },    variants[]->{      _id,      label,      sku,      colorOptions[]{          colorName,          "colorCode": color.hex,          "images":images[].asset->url,          price,          stock,          specs,        }    }  }
@@ -866,6 +877,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"category\"]{\n    _id,\n    title,\n    \"imageUrl\": image.asset->url,\n    description,\n    \"slug\": slug.current\n  }\n    ": ALL_CATEGORIES_QUERYResult;
     "\n    *[_type == \"category\" && featured == true]{\n      _id,\n      title,\n      \"imageUrl\": image.asset->url,\n      description,\n      \"slug\": slug.current\n    }\n  ": FEATURED_CATEGORIES_QUERYResult;
     "\n    *[_type == \"product\"] | order(_updatedAt desc) {\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n    }\n  }\n    ": ALL_PRODUCTS_QUERYResult;
+    "\n    *[_type == \"product\" && category->slug.current == $slug]{\n    variants[]->{\n      colorOptions[]{\n        \"colorCode\": color.hex\n      }\n    }\n  }\n  ": GET_AVAILABLE_COLORS_BY_CATEGORY_SLUG_QUERYResult;
     "\n    *[_type == \"product\" && slug.current==$slug][0]{\n    _id,\n    name,\n    baseSku,\n    \"slug\": slug.current,\n    category->{\n      title,\n      \"slug\": slug.current\n    },\n    variants[]->{\n      _id,\n      label,\n      sku,\n      colorOptions[]{\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\":images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n    }\n  }\n    ": PRODUCT_BY_SLUG_QUERYResult;
     "\n    *[_type == \"product\" && category->slug.current == $categorySlug] | order(_createdAt desc)[0...4]{\n      _id,\n      name,\n      baseSku,\n      \"slug\": slug.current,\n      category->{\n        title,\n        \"slug\": slug.current\n      },\n      variants[]->{\n        _id,\n        label,\n        sku,\n        colorOptions[] {\n          colorName,\n          \"colorCode\": color.hex,\n          \"images\": images[].asset->url,\n          price,\n          stock,\n          specs,\n        }\n      }\n    }\n    ": PRODUCTS_BY_CATEGORY_QUERYResult;
     "\n  {\n    \"items\": *[_type == \"product\" && category->slug.current == $categorySlug]\n      | order(_createdAt desc)[$offset...$limit] {\n        _id,\n        name,\n        baseSku,\n        \"slug\": slug.current,\n        category->{\n          title,\n          \"slug\": slug.current\n        },\n        variants[]->{\n          _id,\n          label,\n          sku,\n          colorOptions[] {\n            colorName,\n            \"colorCode\": color.hex,\n            \"images\": images[].asset->url,\n            price,\n            stock,\n            specs,\n          }\n        }\n    },\n    \"total\": count(*[_type == \"product\" && category->slug.current == $categorySlug])\n  }\n": PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult;

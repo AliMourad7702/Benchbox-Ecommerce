@@ -7,6 +7,14 @@ export async function GET(req: NextRequest) {
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || "8", 10);
 
+  const colorCode = searchParams.get("color");
+
+  const decodedColorCode = colorCode
+    ? decodeURIComponent(colorCode)
+    : undefined;
+
+  console.log("decoded colorCodes:", decodedColorCode);
+
   if (!categorySlug) {
     return NextResponse.json({ error: "Missing category" }, { status: 400 });
   }
@@ -15,13 +23,19 @@ export async function GET(req: NextRequest) {
     const result = await getProductsByCategoryPaginated(
       categorySlug,
       page,
-      limit
+      limit,
+      {
+        color:
+          decodedColorCode && decodedColorCode !== ""
+            ? decodedColorCode
+            : undefined,
+      }
     );
     return NextResponse.json(result);
   } catch (err) {
     console.error("API Error:", err);
     return NextResponse.json(
-      { error: "Failed to fetch products" },
+      { error: "Failed to fetch products by category slug" },
       { status: 500 }
     );
   }
