@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
+import { TbCategory } from "react-icons/tb";
 
 const AuthClientWrapperNoSSR = dynamic(() => import("./AuthClientWrapper"), {
   ssr: false,
@@ -67,6 +68,15 @@ const Header = () => {
         <div className="hidden lg:flex items-center justify-between flex-wrap gap-2 flex-1 md:flex-none mt-2 lg:mt-0">
           <ClerkLoaded>
             <Link
+              href="/categories"
+              passHref
+              className="relative flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              <TbCategory className="w-6 h-6" />
+              <span className="text-[0.7rem] md:text-base">Categories</span>
+            </Link>
+
+            <Link
               href="/basket"
               passHref
               className="relative flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -115,6 +125,15 @@ const Header = () => {
               <AccordionTrigger className="text-white">Menu</AccordionTrigger>
               <AccordionContent className="flex flex-col gap-3">
                 <ClerkLoaded>
+                  <Link
+                    href="/categories"
+                    passHref
+                    className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded sm:justify-center"
+                  >
+                    <TbCategory className="w-6 h-6" />
+                    Categories
+                  </Link>
+
                   <Link
                     href="/basket"
                     passHref
