@@ -37,7 +37,7 @@ export default function CategoryProductsPage({
   const [total, setTotal] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [statuses, setStatuses] = useState<string[]>([]);
+  // const [statuses, setStatuses] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<{
     min: number | string | undefined;
     max: number | string | undefined;
@@ -72,6 +72,15 @@ export default function CategoryProductsPage({
             selectedColor !== "" && {
               color: selectedColor,
             }),
+          ...(searchTerm && { searchTerm }),
+          ...(priceRange.min !== "" &&
+            !Number.isNaN(priceRange.min) && {
+              minPrice: String(priceRange.min),
+            }),
+          ...(priceRange.max !== "" &&
+            !Number.isNaN(priceRange.max) && {
+              maxPrice: String(priceRange.max),
+            }),
         });
         const res = await fetch(`/api/products-by-category?${params}`);
 
@@ -88,7 +97,14 @@ export default function CategoryProductsPage({
 
     fetchProducts();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [categorySlug, page, selectedColor]);
+  }, [
+    categorySlug,
+    page,
+    selectedColor,
+    searchTerm,
+    priceRange.min,
+    priceRange.max,
+  ]);
 
   const goToPage = (pageNumber: number) => {
     router.push(`?page=${pageNumber}`);
@@ -116,6 +132,13 @@ export default function CategoryProductsPage({
               colorOptions={availableColors}
               selectedColor={selectedColor}
               onColorChange={setSelectedColor}
+              enablePriceFilter
+              minPrice={Number(priceRange.min)}
+              maxPrice={Number(priceRange.max)}
+              onPriceChange={setPriceRange}
+              enableSearch
+              searchFieldName="base sku, name and specifications"
+              onSearchChange={setSearchTerm}
             />
           </div>
 

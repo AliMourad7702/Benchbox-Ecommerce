@@ -22,15 +22,6 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    console.log(
-      "mintotal:",
-      minTotal,
-      "maxtotal:",
-      maxTotal,
-      "status:",
-      status
-    );
-
     const { items, total } = await getQuotationsByClerkIdPaginated(
       clerkId,
       page,

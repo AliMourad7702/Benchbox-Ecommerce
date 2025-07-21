@@ -11,7 +11,7 @@ export const getProductsByCategoryPaginated = async (
   const offset = (page - 1) * limit;
   const sliceEnd = offset + limit;
 
-  const { color } = filters;
+  const { color, searchTerm, minTotal, maxTotal } = filters;
 
   const filterConditions = [
     `_type == "product"`,
@@ -24,12 +24,54 @@ export const getProductsByCategoryPaginated = async (
     `);
   }
 
+  // Search term filter
+  if (searchTerm && searchTerm !== "") {
+    filterConditions.push(`(
+      name match $searchTerm ||
+      baseSku match $searchTerm ||
+      count(variants[]->sku match $searchTerm) > 0 ||
+      count(variants[]->colorOptions[specs[].children[].text match $searchTerm]) > 0
+    )`);
+  }
+
+  // Price range filter
+  if (minTotal !== undefined && !Number.isNaN(minTotal)) {
+    filterConditions.push(
+      `count(variants[]->colorOptions[price >= $minTotal]) > 0`
+    );
+  }
+
+  if (maxTotal !== undefined && !Number.isNaN(maxTotal)) {
+    filterConditions.push(
+      `count(variants[]->colorOptions[price <= $maxTotal]) > 0`
+    );
+  }
+
+  const colorOptionsConditions: string[] = [];
+
+  if (color) {
+    colorOptionsConditions.push(`color.hex == $color`);
+  }
+
+  if (minTotal !== undefined && !Number.isNaN(minTotal)) {
+    colorOptionsConditions.push(`price >= $minTotal`);
+  }
+
+  if (maxTotal !== undefined && !Number.isNaN(maxTotal)) {
+    colorOptionsConditions.push(`price <= $maxTotal`);
+  }
+
+  const combinedColorOptionsFilter =
+    colorOptionsConditions.length > 0
+      ? `colorOptions[${colorOptionsConditions.join(" && ")}]`
+      : `colorOptions`;
+
   const filtersString = filterConditions.join(" && ");
 
   const colorOptionsBasedOnColor =
-    color !== undefined && color !== ""
+    colorOptionsConditions.length > 0
       ? `"colorOptions": select(
-            ${color && color.length > 0} => colorOptions[color.hex == $color],
+            ${(color && color.length > 0) || (minTotal !== undefined && !Number.isNaN(minTotal)) || (maxTotal !== undefined && !Number.isNaN(maxTotal))} => ${combinedColorOptionsFilter},
             true => colorOptions
           )[] `
       : "colorOptions[]";
@@ -70,6 +112,9 @@ export const getProductsByCategoryPaginated = async (
       params: {
         categorySlug,
         ...(color && color !== "" ? { color } : {}),
+        ...(searchTerm ? { searchTerm: `${searchTerm}*` } : {}),
+        ...(minTotal !== undefined ? { minTotal } : {}),
+        ...(maxTotal !== undefined ? { maxTotal } : {}),
       },
     });
 

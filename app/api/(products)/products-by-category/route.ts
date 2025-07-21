@@ -8,9 +8,16 @@ export async function GET(req: NextRequest) {
   const limit = parseInt(searchParams.get("limit") || "8", 10);
 
   const colorCode = searchParams.get("color");
+  const searchTerm = searchParams.get("searchTerm") || undefined;
+  const minTotal = searchParams.get("minPrice") || undefined;
+  const maxTotal = searchParams.get("maxPrice") || undefined;
 
   const decodedColorCode = colorCode
     ? decodeURIComponent(colorCode)
+    : undefined;
+
+  const decodedSearchTerm = searchTerm
+    ? decodeURIComponent(searchTerm)
     : undefined;
 
   console.log("decoded colorCodes:", decodedColorCode);
@@ -29,6 +36,9 @@ export async function GET(req: NextRequest) {
           decodedColorCode && decodedColorCode !== ""
             ? decodedColorCode
             : undefined,
+        searchTerm: decodedSearchTerm ? decodedSearchTerm : undefined,
+        minTotal: minTotal ? Number(minTotal) : undefined,
+        maxTotal: maxTotal ? Number(maxTotal) : undefined,
       }
     );
     return NextResponse.json(result);
