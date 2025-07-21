@@ -19,7 +19,7 @@ const AuthClientWrapper = () => {
 
   return user ? (
     <div
-      className="flex items-center space-x-2 flex-1 sm:flex-2 justify-center sm:justify-start bg-white rounded py-1 px-2 hover:bg-slate-200 hover:cursor-pointer transition select-none"
+      className="flex items-center space-x-2 flex-1 sm:flex-2 justify-center lg:justify-start bg-white rounded py-1 px-2 hover:bg-slate-200 hover:cursor-pointer transition select-none"
       onClick={handleUserButtonClick}
     >
       <div

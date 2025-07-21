@@ -33,7 +33,7 @@ const CategoriesProductsSection = ({
       <div className="flex justify-center">
         <Link
           href={`/category/${category.slug}`}
-          className="bg-black text-white px-4 py-2 rounded-md mt-4 hover:opacity-70 flex items-center justify-center gap-1"
+          className="bg-black text-white px-4 py-2 rounded-md mt-6 hover:opacity-70 flex items-center justify-center gap-1"
         >
           View All
           <MdArrowForward />

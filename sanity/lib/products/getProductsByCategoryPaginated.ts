@@ -1,4 +1,3 @@
-import { PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult } from "./../../../sanity.types";
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "../live";
 import { Filters } from "../quotations/getQuotationsByClerkIdPaginated";
@@ -11,25 +10,33 @@ export const getProductsByCategoryPaginated = async (
 ) => {
   const offset = (page - 1) * limit;
   const sliceEnd = offset + limit;
+
   const { color } = filters;
 
-  // Build filter conditions
-  // const filterConditions = [
-  //   `_type == "product"`,
-  //   `category->slug.current == $categorySlug`,
-  // ];
+  const filterConditions = [
+    `_type == "product"`,
+    `category->slug.current == $categorySlug`,
+  ];
 
-  // if (color && color !== "") {
-  //   filterConditions.push(
-  //     `count(variants[]->colorOptions[color.hex == $color]) > 0`
-  //   );
-  // }
+  if (color && color !== "") {
+    filterConditions.push(`
+      count(variants[]->colorOptions[color.hex == $color]) > 0
+    `);
+  }
 
-  // const filtersString = filterConditions.join(" && ");
+  const filtersString = filterConditions.join(" && ");
+
+  const colorOptionsBasedOnColor =
+    color !== undefined && color !== ""
+      ? `"colorOptions": select(
+            ${color && color.length > 0} => colorOptions[color.hex == $color],
+            true => colorOptions
+          )[] `
+      : "colorOptions[]";
 
   const PRODUCTS_BY_CATEGORY_QUERY_PAGINATED = defineQuery(`
   {
-    "items": *[_type == "product" && category->slug.current == $categorySlug]
+    "items": *[${filtersString}]
       | order(_createdAt desc)[${offset}...${sliceEnd}] {
         _id,
         name,
@@ -43,7 +50,7 @@ export const getProductsByCategoryPaginated = async (
           _id,
           label,
           sku,
-          "colorOptions": colorOptions[]{
+          ${colorOptionsBasedOnColor}{
             colorName,
             "colorCode": color.hex,
             "images": images[].asset->url,
@@ -53,63 +60,17 @@ export const getProductsByCategoryPaginated = async (
           }
         }
     },
-    "total": count(*[_type == "product" && category->slug.current == $categorySlug])
-  }
-`);
-
-  const PRODUCTS_BY_CATEGORY_WITH_COLOR_QUERY_PAGINATED = defineQuery(`
-  {
-    "items": *[
-      _type == "product" &&
-      category->slug.current == $categorySlug &&
-      count(variants[]->colorOptions[color.hex == $color]) > 0
-    ]
-      | order(_createdAt desc)[${offset}...${sliceEnd}] {
-        _id,
-        name,
-        baseSku,
-        "slug": slug.current,
-        category->{
-          title,
-          "slug": slug.current
-        },
-        variants[]->{
-          _id,
-          label,
-          sku,
-          "colorOptions": colorOptions[color.hex == $color][]{
-            colorName,
-            "colorCode": color.hex,
-            "images": images[].asset->url,
-            price,
-            stock,
-            specs,
-          }
-        }
-    },
-    "total": count(*[
-      _type == "product" &&
-      category->slug.current == $categorySlug &&
-      count(variants[]->colorOptions[color.hex == $color]) > 0
-    ])
+    "total": count(*[${filtersString}])
   }
 `);
 
   try {
-    const query = color
-      ? PRODUCTS_BY_CATEGORY_WITH_COLOR_QUERY_PAGINATED
-      : PRODUCTS_BY_CATEGORY_QUERY_PAGINATED;
-    const params = color
-      ? {
-          categorySlug,
-          color,
-        }
-      : {
-          categorySlug,
-        };
     const { data } = await sanityFetch({
-      query,
-      params,
+      query: PRODUCTS_BY_CATEGORY_QUERY_PAGINATED,
+      params: {
+        categorySlug,
+        ...(color && color !== "" ? { color } : {}),
+      },
     });
 
     return {

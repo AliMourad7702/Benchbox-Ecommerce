@@ -39,7 +39,7 @@ const Header = () => {
       <div className="w-full flex flex-wrap justify-between items-center">
         <Link
           href={"/"}
-          className="hover:opacity-50 cursor-pointer mx-auto sm:mx-0 flex items-center justify-center min-w-fit max-w-1.5 mb-2 sm:my-0"
+          className="hover:opacity-50 cursor-pointer mx-auto lg:mx-0 flex items-center justify-center min-w-fit max-w-1.5 mb-2 lg:my-0"
         >
           <Image
             src={"/images/Benchbox-logo.png"}
@@ -53,18 +53,18 @@ const Header = () => {
 
         <Form
           action="/search"
-          className="w-full sm:flex-1 sm:mx-4 mt-2 sm:mt-0 sm:ml-4"
+          className="w-full lg:flex-1 lg:mx-4 mt-2 lg:mt-0 lg:ml-4"
         >
           <input
             type="text"
             name="query"
             placeholder="Search for products"
-            className="bg-gray-100 text-gray-800 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border w-full max-w-3xl "
+            className="bg-gray-100 text-gray-800 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border w-full lg:max-w-3xl "
           />
         </Form>
 
-        {/* Desktop layout: show all links normally on sm+ */}
-        <div className="hidden sm:flex items-center justify-between flex-wrap gap-2 flex-1 md:flex-none mt-2 sm:mt-0">
+        {/* Desktop layout: show all links normally on lg+ */}
+        <div className="hidden lg:flex items-center justify-between flex-wrap gap-2 flex-1 md:flex-none mt-2 lg:mt-0">
           <ClerkLoaded>
             <Link
               href="/basket"
@@ -105,8 +105,8 @@ const Header = () => {
           </ClerkLoaded>
         </div>
 
-        {/* Mobile layout: collapse everything below form into one accordion */}
-        <div className="sm:hidden w-full mt-4">
+        {/* Mobile/Tablets layout: collapse everything below form into one accordion */}
+        <div className="lg:hidden w-full mt-4">
           <Accordion
             type="single"
             collapsible
@@ -118,7 +118,7 @@ const Header = () => {
                   <Link
                     href="/basket"
                     passHref
-                    className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-between"
+                    className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-between sm:justify-center"
                   >
                     <div className="flex gap-2 items-center">
                       <TrolleyIcon className="w-6 h-6" />
@@ -134,7 +134,7 @@ const Header = () => {
                     <Link
                       href="/requested-quotes"
                       passHref
-                      className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded sm:justify-center"
                     >
                       <ClipboardIcon className="w-6 h-6" />
                       My Quotations
@@ -143,7 +143,7 @@ const Header = () => {
                   {user?.publicMetadata.role === "admin" && (
                     <Link
                       href="/studio"
-                      className="bg-white hover:bg-blue-700 text-blue-500 hover:text-white font-bold py-2 px-4 rounded border border-blue-300"
+                      className="bg-white hover:bg-blue-700 text-blue-500 hover:text-white font-bold py-2 px-4 rounded border border-blue-300 text-center"
                     >
                       Studio
                     </Link>
