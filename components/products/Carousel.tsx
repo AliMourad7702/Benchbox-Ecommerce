@@ -66,7 +66,13 @@ export default function Carousel({
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
 
-  const carouselItems = loop ? [...items, items[0]] : items;
+  const validItems = items.filter(
+    (variant) => variant?.colorOptions && variant.colorOptions.length > 0
+  );
+
+  const carouselItems = loop ? [...validItems, validItems[0]] : validItems;
+  // const carouselItems = loop ? [...items, items[0]] : items;
+
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const x = useMotionValue(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -91,7 +97,7 @@ export default function Carousel({
     if (autoplay && (!pauseOnHover || !isHovered)) {
       const timer = setInterval(() => {
         setCurrentIndex((prev) => {
-          if (prev === items.length - 1 && loop) {
+          if (prev === validItems.length - 1 && loop) {
             return prev + 1;
           }
           if (prev === carouselItems.length - 1) {
@@ -107,7 +113,7 @@ export default function Carousel({
     autoplayDelay,
     isHovered,
     loop,
-    items.length,
+    validItems.length,
     carouselItems.length,
     pauseOnHover,
   ]);
@@ -130,14 +136,14 @@ export default function Carousel({
     const offset = info.offset.x;
     const velocity = info.velocity.x;
     if (offset < -DRAG_BUFFER || velocity < -VELOCITY_THRESHOLD) {
-      if (loop && currentIndex === items.length - 1) {
+      if (loop && currentIndex === validItems.length - 1) {
         setCurrentIndex(currentIndex + 1);
       } else {
         setCurrentIndex((prev) => Math.min(prev + 1, carouselItems.length - 1));
       }
     } else if (offset > DRAG_BUFFER || velocity > VELOCITY_THRESHOLD) {
       if (loop && currentIndex === 0) {
-        setCurrentIndex(items.length - 1);
+        setCurrentIndex(validItems.length - 1);
       } else {
         setCurrentIndex((prev) => Math.max(prev - 1, 0));
       }
@@ -153,6 +159,17 @@ export default function Carousel({
         },
       };
 
+  // Stable number of transforms (e.g., max 10 items expected)
+  const maxItems = 10;
+  const rotateTransforms = Array.from({ length: maxItems }, (_, index) => {
+    const range = [
+      -(index + 1) * trackItemOffset,
+      -index * trackItemOffset,
+      -(index - 1) * trackItemOffset,
+    ];
+    return useTransform(x, range, [90, 0, -90], { clamp: false });
+  });
+
   return (
     <div
       ref={containerRef}
@@ -166,7 +183,9 @@ export default function Carousel({
     >
       <motion.div
         className="flex"
-        {...(items.length > 1 ? { drag: "x", onDragEnd: handleDragEnd } : {})}
+        {...(validItems.length > 1
+          ? { drag: "x", onDragEnd: handleDragEnd }
+          : {})}
         // drag="x"
         // onDragEnd={handleDragEnd}
         {...dragProps}
@@ -189,15 +208,15 @@ export default function Carousel({
             -(index - 1) * trackItemOffset,
           ];
           const outputRange = [90, 0, -90];
-          const rotateY = useTransform(x, range, outputRange, { clamp: false });
+          const rotateY = rotateTransforms[index];
           return (
             <motion.div
-              key={index}
+              key={`${item._id}-${index}`}
               className={`relative shrink-0 flex flex-col ${
                 round
-                  ? "items-center justify-center text-center border-0"
-                  : "items-start justify-between "
-              } overflow-hidden ${items.length > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-default"} `}
+                  ? "validItems-center justify-center text-center border-0"
+                  : "validItems-start justify-between "
+              } overflow-hidden ${validItems.length > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-default"} `}
               style={{
                 width: itemWidth,
                 height: round ? itemWidth : "100%",
@@ -247,7 +266,7 @@ export default function Carousel({
                 )}
 
                 {isOutOfStock && (
-                  <div className="relative inset-0 flex items-center justify-center bg-black opacity-50 w-full h-full">
+                  <div className="relative inset-0 flex validItems-center justify-center bg-black opacity-50 w-full h-full">
                     <span className="text-white font-bold text-lg absolute top-1 left-1">
                       Out of Stock
                     </span>
@@ -266,7 +285,7 @@ export default function Carousel({
               >
                 <div className="p-4">
                   <div
-                    className={`flex ${item.label?.length! > 1 ? "flex-col justify-center" : "justify-between items-center"} `}
+                    className={`flex ${item.label?.length! > 1 ? "flex-col justify-center" : "justify-between validItems-center"} `}
                   >
                     <h2 className="text-lg font-semibold text-gray-800 truncate">
                       {parentProductInfo.name
@@ -303,11 +322,11 @@ export default function Carousel({
           }`}
         >
           <div className="mt-4 flex w-[150px] justify-between px-8">
-            {items.map((_, index) => (
+            {validItems.map((_, index) => (
               <motion.div
-                key={index}
+                key={`${_._id}-${index}`}
                 className={`h-2 w-2 rounded-full cursor-pointer transition-colors duration-150 ${
-                  currentIndex % items.length === index
+                  currentIndex % validItems.length === index
                     ? round
                       ? "bg-white"
                       : "bg-[#333333]"
@@ -316,7 +335,7 @@ export default function Carousel({
                       : "bg-[rgba(51,51,51,0.4)]"
                 }`}
                 animate={{
-                  scale: currentIndex % items.length === index ? 1.2 : 1,
+                  scale: currentIndex % validItems.length === index ? 1.2 : 1,
                 }}
                 onClick={() => setCurrentIndex(index)}
                 transition={{ duration: 0.15 }}

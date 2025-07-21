@@ -14,9 +14,9 @@ interface ProductGridProps {
 const ProductGrid = ({ products }: ProductGridProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4 gap-3">
-      {products.map((product) => {
+      {products.map((product, index) => {
         return (
-          <AnimatePresence key={product._id}>
+          <AnimatePresence key={`${product._id}-${index}`}>
             <motion.div
               layout
               initial={{ opacity: 0.2 }}
@@ -25,7 +25,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
               className="flex justify-center"
             >
               <ProductThumbnail
-                key={product._id}
+                key={`${product._id}-${index}`}
                 product={product}
               />
             </motion.div>
