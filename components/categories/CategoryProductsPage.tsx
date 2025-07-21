@@ -37,7 +37,6 @@ export default function CategoryProductsPage({
   const [total, setTotal] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState("");
-  // const [statuses, setStatuses] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<{
     min: number | string | undefined;
     max: number | string | undefined;
@@ -118,6 +117,27 @@ export default function CategoryProductsPage({
 
   console.log("productsByCategory: ", products);
   console.log("total: ", total);
+
+  if (products!.length === 0) {
+    return (
+      <div className="flex flex-col items-center text-center px-4 py-8">
+        <div className="text-xl text-slate-700">
+          No products match your current filters.
+        </div>
+        <button
+          onClick={() => {
+            setSearchTerm("");
+            setSelectedColor("");
+            setPriceRange({ min: undefined, max: undefined });
+            router.push("?page=1");
+          }}
+          className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300"
+        >
+          Reset filters
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full p-4 flex flex-col gap-6">
