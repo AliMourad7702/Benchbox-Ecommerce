@@ -70,8 +70,9 @@ export default function Carousel({
     (variant) => variant?.colorOptions && variant.colorOptions.length > 0
   );
 
+  autoplay = validItems.length > 1;
+
   const carouselItems = loop ? [...validItems, validItems[0]] : validItems;
-  // const carouselItems = loop ? [...items, items[0]] : items;
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const x = useMotionValue(0);

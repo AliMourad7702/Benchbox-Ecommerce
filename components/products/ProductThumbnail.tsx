@@ -20,7 +20,6 @@ const ProductThumbnail = ({ product }: ProductThumbnailProps) => {
           items={product.variants!}
           baseSku={product.baseSku!}
           baseWidth={250}
-          autoplay={product.variants!.length > 1}
           autoplayDelay={6000}
           pauseOnHover={true}
           loop={true}

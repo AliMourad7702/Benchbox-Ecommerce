@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/accordion";
 import { useDebounce } from "@/hooks/useDebounce";
 
+// TODO add a reset filter button
+
 type FilterProps = {
   statusOptions?: string[];
   selectedStatuses?: string[];
