@@ -118,7 +118,7 @@ export default function CategoryProductsPage({
   console.log("productsByCategory: ", products);
   console.log("total: ", total);
 
-  if (products!.length === 0) {
+  if (!products || products!.length === 0) {
     return (
       <div className="flex flex-col items-center text-center px-4 py-8">
         <div className="text-xl text-slate-700">
