@@ -8,8 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useDebounce } from "@/hooks/useDebounce";
-
-// TODO add a reset filter button
+import { Button } from "../ui/button";
 
 type FilterProps = {
   statusOptions?: string[];
@@ -19,7 +18,10 @@ type FilterProps = {
   enablePriceFilter?: boolean;
   minPrice?: number | string;
   maxPrice?: number | string;
-  onPriceChange?: (range: { min: number; max: number }) => void;
+  onPriceChange?: (range: {
+    min: number | string | undefined;
+    max: number | string | undefined;
+  }) => void;
 
   enableSearch?: boolean;
   searchFieldName?: string;
@@ -94,6 +96,19 @@ export default function Filter({
         ? prev.filter((s) => s !== status)
         : [...prev, status]
     );
+  };
+
+  const handleResetFilters = () => {
+    setSelectedStats([]);
+    setSelectedCol(undefined);
+    setPriceMin(undefined);
+    setPriceMax(undefined);
+    setSearch("");
+
+    onStatusChange?.([]);
+    onColorChange?.("");
+    onPriceChange?.({ min: undefined, max: undefined }); // or undefined, depending on your app
+    onSearchChange?.("");
   };
 
   return (
@@ -219,6 +234,22 @@ export default function Filter({
                       />
                     ))}
                   </div>
+                </div>
+              )}
+
+              {(selectedStats.length > 0 ||
+                selectedCol ||
+                (priceMin !== undefined && !Number.isNaN(priceMin)) ||
+                (priceMax !== undefined && !Number.isNaN(priceMax)) ||
+                search !== "") && (
+                <div className="flex items-center justify-end">
+                  <Button
+                    onClick={handleResetFilters}
+                    className="text-sm font-medium text-red-600 w-full md:w-fit bg-red-100"
+                    variant={"ghost"}
+                  >
+                    Reset All Filters
+                  </Button>
                 </div>
               )}
             </div>
