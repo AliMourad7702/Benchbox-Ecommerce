@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "../live";
 
+// TODO add color hex code support
 export const getRelatedProductsByFilter = async ({
   baseSku,
   categorySlug,
