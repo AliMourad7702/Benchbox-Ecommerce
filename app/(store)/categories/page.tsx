@@ -7,6 +7,8 @@ import Image from "next/image";
 export const dynamic = "force-static";
 export const revalidate = 1800;
 
+// TODO add filter component here to select between certain categories (as statuses like chairs / desks / workstations and more categories)
+
 export default async function CategoriesPage() {
   const categories = await getAllCategories();
 
