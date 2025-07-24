@@ -221,17 +221,21 @@ export default function Filter({
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {colorOptions.map((color, index) => (
-                      <button
+                      <div
                         key={`${color} - ${index}`}
-                        onClick={() => handleColorClick(color)}
-                        style={{ backgroundColor: color }}
-                        className={`w-6 h-6 rounded-full border-2 p-2 transition-transform duration-300 hover:scale-105  hover:cursor-pointer ${
+                        className={`w-7 h-7 rounded-full border-2 flex items-center justify-center ${
                           selectedCol === color
                             ? "border-green-600"
                             : "border-gray-300"
                         }`}
-                        title={color}
-                      />
+                      >
+                        <button
+                          onClick={() => handleColorClick(color)}
+                          style={{ backgroundColor: color }}
+                          className={`w-5 h-5 rounded-full transition-transform duration-300 hover:scale-105  hover:cursor-pointer `}
+                          title={color}
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>
