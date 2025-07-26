@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 
+// TODO we need to make this more editable (remove unnecessary readonly attributes)
 export const quoteType = defineType({
   name: "quote",
   title: "Quotation Requests",
