@@ -314,6 +314,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           >
             Add to Basket
           </Button>
+          {/* TODO add a "Continue Shopping" button next to the "Add to Basket" one */}
         </div>
       </div>
       <div className="flex flex-col gap-2 col-span-1 md:col-span-2">
