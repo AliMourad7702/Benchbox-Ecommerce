@@ -21,8 +21,6 @@ import Filter from "../layout/Filter";
 
 const PRODUCTS_PER_PAGE = 8;
 
-// TODO add Filter component and logic
-
 export default function CategoryProductsPage({
   categorySlug,
 }: {
@@ -110,10 +108,12 @@ export default function CategoryProductsPage({
   };
 
   useEffect(() => {
-    if (page > totalPages || page <= 0) {
-      goToPage(1);
+    if (totalPages > 0 && (page > totalPages || page <= 0)) {
+      if (page !== 1) {
+        goToPage(1);
+      }
     }
-  }, [page]);
+  }, [page, totalPages]);
 
   console.log("productsByCategory: ", products);
   console.log("total: ", total);

@@ -1,3 +1,4 @@
+import CategoryPageWrapper from "@/components/categories/CategoryPageWrapper";
 import CategoryProductsPage from "@/components/categories/CategoryProductsPage";
 import React from "react";
 
@@ -12,7 +13,9 @@ async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
   return (
     <div>
-      <CategoryProductsPage categorySlug={slug} />
+      <CategoryPageWrapper>
+        <CategoryProductsPage categorySlug={slug} />
+      </CategoryPageWrapper>
     </div>
   );
 }

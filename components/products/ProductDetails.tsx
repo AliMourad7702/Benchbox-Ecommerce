@@ -5,6 +5,7 @@ import { AdjustedVariantType } from "@/utils/isProductOutOfStock";
 import { PortableText } from "next-sanity";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import ProductImage from "./ProductImage";
 import SetColor from "./SetColor";
@@ -79,6 +80,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   console.log("basketTotalQuantity: ", basketTotalQuantity);
   console.log("productsInBasket: ", productsInBasket);
+
+  const router = useRouter();
 
   const [productInBasket, setProductInBasket] = useState<ProductInBasketType>({
     productId: product!._id,
@@ -307,14 +310,36 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             />
           </div>
           <Horizontal />
-          <Button
-            className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
-            size={"lg"}
-            onClick={() => handleAddProductToBasket(productInBasket)}
-          >
-            Add to Basket
-          </Button>
-          {/* TODO add a "Continue Shopping" button next to the "Add to Basket" one */}
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button
+              className="bg-blue-500 hover:bg-blue-700 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
+              size={"lg"}
+              onClick={() => handleAddProductToBasket(productInBasket)}
+            >
+              Add to Basket
+            </Button>
+            {/* TODO add a "Continue Shopping" button next to the "Add to Basket" one */}
+            <Button
+              className="bg-slate-500 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
+              size={"lg"}
+              onClick={() => {
+                const lastCategoryPath =
+                  localStorage.getItem("lastCategoryPath");
+                const categorySlug = product?.category?.slug;
+                if (
+                  lastCategoryPath &&
+                  categorySlug &&
+                  lastCategoryPath.includes(`/category/${categorySlug}`)
+                ) {
+                  router.push(lastCategoryPath);
+                } else {
+                  router.push(`/category/${product?.category?.slug}`); // fallback
+                }
+              }}
+            >
+              Continue Shopping
+            </Button>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-2 col-span-1 md:col-span-2">

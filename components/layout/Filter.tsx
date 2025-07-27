@@ -112,7 +112,7 @@ export default function Filter({
   };
 
   return (
-    <div className="w-full mb-4">
+    <div className="w-full bg-white px-4 rounded-md">
       <Accordion
         type="single"
         collapsible
