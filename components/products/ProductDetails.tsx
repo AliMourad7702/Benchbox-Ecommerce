@@ -318,7 +318,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             >
               Add to Basket
             </Button>
-            {/* TODO add a "Continue Shopping" button next to the "Add to Basket" one */}
+
             <Button
               className="bg-slate-500 hover:opacity-50 w-full max-w-[60%] sm:max-w-[30%]"
               size={"lg"}

@@ -5,7 +5,7 @@ import { getRelatedProductsByFilter } from "@/sanity/lib/products/getRelatedProd
 import ProductGrid from "./ProductGrid";
 import { MdArrowForward } from "react-icons/md";
 
-// TODO add a related products by package (search for products with different categories and showcase them as related ones)
+// TODO add a related products by package (search for products with different categories and showcase them as related ones and adjust backend)
 
 interface RelatedProductsSectionProps {
   product: ProductInBasketType;
