@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(availableColors);
   } catch (error) {
-    console.error("Error in /api/colors:", error);
+    console.error("Error in /api/colors-by-category:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

@@ -5,7 +5,7 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title("Benchbox Ecommerce CMS")
     .items([
-      S.documentTypeListItem("category").title("Categories"),
+      S.documentTypeListItem("category"),
       S.divider(),
       ...S.documentTypeListItems().filter(
         (item) => item.getId() && !["category"].includes(item.getId()!)

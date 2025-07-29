@@ -6,6 +6,7 @@ import {
   AdjustedVariantType,
   isProductOutOfStock,
 } from "@/utils/isProductOutOfStock";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface ProductPageProps {
@@ -18,10 +19,52 @@ interface ProductPageProps {
   };
 }
 
-// export const dynamic = "force-static";
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const product = await getProductBySlug(params.slug);
 
-// cache revalidation after 30 minutes
-export const revalidate = 1800;
+  if (!product) return { title: "Product Not Found" };
+
+  const title = product.name
+    ? `${product.name} | BenchBox`
+    : `${product.baseSku} | BenchBox`;
+
+  const description =
+    product
+      .variants![0].colorOptions![0].specs!.filter(
+        (block) => block._type === "block"
+      )
+      .map((block) => block.children?.map((child) => child.text).join(" "))
+      .join(" ") || "Explore premium office products from BenchBox.";
+
+  const image = product.variants?.[0]?.colorOptions?.[0]?.images?.[0];
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: image!,
+          width: 1200,
+          height: 630,
+          alt: product.name! || product.baseSku!,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image!],
+    },
+  };
+}
 
 async function ProductPage({ params, searchParams }: ProductPageProps) {
   const { slug } = await params;

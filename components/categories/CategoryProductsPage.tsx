@@ -9,15 +9,12 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult,
-  PRODUCTS_BY_CATEGORY_QUERYResult,
-} from "@/sanity.types";
-import { TbArrowBadgeRight } from "react-icons/tb";
+import { PRODUCTS_BY_CATEGORY_QUERYResult } from "@/sanity.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ProductGrid from "../products/ProductGrid";
+import { TbArrowBadgeRight } from "react-icons/tb";
 import Filter from "../layout/Filter";
+import ProductGrid from "../products/ProductGrid";
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -50,7 +47,9 @@ export default function CategoryProductsPage({
 
   useEffect(() => {
     async function loadColors() {
-      const res = await fetch(`/api/colors?category=${categorySlug}`);
+      const res = await fetch(
+        `/api/colors-by-category?category=${categorySlug}`
+      );
       const colorData = await res.json();
       console.log("colorData: ", colorData);
       setAvailableColors(colorData);
@@ -81,8 +80,7 @@ export default function CategoryProductsPage({
         });
         const res = await fetch(`/api/products-by-category?${params}`);
 
-        const { items, total }: PRODUCTS_BY_CATEGORY_QUERY_PAGINATEDResult =
-          await res.json();
+        const { items, total } = await res.json();
 
         console.log("Fetched filtered products by category: ", items);
         setProducts(items);

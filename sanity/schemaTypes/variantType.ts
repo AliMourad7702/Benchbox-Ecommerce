@@ -2,7 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const variantType = defineType({
   name: "variant",
-  title: "Product Variant",
+  title: "Product Variants",
   type: "document",
   icon: () => "📦",
   fields: [
