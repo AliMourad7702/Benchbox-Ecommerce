@@ -8,7 +8,7 @@ export default function QuoteTemplateLayout({
   return (
     <html lang="en">
       <head>
-        <title>Quotation PDF</title>
+        <title>Quotation PDF | BenchBox</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0"
