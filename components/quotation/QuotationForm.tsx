@@ -18,6 +18,8 @@ import { useUser } from "@clerk/nextjs";
 import toast from "react-hot-toast";
 import { MdArrowForward } from "react-icons/md";
 
+// TODO add a dialog that suggests to the user to login to keep track of his quotations requests before submitting.
+
 interface QuotationFormProps {
   dialogTriggerContent?: string;
   dialogTitle?: string;
