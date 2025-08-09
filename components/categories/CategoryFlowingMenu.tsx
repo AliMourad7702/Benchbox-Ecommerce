@@ -8,7 +8,7 @@ interface CategoryFlowingMenuProps {
 
 const CategoryFlowingMenu = ({ category }: CategoryFlowingMenuProps) => {
   return (
-    <div className="relative w-full h-[6rem]">
+    <div className="relative w-full h-10 sm:h-[6rem]">
       <FlowingMenu
         items={[
           {
