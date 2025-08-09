@@ -34,7 +34,7 @@ const Header = () => {
   const { basketTotalQuantity, productsInBasket } = useBasket();
 
   return (
-    <header className="flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
+    <header className="sticky top-0 z-99 flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
       <div className="w-full flex flex-wrap justify-between items-center">
         <Link
           href={"/"}
