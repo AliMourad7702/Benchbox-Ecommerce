@@ -49,7 +49,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: `https://benchbox.sa/category/${params.slug}`,
+      url: `https://benchbox.sa/category/${category.slug}`,
       siteName: "BenchBox",
       locale: "en_SA",
       type: "website",
