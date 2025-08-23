@@ -61,6 +61,7 @@ export default function Carousel({
 }: CarouselProps): JSX.Element {
   const router = useRouter();
   const dragStartX = useRef<number | null>(null);
+  const dragStartY = useRef<number | null>(null);
   const dragThreshold = 10; // in pixels
   const containerPadding = 0;
   const itemWidth = baseWidth - containerPadding * 2;
@@ -238,11 +239,14 @@ export default function Carousel({
                     draggable={false}
                     onMouseDown={(e) => {
                       dragStartX.current = e.clientX;
+                      dragStartY.current = e.clientY;
                     }}
                     onMouseUp={(e) => {
                       if (
                         dragStartX.current !== null &&
-                        Math.abs(e.clientX - dragStartX.current) < dragThreshold
+                        Math.abs(e.clientX - dragStartX.current) <
+                          dragThreshold &&
+                        Math.abs(e.clientY - dragStartX.current) < dragThreshold
                       ) {
                         router.push(
                           `/product/${parentProductInfo.slug}?variant=${item.label!}&color=${item.colorOptions![0].colorName}`
@@ -251,12 +255,15 @@ export default function Carousel({
                     }}
                     onTouchStart={(e) => {
                       dragStartX.current = e.touches[0].clientX;
+                      dragStartY.current = e.touches[0].clientY;
                     }}
                     onTouchEnd={(e) => {
                       const endX = e.changedTouches[0].clientX;
+                      const endY = e.changedTouches[0].clientY;
                       if (
                         dragStartX.current !== null &&
-                        Math.abs(endX - dragStartX.current) < dragThreshold
+                        Math.abs(endX - dragStartX.current) < dragThreshold &&
+                        Math.abs(endY - dragStartY.current!) < dragThreshold
                       ) {
                         router.push(
                           `/product/${parentProductInfo.slug}?variant=${item.label!}&color=${item.colorOptions![0].colorName}`
