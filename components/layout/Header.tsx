@@ -34,8 +34,8 @@ const Header = () => {
   const { basketTotalQuantity, productsInBasket } = useBasket();
 
   return (
-    <header className="sticky top-0 z-99 flex flex-wrap justify-between px-4 py-4 bg-neutral-900">
-      <div className="w-full flex flex-wrap justify-between items-center">
+    <header className="sticky -top-30  z-99 lg:top-0 flex flex-wrap justify-between px-4 py-4 bg-neutral-900 shadow-md">
+      <div className="w-full flex flex-wrap justify-between items-center relative">
         <Link
           href={"/"}
           className="hover:opacity-50 cursor-pointer mx-auto lg:mx-0 flex items-center justify-center min-w-fit max-w-1.5 mb-2 lg:my-0"
@@ -50,17 +50,31 @@ const Header = () => {
           />
         </Link>
 
-        <Form
-          action="/search"
-          className="w-full lg:flex-1 lg:mx-4 mt-2 lg:mt-0 lg:ml-4"
-        >
-          <input
-            type="text"
-            name="query"
-            placeholder="Search for products"
-            className="bg-gray-100 text-gray-800 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border w-full lg:max-w-3xl "
-          />
-        </Form>
+        <div className="sticky top-4 z-99 w-full flex justify-between gap-2 lg:flex-1">
+          <Form
+            action="/search"
+            className="w-full lg:flex-1 lg:mx-4 mt-2 lg:mt-0 lg:ml-4"
+          >
+            <input
+              type="text"
+              name="query"
+              placeholder="Search for products"
+              className="bg-gray-100 text-gray-800 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border w-full lg:max-w-3xl "
+            />
+          </Form>
+          <Link
+            href="/basket"
+            passHref
+            className="relative flex justify-center items-center bg-blue-500 hover:bg-blue-700 text-white font-bold px-3 rounded lg:hidden mt-2"
+          >
+            <TrolleyIcon className="w-6 h-6" />
+            {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-white text-blue-500 text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
+                {productsInBasket!.length!}
+              </span>
+            )}
+          </Link>
+        </div>
 
         {/* Desktop layout: show all links normally on lg+ */}
         <div className="hidden lg:flex items-center justify-between flex-wrap gap-2 flex-1 md:flex-none mt-2 lg:mt-0">
@@ -130,21 +144,6 @@ const Header = () => {
                   >
                     <TbCategory className="w-6 h-6" />
                     Categories
-                  </Link>
-
-                  <Link
-                    href="/basket"
-                    passHref
-                    className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-between sm:justify-center"
-                  >
-                    <div className="flex gap-2 items-center">
-                      <TrolleyIcon className="w-6 h-6" />
-                      My Basket
-                    </div>
-
-                    <div className="flex rounded-full bg-white text-blue-500 aspect-square w-6 h-6 items-center justify-center text-sm">
-                      {productsInBasket?.length || 0}
-                    </div>
                   </Link>
 
                   <SignedIn>

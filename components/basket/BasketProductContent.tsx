@@ -73,10 +73,11 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
       </div>
       <div className="md:justify-self-center ">
         <span className="md:hidden font-semibold">Price: </span>
+        <br className="sm:hidden" />
         SR {product?.variant.color!.price?.toFixed(2)}
       </div>
-      <div className="md:justify-self-center flex gap-2 items-center">
-        <span className="md:hidden font-semibold mb-">Qty: </span>
+      <div className="md:justify-self-center flex gap-1 items-center">
+        <span className="md:hidden font-semibold">Qty: </span>
         <SetQuantity
           isBasket
           productInBasket={product!}
@@ -85,6 +86,7 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
       </div>
       <div className="md:justify-self-end">
         <span className="md:hidden font-semibold">Total: </span>
+        <br className="sm:hidden" />
         SR {(product?.quantity! * product?.variant.color!.price!).toFixed(2)}
       </div>
     </div>

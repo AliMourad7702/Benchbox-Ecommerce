@@ -27,7 +27,7 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
   return (
     <div className="flex gap-8 items-center text-sm">
       {!isBasket && <span className="font-semibold">QUANTITY: </span>}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1 md:gap-2">
         <Button
           variant={"outline"}
           onClick={() => handleQuantityChange("decrease", productInBasket)}

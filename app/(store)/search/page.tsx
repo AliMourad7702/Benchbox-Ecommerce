@@ -24,8 +24,8 @@ export default async function SearchPage({
     page?: string;
   };
 }) {
-  const query = searchParams.query;
-  const page = Math.max(1, Number(searchParams.page) || 1);
+  const { query, page: p } = await searchParams;
+  const page = Math.max(1, Number(p) || 1);
 
   if (!query || query.trim().length === 0) {
     return redirect("/");
