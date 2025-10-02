@@ -119,7 +119,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[600px] max-h-[95vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] md:max-h-[90vh] mt-5 md:mt-0 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         <DialogHeader>
           <DialogTitle>{dialogTitle || "Quotation Request"}</DialogTitle>
           <DialogDescription>
