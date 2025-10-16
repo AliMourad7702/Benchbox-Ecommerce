@@ -321,7 +321,7 @@ export default function Carousel({
                       height={18}
                       className="inline-block"
                     />{" "}
-                    {item.colorOptions![0].price?.toFixed(2)}
+                    {item.colorOptions![0].price}
                   </p>
                 </div>
               </Link>

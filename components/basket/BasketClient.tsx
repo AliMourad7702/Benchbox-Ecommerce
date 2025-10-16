@@ -83,7 +83,7 @@ const BasketClient = () => {
                   height={18}
                   className="inline-block"
                 />{" "}
-                {basketTotalPrice.toFixed(2)}
+                {basketTotalPrice}
               </span>
             </div>
 

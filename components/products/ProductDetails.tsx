@@ -253,7 +253,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               height={18}
               className="inline-block"
             />{" "}
-            {productInBasket.variant.color?.price?.toFixed(2)}
+            {productInBasket.variant.color?.price}
           </div>
           <Horizontal />
           <div className="prose max-w-none mb-6 text-black">

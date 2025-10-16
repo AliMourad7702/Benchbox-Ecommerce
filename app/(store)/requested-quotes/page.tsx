@@ -332,7 +332,7 @@ export default function RequestedQuotesPage() {
                                   height={18}
                                   className="inline-block opacity-65"
                                 />{" "}
-                                {item.color?.variantPrice?.toFixed(2)}
+                                {item.color?.variantPrice}
                               </p>
                               <p className="text-sm font-medium text-right sm:text-base text-slate-700">
                                 Subtotal:{" "}
@@ -343,9 +343,7 @@ export default function RequestedQuotesPage() {
                                   height={18}
                                   className="inline-block"
                                 />{" "}
-                                {(
-                                  item.color?.variantPrice! * item.quantity!
-                                ).toFixed(2)}
+                                {item.color?.variantPrice! * item.quantity!}
                               </p>
                             </div>
                           </div>

@@ -81,7 +81,7 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
           height={18}
           className="inline-block opacity-80"
         />{" "}
-        {product?.variant.color!.price?.toFixed(2)}
+        {product?.variant.color!.price}
       </div>
       <div className="md:justify-self-center flex gap-1 items-center">
         <span className="md:hidden font-semibold">Qty: </span>
@@ -101,7 +101,7 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
           height={18}
           className="inline-block opacity-80"
         />{" "}
-        {(product?.quantity! * product?.variant.color!.price!).toFixed(2)}
+        {product?.quantity! * product?.variant.color!.price!}
       </div>
     </div>
   );
