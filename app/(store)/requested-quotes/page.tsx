@@ -245,7 +245,7 @@ export default function RequestedQuotesPage() {
                         alt="Currency Logo"
                         width={18}
                         height={18}
-                        className="inline-block"
+                        className="inline-block opacity-70"
                       />
                       {quotation.totalPrice}
                     </p>
@@ -324,11 +324,25 @@ export default function RequestedQuotesPage() {
 
                             <div className="flex flex-col justify-center gap-1 w-full">
                               <p className="text-sm font-medium text-right sm:text-base text-slate-600">
-                                Item price: SR{" "}
+                                Item price:{" "}
+                                <Image
+                                  src="/images/Saudi_Riyal_Symbol.svg"
+                                  alt="Currency Logo"
+                                  width={18}
+                                  height={18}
+                                  className="inline-block opacity-65"
+                                />{" "}
                                 {item.color?.variantPrice?.toFixed(2)}
                               </p>
                               <p className="text-sm font-medium text-right sm:text-base text-slate-700">
-                                Subtotal: SR{" "}
+                                Subtotal:{" "}
+                                <Image
+                                  src="/images/Saudi_Riyal_Symbol.svg"
+                                  alt="Currency Logo"
+                                  width={18}
+                                  height={18}
+                                  className="inline-block"
+                                />{" "}
                                 {(
                                   item.color?.variantPrice! * item.quantity!
                                 ).toFixed(2)}

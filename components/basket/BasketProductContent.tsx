@@ -74,7 +74,14 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
       <div className="md:justify-self-center ">
         <span className="md:hidden font-semibold">Price: </span>
         <br className="sm:hidden" />
-        SR {product?.variant.color!.price?.toFixed(2)}
+        <Image
+          src="/images/Saudi_Riyal_Symbol.svg"
+          alt="Currency Logo"
+          width={18}
+          height={18}
+          className="inline-block opacity-80"
+        />{" "}
+        {product?.variant.color!.price?.toFixed(2)}
       </div>
       <div className="md:justify-self-center flex gap-1 items-center">
         <span className="md:hidden font-semibold">Qty: </span>
@@ -87,7 +94,14 @@ const BasketProductContent: React.FC<BasketProductContentProps> = ({
       <div className="md:justify-self-end">
         <span className="md:hidden font-semibold">Total: </span>
         <br className="sm:hidden" />
-        SR {(product?.quantity! * product?.variant.color!.price!).toFixed(2)}
+        <Image
+          src="/images/Saudi_Riyal_Symbol.svg"
+          alt="Currency Logo"
+          width={18}
+          height={18}
+          className="inline-block opacity-80"
+        />{" "}
+        {(product?.quantity! * product?.variant.color!.price!).toFixed(2)}
       </div>
     </div>
   );

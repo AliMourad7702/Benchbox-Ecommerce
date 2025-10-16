@@ -14,6 +14,7 @@ import SetVariant from "./SetVariant";
 import { useBasket } from "@/hooks/useBasket";
 import toast from "react-hot-toast";
 import RelatedProductsSection from "./RelatedProductsSection";
+import Image from "next/image";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -245,7 +246,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               : product!.baseSku + " " + productInBasket.variant!.label}
           </h1>
           <div className="text-xl font-semibold mb-4">
-            SR {productInBasket.variant.color?.price?.toFixed(2)}
+            <Image
+              src="/images/Saudi_Riyal_Symbol.svg"
+              alt="Currency Logo"
+              width={18}
+              height={18}
+              className="inline-block"
+            />{" "}
+            {productInBasket.variant.color?.price?.toFixed(2)}
           </div>
           <Horizontal />
           <div className="prose max-w-none mb-6 text-black">

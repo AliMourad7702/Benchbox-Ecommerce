@@ -313,8 +313,15 @@ export default function Carousel({
                       <PortableText value={item.colorOptions![0]!.specs} />
                     )}
                   </div>
-                  <p className="mt-2 text-lg font-bold text-gray-900">
-                    SR {item.colorOptions![0].price?.toFixed(2)}
+                  <p className="mt-2 text-lg font-bold text-gray-900 flex items-center gap-1">
+                    <Image
+                      src="/images/Saudi_Riyal_Symbol.svg"
+                      alt="Currency Logo"
+                      width={18}
+                      height={18}
+                      className="inline-block"
+                    />{" "}
+                    {item.colorOptions![0].price?.toFixed(2)}
                   </p>
                 </div>
               </Link>

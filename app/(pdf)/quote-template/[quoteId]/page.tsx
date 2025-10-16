@@ -119,7 +119,7 @@ export default async function QuoteTemplatePage({
               {item.category?.title}
             </p>
 
-            <div className="mt-3 sm:mt-0 sm:text-right">
+            <div className="mt-3 sm:mt-0 sm:text-right flex flex-col gap-2">
               <p className="text-sm text-slate-500 flex gap-1">
                 Item price:{" "}
                 <Image
@@ -127,13 +127,20 @@ export default async function QuoteTemplatePage({
                   alt="Currency Logo"
                   width={18}
                   height={18}
-                  className="inline-block"
+                  className="inline-block opacity-50"
                 />
                 {quotation.totalPrice}
               </p>
-              <p className="text-sm font-semibold text-slate-700">
-                Subtotal: SR{" "}
-                {(item.color?.variantPrice! * item.quantity!).toFixed(2)}
+              <p className="text-sm font-semibold text-slate-700 flex gap-1">
+                Subtotal:
+                <Image
+                  src="/images/Saudi_Riyal_Symbol.svg"
+                  alt="Currency Logo"
+                  width={18}
+                  height={18}
+                  className="inline-block"
+                />
+                {item.color?.variantPrice! * item.quantity!}
               </p>
             </div>
           </div>
@@ -167,16 +174,40 @@ export default async function QuoteTemplatePage({
           <p className="text-base ">
             Total without VAT:{" "}
             <span className="font-bold">
-              SR {quotation.totalPrice!.toFixed(2)}
+              <Image
+                src="/images/Saudi_Riyal_Symbol.svg"
+                alt="Currency Logo"
+                width={18}
+                height={18}
+                className="inline-block"
+              />{" "}
+              {quotation.totalPrice!}
             </span>
           </p>
           <p>
             + VAT {`(${vatPercentage}%)`}:{" "}
-            <span className="font-bold">SR {vatPrice.toFixed(2)}</span>
+            <span className="font-bold">
+              <Image
+                src="/images/Saudi_Riyal_Symbol.svg"
+                alt="Currency Logo"
+                width={18}
+                height={18}
+                className="inline-block"
+              />{" "}
+              {vatPrice.toFixed(2)}
+            </span>
           </p>
           <hr className="border-slate-300 text-right w-full " />
           <p className="text-base font-bold">
-            Total: SR {(quotation.totalPrice! + vatPrice).toFixed(2)}
+            Total:{" "}
+            <Image
+              src="/images/Saudi_Riyal_Symbol.svg"
+              alt="Currency Logo"
+              width={18}
+              height={18}
+              className="inline-block"
+            />{" "}
+            {(quotation.totalPrice! + vatPrice).toFixed(2)}
           </p>
           <p className="text-slate-800 text-xs">
             <strong>Payment Terms :</strong> 100% Upon Delivery &

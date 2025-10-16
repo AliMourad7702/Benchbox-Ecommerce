@@ -7,6 +7,7 @@ import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import { Button } from "../ui/button";
 import BasketProductContent from "./BasketProductContent";
 import QuotationForm from "../quotation/QuotationForm";
+import Image from "next/image";
 
 const BasketClient = () => {
   const { productsInBasket, handleClearBasket, basketTotalPrice } = useBasket();
@@ -74,7 +75,16 @@ const BasketClient = () => {
           <div className="text-sm flex flex-col gap-1 items-start w-full md:w-auto">
             <div className="flex justify-between w-full items-center font-semibold text-base">
               <span>Subtotal</span>
-              <span>SR {basketTotalPrice.toFixed(2)}</span>
+              <span>
+                <Image
+                  src="/images/Saudi_Riyal_Symbol.svg"
+                  alt="Currency Logo"
+                  width={18}
+                  height={18}
+                  className="inline-block"
+                />{" "}
+                {basketTotalPrice.toFixed(2)}
+              </span>
             </div>
 
             <p className="text-slate-500 text-xs">

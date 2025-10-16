@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 type FilterProps = {
   statusOptions?: string[];
@@ -174,7 +175,15 @@ export default function Filter({
               {enablePriceFilter && (
                 <div>
                   <h3 className="text-base font-medium mb-2 text-slate-700">
-                    Price Range (SR)
+                    Price Range (
+                    <Image
+                      src="/images/Saudi_Riyal_Symbol.svg"
+                      alt="Currency Logo"
+                      width={18}
+                      height={18}
+                      className="inline-block mx-1"
+                    />
+                    )
                   </h3>
                   <div className="flex items-center gap-2">
                     <input
