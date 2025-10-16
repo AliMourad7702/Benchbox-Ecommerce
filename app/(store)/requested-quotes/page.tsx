@@ -239,8 +239,15 @@ export default function RequestedQuotesPage() {
                   </div>
                   <div className="sm:text-right">
                     <p className="text-sm text-slate-600 mb-1">Total Amount</p>
-                    <p className="font-bold text-lg">
-                      SR {quotation.totalPrice?.toFixed(2)}
+                    <p className="font-bold text-lg flex items center gap-1">
+                      <Image
+                        src="/images/Saudi_Riyal_Symbol.svg"
+                        alt="Currency Logo"
+                        width={18}
+                        height={18}
+                        className="inline-block"
+                      />
+                      {quotation.totalPrice}
                     </p>
                   </div>
                 </div>

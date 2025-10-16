@@ -120,8 +120,16 @@ export default async function QuoteTemplatePage({
             </p>
 
             <div className="mt-3 sm:mt-0 sm:text-right">
-              <p className="text-sm text-slate-500">
-                Item price: SR {item.color?.variantPrice?.toFixed(2)}
+              <p className="text-sm text-slate-500 flex gap-1">
+                Item price:{" "}
+                <Image
+                  src="/images/Saudi_Riyal_Symbol.svg"
+                  alt="Currency Logo"
+                  width={18}
+                  height={18}
+                  className="inline-block"
+                />
+                {quotation.totalPrice}
               </p>
               <p className="text-sm font-semibold text-slate-700">
                 Subtotal: SR{" "}
