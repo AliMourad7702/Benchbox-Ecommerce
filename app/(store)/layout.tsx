@@ -5,9 +5,11 @@ import Header from "@/components/layout/Header";
 import { SanityLive } from "@/sanity/lib/live";
 import BasketProvider from "@/providers/BasketProvider";
 import { Toaster } from "react-hot-toast";
+import { Inter } from "next/font/google";
 
 // TODO adjust metadata for all pages (even the dynamic ones) after checking with wassim
 
+const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "BenchBox | Premium Office Furniture in Saudi Arabia",
   description: "to be added",
@@ -49,7 +51,7 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang="en">
-        <body className="m-0 bg-gray-100">
+        <body className={`m-0 bg-gray-100 ${inter.className}`}>
           <Toaster
             toastOptions={{
               style: {
