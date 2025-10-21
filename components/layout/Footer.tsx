@@ -7,13 +7,17 @@ export const revalidate = 1800;
 
 const Footer = async () => {
   const categories = await getAllCategories();
+
   return (
-    <footer className="bg-neutral-900 text-white text-sm mt-16">
-      <div className="flex flex-col md:flex-row justify-between pt-16 pb-8">
-        <FooterList>
-          <h3>Categories</h3>
-          {/*TODO map through all fetched categories here */}
-        </FooterList>
+    <footer className="bg-neutral-900 text-white text-sm mt-8">
+      <div className="flex flex-col md:flex-row justify-between px-8 py-8">
+        <FooterList
+          type="category"
+          title="Categories"
+          links={categories}
+        />
+        {/* <FooterList
+          type="mail"/> */}
       </div>
     </footer>
   );

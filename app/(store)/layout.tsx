@@ -6,6 +6,7 @@ import { SanityLive } from "@/sanity/lib/live";
 import BasketProvider from "@/providers/BasketProvider";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
+import Footer from "@/components/layout/Footer";
 
 // TODO adjust metadata for all pages (even the dynamic ones) after checking with wassim
 
@@ -64,6 +65,7 @@ export default function RootLayout({
             <main>
               <Header />
               {children}
+              <Footer />
             </main>
           </BasketProvider>
           <SanityLive />
