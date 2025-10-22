@@ -118,7 +118,7 @@ export default function CategoryProductsPage({
 
   if (!products || products!.length === 0) {
     return (
-      <div className="flex flex-col items-center text-center px-4 py-8">
+      <div className="flex flex-col items-center text-center min-h-[70vh] justify-center px-4 py-8">
         <div className="text-xl text-slate-700">
           No products match your current filters.
         </div>
@@ -129,7 +129,7 @@ export default function CategoryProductsPage({
             setPriceRange({ min: undefined, max: undefined });
             router.push("?page=1");
           }}
-          className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300"
+          className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300 hover:cursor-pointer"
         >
           Reset filters
         </button>

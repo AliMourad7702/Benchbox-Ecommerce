@@ -14,7 +14,7 @@ const BasketClient = () => {
 
   if (!productsInBasket || productsInBasket.length === 0) {
     return (
-      <div className="flex flex-col items-center text-center">
+      <div className="flex flex-col items-center text-center min-h-[70vh] justify-center">
         <div className="text-2xl">Your basket is empty</div>
         <div>
           <Link

@@ -126,7 +126,7 @@ export default function RequestedQuotesPage() {
 
   if (!hasAnyQuotations) {
     return (
-      <div className="flex flex-col items-center text-center px-4 py-8">
+      <div className="flex flex-col items-center text-center min-h-[70vh] justify-center px-4 py-8">
         <div className="text-2xl">You haven't requested any quotations</div>
         <div>
           <Link
@@ -143,7 +143,7 @@ export default function RequestedQuotesPage() {
 
   if (quotations.length === 0 && hasAnyQuotations) {
     return (
-      <div className="flex flex-col items-center text-center px-4 py-8">
+      <div className="flex flex-col items-center text-center min-h-[70vh] justify-center px-4 py-8">
         <div className="text-xl text-slate-700">
           No quotations match your current filters.
         </div>
@@ -154,7 +154,7 @@ export default function RequestedQuotesPage() {
             setPriceRange({ min: undefined, max: undefined });
             router.push("?page=1");
           }}
-          className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300"
+          className="mt-3 px-4 py-2 text-sm bg-slate-200 text-slate-800 rounded hover:bg-slate-300 hover:cursor-pointer"
         >
           Reset filters
         </button>
