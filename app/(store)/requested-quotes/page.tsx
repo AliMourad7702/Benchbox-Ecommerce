@@ -239,7 +239,8 @@ export default function RequestedQuotesPage() {
                   </div>
                   <div className="sm:text-right">
                     <p className="text-sm text-slate-600 mb-1">
-                      Total Amount (without VAT)
+                      Total Amount <br />
+                      <span className="opacity-80">(without VAT)</span>
                     </p>
                     <p className="font-bold text-lg flex items center gap-1">
                       <Image
