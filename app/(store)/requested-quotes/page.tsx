@@ -238,7 +238,9 @@ export default function RequestedQuotesPage() {
                     </span>
                   </div>
                   <div className="sm:text-right">
-                    <p className="text-sm text-slate-600 mb-1">Total Amount</p>
+                    <p className="text-sm text-slate-600 mb-1">
+                      Total Amount (without VAT)
+                    </p>
                     <p className="font-bold text-lg flex items center gap-1">
                       <Image
                         src="/images/Saudi_Riyal_Symbol.svg"
