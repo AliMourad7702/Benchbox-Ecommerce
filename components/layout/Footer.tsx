@@ -10,7 +10,7 @@ const Footer = async () => {
   const categories = await getAllCategories();
 
   return (
-    <footer className="bg-neutral-900 text-white text-sm mt-8">
+    <footer className="bg-neutral-900 text-gray-300 text-sm mt-8">
       <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-10">
         <FooterList
           type="category"

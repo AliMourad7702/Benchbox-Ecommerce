@@ -68,7 +68,7 @@ const Header = () => {
           <Link
             href="/basket"
             passHref
-            className="relative flex justify-center items-center bg-neutral-900 border-white border text-white font-bold px-3 rounded lg:hidden mt-2"
+            className="relative flex justify-center items-center bg-neutral-900 border-white border text-gray-300 font-bold px-3 rounded lg:hidden mt-2"
           >
             <TrolleyIcon className="w-6 h-6" />
             {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
@@ -85,7 +85,7 @@ const Header = () => {
             <Link
               href="/categories"
               passHref
-              className="group relative flex justify-center items-center gap-2 text-white font-bold py-2 px-4 rounded"
+              className="group relative flex justify-center items-center gap-2 text-gray-300 font-bold py-2 px-4 rounded"
             >
               <TbCategory className="w-6 h-6" />
               <span className="text-[0.7rem] md:text-base">Categories</span>
@@ -99,7 +99,7 @@ const Header = () => {
             <Link
               href="/basket"
               passHref
-              className="group relative flex justify-center items-center gap-2 text-white font-bold py-2 px-4 rounded"
+              className="group relative flex justify-center items-center gap-2 text-gray-300 font-bold py-2 px-4 rounded"
             >
               <TrolleyIcon className="w-6 h-6" />
               <span className="text-[0.7rem] md:text-base">My Basket</span>
@@ -118,7 +118,7 @@ const Header = () => {
               <Link
                 href="/requested-quotes"
                 passHref
-                className="group relative flex justify-center items-center gap-2 text-white font-bold py-2 px-4 rounded"
+                className="group relative flex justify-center items-center gap-2 text-gray-300 font-bold py-2 px-4 rounded"
               >
                 <ClipboardIcon className="w-6 h-6" />
                 <span className="text-[0.7rem] md:text-base">
@@ -134,7 +134,7 @@ const Header = () => {
               <Link
                 href="/studio"
                 passHref
-                className="group relative text-white text-[0.7rem] md:text-base font-bold py-[0.44rem] px-4 rounded"
+                className="group relative text-gray-300 text-[0.7rem] md:text-base font-bold py-[0.44rem] px-4 rounded"
               >
                 Studio
                 {/* underline animation */}
@@ -152,13 +152,15 @@ const Header = () => {
             collapsible
           >
             <AccordionItem value="mobile-actions">
-              <AccordionTrigger className="text-white">Menu</AccordionTrigger>
+              <AccordionTrigger className="text-gray-300">
+                Menu
+              </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-3">
                 <ClerkLoaded>
                   <Link
                     href="/categories"
                     passHref
-                    className="group relative flex items-center gap-2 text-white font-bold py-2 px-4 rounded sm:justify-center"
+                    className="group relative flex items-center gap-2 text-gray-300 font-bold py-2 px-4 rounded sm:justify-center"
                   >
                     <TbCategory className="w-6 h-6" />
                     Categories
@@ -174,7 +176,7 @@ const Header = () => {
                     <Link
                       href="/requested-quotes"
                       passHref
-                      className="group relative flex items-center gap-2  text-white font-bold py-2 px-4 rounded sm:justify-center"
+                      className="group relative flex items-center gap-2  text-gray-300 font-bold py-2 px-4 rounded sm:justify-center"
                     >
                       <ClipboardIcon className="w-6 h-6" />
                       My Quotations
@@ -189,7 +191,7 @@ const Header = () => {
                   {user?.publicMetadata.role === "admin" && (
                     <Link
                       href="/studio"
-                      className="group relative text-white hover:text-white font-bold py-2 px-4 rounded text-center"
+                      className="group relative text-gray-300 hover:text-gray-300 font-bold py-2 px-4 rounded text-center"
                     >
                       Studio
                       {/* underline animation */}
