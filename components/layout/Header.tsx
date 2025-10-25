@@ -72,7 +72,7 @@ const Header = () => {
           >
             <TrolleyIcon className="w-6 h-6" />
             {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-white text-black text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
+              <span className="absolute -top-1.5 -right-1.5 bg-gray-300 text-black text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
                 {productsInBasket!.length!}
               </span>
             )}
@@ -104,7 +104,7 @@ const Header = () => {
               <TrolleyIcon className="w-6 h-6" />
               <span className="text-[0.7rem] md:text-base">My Basket</span>
               {basketTotalQuantity > 0 && productsInBasket?.length! > 0 && (
-                <span className="absolute -top-1.5 -right-1 bg-white text-black text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-1.5 -right-1 bg-gray-300 text-black text-sm font-bold h-5 w-5 flex items-center justify-center rounded-full">
                   {productsInBasket!.length!}
                 </span>
               )}
