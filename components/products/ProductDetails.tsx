@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 import RelatedProductsSection from "./RelatedProductsSection";
 import Image from "next/image";
 import { lowercaseChildren } from "@/utils/lowerCaseChildren";
+import { transformTextNodes } from "@/utils/transformTextNodes";
+import { capitalizeFirst } from "@/utils/capitalizeFirst";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -258,46 +260,42 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           </div>
           <Horizontal />
 
-          {/* <div className="prose max-w-none mb-6 text-black">
-            {Array.isArray(productInBasket.variant.color?.specs) && (
-              <PortableText value={productInBasket.variant.color?.specs} />
-            )}
-          </div> */}
-
-          <div className="prose max-w-none mb-6 text-black">
+          <div className="prose max-w-none mb-6 text-black text-sm">
             {Array.isArray(productInBasket.variant.color?.specs) && (
               <PortableText
                 value={productInBasket.variant.color?.specs}
                 components={{
                   block: {
                     normal: ({ children }) => (
-                      <p>{lowercaseChildren(children)}</p>
+                      <p>{transformTextNodes(children, capitalizeFirst)}</p>
                     ),
                     h1: ({ children }) => (
-                      <h1>{lowercaseChildren(children)}</h1>
+                      <h1>{transformTextNodes(children, capitalizeFirst)}</h1>
                     ),
                     h2: ({ children }) => (
-                      <h2>{lowercaseChildren(children)}</h2>
+                      <h2>{transformTextNodes(children, capitalizeFirst)}</h2>
                     ),
                     h3: ({ children }) => (
-                      <h3>{lowercaseChildren(children)}</h3>
+                      <h3>{transformTextNodes(children, capitalizeFirst)}</h3>
                     ),
                     h4: ({ children }) => (
-                      <h4>{lowercaseChildren(children)}</h4>
+                      <h4>{transformTextNodes(children, capitalizeFirst)}</h4>
                     ),
                     h5: ({ children }) => (
-                      <h5>{lowercaseChildren(children)}</h5>
+                      <h5>{transformTextNodes(children, capitalizeFirst)}</h5>
                     ),
                     h6: ({ children }) => (
-                      <h6>{lowercaseChildren(children)}</h6>
+                      <h6>{transformTextNodes(children, capitalizeFirst)}</h6>
                     ),
                     blockquote: ({ children }) => (
-                      <blockquote>{lowercaseChildren(children)}</blockquote>
+                      <blockquote>
+                        {transformTextNodes(children, capitalizeFirst)}
+                      </blockquote>
                     ),
                   },
 
                   listItem: ({ children }) => (
-                    <li>{lowercaseChildren(children)}</li>
+                    <li>{transformTextNodes(children, capitalizeFirst)}</li>
                   ),
 
                   marks: {
@@ -306,7 +304,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         href={value?.href}
                         className="underline"
                       >
-                        {lowercaseChildren(children)}
+                        {transformTextNodes(children, capitalizeFirst)}
                       </a>
                     ),
                   },
