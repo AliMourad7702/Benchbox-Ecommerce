@@ -17,6 +17,7 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { lowercaseChildren } from "@/utils/lowerCaseChildren";
 
 export interface CarouselProps {
   items: AdjustedVariantType[];
@@ -307,10 +308,59 @@ export default function Carousel({
                       </h2>
                     )}
                   </div>
-
-                  <div className="mt-2 text-sm text-gray-600 line-clamp-2">
+                  {/* <div className="mt-2 text-sm text-gray-600 line-clamp-2">
                     {Array.isArray(item.colorOptions![0]!.specs) && (
                       <PortableText value={item.colorOptions![0]!.specs} />
+                    )}
+                  </div> */}
+                  <div className="mt-2 text-sm text-gray-600 line-clamp-2">
+                    {Array.isArray(item.colorOptions![0]!.specs) && (
+                      <PortableText
+                        value={item.colorOptions![0]!.specs}
+                        components={{
+                          block: {
+                            normal: ({ children }) => (
+                              <p>{lowercaseChildren(children)}</p>
+                            ),
+                            h1: ({ children }) => (
+                              <h1>{lowercaseChildren(children)}</h1>
+                            ),
+                            h2: ({ children }) => (
+                              <h2>{lowercaseChildren(children)}</h2>
+                            ),
+                            h3: ({ children }) => (
+                              <h3>{lowercaseChildren(children)}</h3>
+                            ),
+                            h4: ({ children }) => (
+                              <h4>{lowercaseChildren(children)}</h4>
+                            ),
+                            h5: ({ children }) => (
+                              <h5>{lowercaseChildren(children)}</h5>
+                            ),
+                            h6: ({ children }) => (
+                              <h6>{lowercaseChildren(children)}</h6>
+                            ),
+                            blockquote: ({ children }) => (
+                              <blockquote>
+                                {lowercaseChildren(children)}
+                              </blockquote>
+                            ),
+                          },
+                          listItem: ({ children }) => (
+                            <li>{lowercaseChildren(children)}</li>
+                          ),
+                          marks: {
+                            link: ({ children, value }) => (
+                              <a
+                                href={value?.href}
+                                className="underline"
+                              >
+                                {lowercaseChildren(children)}
+                              </a>
+                            ),
+                          },
+                        }}
+                      />
                     )}
                   </div>
                   <p className="mt-2 text-lg font-bold text-gray-900 flex items-center gap-1">

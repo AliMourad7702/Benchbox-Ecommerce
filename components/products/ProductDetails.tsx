@@ -15,6 +15,7 @@ import { useBasket } from "@/hooks/useBasket";
 import toast from "react-hot-toast";
 import RelatedProductsSection from "./RelatedProductsSection";
 import Image from "next/image";
+import { lowercaseChildren } from "@/utils/lowerCaseChildren";
 
 interface ProductDetailsProps {
   product: PRODUCT_BY_SLUG_QUERYResult;
@@ -256,9 +257,61 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             {productInBasket.variant.color?.price}
           </div>
           <Horizontal />
-          <div className="prose max-w-none mb-6 text-black">
+
+          {/* <div className="prose max-w-none mb-6 text-black">
             {Array.isArray(productInBasket.variant.color?.specs) && (
               <PortableText value={productInBasket.variant.color?.specs} />
+            )}
+          </div> */}
+
+          <div className="prose max-w-none mb-6 text-black">
+            {Array.isArray(productInBasket.variant.color?.specs) && (
+              <PortableText
+                value={productInBasket.variant.color?.specs}
+                components={{
+                  block: {
+                    normal: ({ children }) => (
+                      <p>{lowercaseChildren(children)}</p>
+                    ),
+                    h1: ({ children }) => (
+                      <h1>{lowercaseChildren(children)}</h1>
+                    ),
+                    h2: ({ children }) => (
+                      <h2>{lowercaseChildren(children)}</h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3>{lowercaseChildren(children)}</h3>
+                    ),
+                    h4: ({ children }) => (
+                      <h4>{lowercaseChildren(children)}</h4>
+                    ),
+                    h5: ({ children }) => (
+                      <h5>{lowercaseChildren(children)}</h5>
+                    ),
+                    h6: ({ children }) => (
+                      <h6>{lowercaseChildren(children)}</h6>
+                    ),
+                    blockquote: ({ children }) => (
+                      <blockquote>{lowercaseChildren(children)}</blockquote>
+                    ),
+                  },
+
+                  listItem: ({ children }) => (
+                    <li>{lowercaseChildren(children)}</li>
+                  ),
+
+                  marks: {
+                    link: ({ children, value }) => (
+                      <a
+                        href={value?.href}
+                        className="underline"
+                      >
+                        {lowercaseChildren(children)}
+                      </a>
+                    ),
+                  },
+                }}
+              />
             )}
           </div>
           <Horizontal />
