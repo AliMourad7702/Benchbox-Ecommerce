@@ -29,7 +29,7 @@ export default async function CategoriesPage() {
             />
           </div>
           <div className="p-4">
-            <h2 className="text-xl font-semibold mb-1 group-hover:text-blue-600">
+            <h2 className="text-xl font-semibold mb-1 group-hover:text-slate-500">
               {category.title}
             </h2>
           </div>
