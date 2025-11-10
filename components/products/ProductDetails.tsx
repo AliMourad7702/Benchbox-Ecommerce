@@ -248,7 +248,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               ? product!.name
               : product!.baseSku + " " + productInBasket.variant!.label}
           </h1>
-          <div className="text-xl font-semibold mb-4">
+          <div className="text-xl font-semibold mb-1">
             <Image
               src="/images/Saudi_Riyal_Symbol.svg"
               alt="Currency Logo"
@@ -257,6 +257,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               className="inline-block"
             />{" "}
             {productInBasket.variant.color?.price}
+          </div>
+          <div className="text-xs opacity-80 mb-4">
+            ✔ Price includes delivery & installation
           </div>
           <Horizontal />
 
